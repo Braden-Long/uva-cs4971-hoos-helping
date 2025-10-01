@@ -1,72 +1,187 @@
 import Link from "next/link";
+import MobileMenu from "@/components/mobile-menu";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <>
-      <nav className="border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <Link href="/" className="text-xl font-bold">
+    <div className="bg-white">
+      <header className="absolute inset-x-0 top-0 z-50">
+        <nav
+          aria-label="Global"
+          className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        >
+          <div className="flex lg:flex-1">
+            <Link href="/" className="-m-1.5 p-1.5">
+              <span className="sr-only">Hoos Helping</span>
+              <span className="text-2xl font-bold text-uva-orange">
                 Hoos Helping
-              </Link>
-            </div>
-            <div className="flex items-center gap-4">
-              <Link href="/login" className="text-sm hover:underline">
-                Sign in
-              </Link>
+              </span>
+            </Link>
+          </div>
+          <MobileMenu />
+          <div className="hidden lg:flex lg:gap-x-12">
+            <Link
+              href="/login"
+              className="text-sm/6 font-semibold text-gray-900"
+            >
+              Browse Tasks
+            </Link>
+            <Link
+              href="/login"
+              className="text-sm/6 font-semibold text-gray-900"
+            >
+              Post a Task
+            </Link>
+            <Link
+              href="/login"
+              className="text-sm/6 font-semibold text-gray-900"
+            >
+              How It Works
+            </Link>
+          </div>
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <Link
+              href="/login"
+              className="text-sm/6 font-semibold text-gray-900"
+            >
+              Sign in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <div className="relative isolate">
+          <svg
+            aria-hidden="true"
+            className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
+          >
+            <defs>
+              <pattern
+                id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84"
+                width="200"
+                height="200"
+                x="50%"
+                y="-1"
+                patternUnits="userSpaceOnUse"
+              >
+                <path d="M.5 200V.5H200" fill="none" />
+              </pattern>
+            </defs>
+            <svg x="50%" y="-1" className="overflow-visible fill-gray-50">
+              <path
+                d="M-200 0h201v201h-201Z M600 0h201v201h-201Z M-400 600h201v201h-201Z M200 800h201v201h-201Z"
+                strokeWidth="0"
+              />
+            </svg>
+            <rect
+              width="100%"
+              height="100%"
+              strokeWidth="0"
+              fill="url(#1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84)"
+            />
+          </svg>
+          <div
+            aria-hidden="true"
+            className="absolute top-0 right-0 left-1/2 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48"
+          >
+            <div
+              style={{
+                clipPath:
+                  "polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)",
+              }}
+              className="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-uva-orange to-uva-blue opacity-30"
+            ></div>
+          </div>
+          <div className="overflow-hidden">
+            <div className="mx-auto max-w-7xl px-6 pt-36 pb-32 sm:pt-60 lg:px-8 lg:pt-32">
+              <div className="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
+                <div className="relative w-full lg:max-w-xl lg:shrink-0 xl:max-w-2xl">
+                  <h1 className="text-5xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-7xl">
+                    We're connecting the UVA community
+                  </h1>
+                  <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:max-w-md sm:text-xl/8 lg:max-w-none">
+                    From moving furniture to running errands, pet sitting to
+                    assembly tasks—find trusted helpers in the Charlottesville
+                    community ready to lend a hand when you need it most.
+                  </p>
+                  <div className="mt-10 flex items-center gap-x-6">
+                    <Link
+                      href="/login"
+                      className="rounded-md bg-primary px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                    >
+                      Get started
+                    </Link>
+                    <Link
+                      href="/login"
+                      className="text-sm/6 font-semibold text-secondary hover:text-primary"
+                    >
+                      Browse tasks <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </div>
+                <div className="mt-14 flex justify-end gap-8 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
+                  <div className="ml-auto w-44 flex-none space-y-8 pt-32 sm:ml-0 sm:pt-80 lg:order-last lg:pt-36 xl:order-0 xl:pt-80">
+                    <div className="relative">
+                      <Image
+                        src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
+                        alt=""
+                        width={176}
+                        height={264}
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                      />
+                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gray-900/10 ring-inset"></div>
+                    </div>
+                  </div>
+                  <div className="mr-auto w-44 flex-none space-y-8 sm:mr-0 sm:pt-52 lg:pt-36">
+                    <div className="relative">
+                      <Image
+                        src="https://images.unsplash.com/photo-1485217988980-11786ced9454?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
+                        alt=""
+                        width={176}
+                        height={264}
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                      />
+                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gray-900/10 ring-inset"></div>
+                    </div>
+                    <div className="relative">
+                      <Image
+                        src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=396&h=528&q=80"
+                        alt=""
+                        width={176}
+                        height={264}
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                      />
+                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gray-900/10 ring-inset"></div>
+                    </div>
+                  </div>
+                  <div className="w-44 flex-none space-y-8 pt-32 sm:pt-0">
+                    <div className="relative">
+                      <Image
+                        src="https://images.unsplash.com/photo-1670272504528-790c24957dda?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=left&w=400&h=528&q=80"
+                        alt=""
+                        width={176}
+                        height={264}
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                      />
+                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gray-900/10 ring-inset"></div>
+                    </div>
+                    <div className="relative">
+                      <Image
+                        src="https://images.unsplash.com/photo-1670272505284-8faba1c31f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=528&q=80"
+                        alt=""
+                        width={176}
+                        height={264}
+                        className="aspect-[2/3] w-full rounded-xl bg-gray-900/5 object-cover shadow-lg"
+                      />
+                      <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gray-900/10 ring-inset"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </nav>
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center">
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Hoos Helping
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Connect with helpers in the UVA and Charlottesville community for
-              one-time tasks like moving, errands, pet sitting, and more.
-            </p>
-            <div className="flex gap-4 justify-center">
-              <Link
-                href="/login"
-                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-              >
-                Get Started
-              </Link>
-              <Link
-                href="/login"
-                className="border border-gray-300 px-8 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-              >
-                Browse Tasks
-              </Link>
-            </div>
-          </div>
-
-          <div className="mt-20 grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold mb-2">Post a Task</h3>
-              <p className="text-gray-600">
-                Describe what you need help with and set your budget
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold mb-2">Find Helpers</h3>
-              <p className="text-gray-600">
-                Connect with trusted community members ready to assist
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold mb-2">Get It Done</h3>
-              <p className="text-gray-600">
-                Complete the task and rate your experience
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

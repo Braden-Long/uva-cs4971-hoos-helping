@@ -6,10 +6,44 @@
 }
 
 @theme inline {
+  /* Base colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* UVA Primary Colors */
+  --color-uva-blue: #232D4B;
+  --color-uva-blue-25: #C8CBD2;
+  --color-uva-orange: #E57200;
+  --color-uva-orange-25: #F9DCBF;
+
+  /* UVA Secondary Colors */
+  --color-uva-cyan: #009FDF;
+  --color-uva-cyan-25: #BFE7F7;
+  --color-uva-yellow: #FDDA24;
+  --color-uva-yellow-25: #FFF6C8;
+  --color-uva-teal: #25CAD3;
+  --color-uva-teal-25: #C9F2F4;
+  --color-uva-green: #62BB46;
+  --color-uva-green-25: #D8EED1;
+  --color-uva-magenta: #EF3F6B;
+  --color-uva-magenta-25: #FBCFDA;
+
+  /* Web-Only Colors */
+  --color-uva-gray-light: #F1F1EF;
+  --color-uva-gray-medium: #DADADA;
+  --color-uva-gray-text: #666666;
+  --color-uva-emergency: #DF1E43;
+  --color-uva-link: #495E9D;
+
+  /* Semantic aliases for easier usage */
+  --color-primary: var(--color-uva-orange);
+  --color-primary-hover: #d16600;
+  --color-secondary: var(--color-uva-blue);
+  --color-accent: var(--color-uva-orange);
 }
 
 body {
