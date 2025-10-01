@@ -26,7 +26,10 @@ export default async function LoginPage() {
           <SignInForm />
         </div>
         <div className="text-center">
-          <Link href="/" className="text-sm text-primary hover:text-primary-hover">
+          <Link
+            href="/"
+            className="text-sm text-primary hover:text-primary-hover"
+          >
             ← Back to home
           </Link>
         </div>

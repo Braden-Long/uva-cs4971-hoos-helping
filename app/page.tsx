@@ -203,9 +203,10 @@ export default function Home() {
                 How Hoos Helping works
               </p>
               <p className="mt-6 text-lg/8 text-gray-700">
-                Whether you need help with a one-time task or you&apos;re looking to
-                earn flexible income, our platform makes it easy to connect with
-                trusted members of the UVA and Charlottesville community.
+                Whether you need help with a one-time task or you&apos;re
+                looking to earn flexible income, our platform makes it easy to
+                connect with trusted members of the UVA and Charlottesville
+                community.
               </p>
             </div>
             <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
@@ -257,9 +258,9 @@ export default function Home() {
                     Browse and connect
                   </dt>
                   <dd className="mt-2 text-base/7 text-gray-600">
-                    Browse available tasks in your area with filters for category,
-                    location, and payment. Find opportunities that fit your skills
-                    and schedule, all within the UVA community.
+                    Browse available tasks in your area with filters for
+                    category, location, and payment. Find opportunities that fit
+                    your skills and schedule, all within the UVA community.
                   </dd>
                 </div>
                 <div className="relative pl-16">
@@ -283,10 +284,10 @@ export default function Home() {
                     Safe and secure
                   </dt>
                   <dd className="mt-2 text-base/7 text-gray-600">
-                    All transactions are processed securely through our platform.
-                    No more risky cash exchanges or unverified identities. We
-                    provide the safety and structure that informal arrangements
-                    lack.
+                    All transactions are processed securely through our
+                    platform. No more risky cash exchanges or unverified
+                    identities. We provide the safety and structure that
+                    informal arrangements lack.
                   </dd>
                 </div>
                 <div className="relative pl-16">
@@ -310,9 +311,10 @@ export default function Home() {
                     Rate and review
                   </dt>
                   <dd className="mt-2 text-base/7 text-gray-600">
-                    After completing a task, both requesters and helpers can rate
-                    and review each other. Build your reputation, help others make
-                    informed decisions, and maintain quality across the platform.
+                    After completing a task, both requesters and helpers can
+                    rate and review each other. Build your reputation, help
+                    others make informed decisions, and maintain quality across
+                    the platform.
                   </dd>
                 </div>
               </dl>
@@ -326,7 +328,8 @@ export default function Home() {
             aria-hidden="true"
             className="absolute inset-0 -z-10 hidden size-full stroke-gray-200 sm:block"
             style={{
-              maskImage: "radial-gradient(64rem 64rem at top, white, transparent)",
+              maskImage:
+                "radial-gradient(64rem 64rem at top, white, transparent)",
             }}
           >
             <defs>
@@ -665,9 +668,7 @@ export default function Home() {
                           <div className="font-semibold text-gray-900">
                             Maria G.
                           </div>
-                          <div className="text-gray-600">
-                            Community Member
-                          </div>
+                          <div className="text-gray-600">Community Member</div>
                         </div>
                       </figcaption>
                     </figure>

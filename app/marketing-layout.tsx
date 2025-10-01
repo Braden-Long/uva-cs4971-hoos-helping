@@ -1,11 +1,7 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 
-export default function MarketingLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <nav className="border-b">

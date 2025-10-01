@@ -15,29 +15,29 @@
   --font-mono: var(--font-geist-mono);
 
   /* UVA Primary Colors */
-  --color-uva-blue: #232D4B;
-  --color-uva-blue-25: #C8CBD2;
-  --color-uva-orange: #E57200;
-  --color-uva-orange-25: #F9DCBF;
+  --color-uva-blue: #232d4b;
+  --color-uva-blue-25: #c8cbd2;
+  --color-uva-orange: #e57200;
+  --color-uva-orange-25: #f9dcbf;
 
   /* UVA Secondary Colors */
-  --color-uva-cyan: #009FDF;
-  --color-uva-cyan-25: #BFE7F7;
-  --color-uva-yellow: #FDDA24;
-  --color-uva-yellow-25: #FFF6C8;
-  --color-uva-teal: #25CAD3;
-  --color-uva-teal-25: #C9F2F4;
-  --color-uva-green: #62BB46;
-  --color-uva-green-25: #D8EED1;
-  --color-uva-magenta: #EF3F6B;
-  --color-uva-magenta-25: #FBCFDA;
+  --color-uva-cyan: #009fdf;
+  --color-uva-cyan-25: #bfe7f7;
+  --color-uva-yellow: #fdda24;
+  --color-uva-yellow-25: #fff6c8;
+  --color-uva-teal: #25cad3;
+  --color-uva-teal-25: #c9f2f4;
+  --color-uva-green: #62bb46;
+  --color-uva-green-25: #d8eed1;
+  --color-uva-magenta: #ef3f6b;
+  --color-uva-magenta-25: #fbcfda;
 
   /* Web-Only Colors */
-  --color-uva-gray-light: #F1F1EF;
-  --color-uva-gray-medium: #DADADA;
+  --color-uva-gray-light: #f1f1ef;
+  --color-uva-gray-medium: #dadada;
   --color-uva-gray-text: #666666;
-  --color-uva-emergency: #DF1E43;
-  --color-uva-link: #495E9D;
+  --color-uva-emergency: #df1e43;
+  --color-uva-link: #495e9d;
 
   /* Semantic aliases for easier usage */
   --color-primary: var(--color-uva-orange);
