@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Hoos Helping - UVA & Charlottesville Task Marketplace",
-  description: "Connect with helpers in the UVA and Charlottesville community for one-time tasks",
+  description:
+    "Connect with helpers in the UVA and Charlottesville community for one-time tasks",
   icons: {
     icon: "/logo.svg",
   },

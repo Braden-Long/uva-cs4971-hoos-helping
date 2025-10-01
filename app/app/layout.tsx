@@ -26,7 +26,10 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
                 >
                   Browse Tasks
                 </a>
-                <a href="/app/tasks/new" className="text-sm hover:text-gray-600">
+                <a
+                  href="/app/tasks/new"
+                  className="text-sm hover:text-gray-600"
+                >
                   Post a Task
                 </a>
               </div>

@@ -30,9 +30,7 @@ export default function UserMenu({ user }: UserMenuProps) {
     await signOut({ callbackUrl: "/" });
   };
 
-  const initials = user.email
-    ? user.email.substring(0, 2).toUpperCase()
-    : "??";
+  const initials = user.email ? user.email.substring(0, 2).toUpperCase() : "??";
 
   return (
     <div className="relative" ref={menuRef}>
