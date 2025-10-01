@@ -20,7 +20,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig.callbacks,
     async jwt({ token, user }) {
       // Add custom fields to JWT token
-      if (user) {
+      if (user?.id) {
         token.id = user.id;
         token.role = user.role;
       }
