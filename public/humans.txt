@@ -1,0 +1,40 @@
+/* TEAM */
+University of Virginia Capstone Project
+Supervisor: Professor Mark Sherriff
+
+/* THANKS */
+University of Virginia School of Engineering and Applied Science
+
+/* SITE */
+Last update: 2025/10/08
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: React 19, Next.js 15, TypeScript 5
+Styling: Tailwind CSS 4
+Marketing Pages: Tailwind Plus Templates (https://tailwindcss.com/plus/templates#browse)
+Database: Prisma ORM with PostgreSQL
+Authentication: NextAuth.js 5
+Email: Resend
+Hosting: Vercel
+
+/* FAQ */
+
+Q: What is this project?
+A: This is HoosHelping, a university capstone project developed by students at the University of Virginia during the Fall 2025 semester under the supervision of Professor Mark Sherriff.
+
+Q: What technology stack does this use?
+A: The application is built with Next.js 15 (React 19) on the frontend, using TypeScript and Tailwind CSS for styling. The backend uses Prisma ORM for database management, NextAuth.js for authentication, and Resend for email services.
+
+Q: Where is this service hosted?
+A: The application is hosted on Vercel, which provides seamless deployment and hosting for Next.js applications.
+
+Q: Is this a production service?
+A: This is an educational capstone project created as part of academic coursework at the University of Virginia.
+
+Q: Who supervises this project?
+A: Professor Mark Sherriff from the University of Virginia School of Engineering and Applied Science.
+
+Q: Can I contribute to this project?
+A: This is a student capstone project. For contribution inquiries, please contact the project team or Professor Mark Sherriff.
+
+Q: What is the purpose of this humans.txt file?
+A: The humans.txt file is a way to credit the people behind a website, similar to how robots.txt is for search engines. It provides transparency about who built the site and what technologies were used.
