@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -16,12 +17,12 @@ export default async function DashboardPage() {
           <p className="text-gray-600 mb-4">
             Find tasks in your area that you can help with
           </p>
-          <a
+          <Link
             href="/app/tasks"
             className="text-blue-600 hover:underline text-sm"
           >
             View all tasks →
-          </a>
+          </Link>
         </div>
 
         <div className="border rounded-lg p-6">
@@ -29,12 +30,12 @@ export default async function DashboardPage() {
           <p className="text-gray-600 mb-4">
             Need help with something? Post a task and get matched with helpers
           </p>
-          <a
+          <Link
             href="/app/tasks/new"
             className="text-blue-600 hover:underline text-sm"
           >
             Create task →
-          </a>
+          </Link>
         </div>
 
         <div className="border rounded-lg p-6">
@@ -42,12 +43,12 @@ export default async function DashboardPage() {
           <p className="text-gray-600 mb-4">
             Manage your account settings and preferences
           </p>
-          <a
+          <Link
             href="/app/profile"
             className="text-blue-600 hover:underline text-sm"
           >
             View profile →
-          </a>
+          </Link>
         </div>
       </div>
     </div>
