@@ -21,7 +21,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
               </a>
               <div className="hidden md:flex gap-6">
                 <a
-                  href="/app/dashboard"
+                  href="/app/tasks"
                   className="text-sm hover:text-gray-600"
                 >
                   Browse Tasks

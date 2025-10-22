@@ -17,6 +17,7 @@ export default function NewTaskPage() {
     const data = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
+      category: formData.get("category") as string,
       location: formData.get("location") as string,
       budget: formData.get("budget") as string,
     };
@@ -76,6 +77,32 @@ export default function NewTaskPage() {
             placeholder="e.g., Help moving furniture"
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
+        </div>
+
+        {/* Category */}
+        <div>
+          <label
+            htmlFor="category"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Category
+          </label>
+          <select
+            name="category"
+            id="category"
+            required
+            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            <option value="">Select a category</option>
+            <option value="Moving">Moving</option>
+            <option value="Errands">Errands</option>
+            <option value="Pet Sitting">Pet Sitting</option>
+            <option value="Assembly">Assembly</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Yard Work">Yard Work</option>
+            <option value="Tutoring">Tutoring</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
 
         {/* Description */}
