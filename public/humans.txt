@@ -1,12 +1,13 @@
 /* TEAM */
 University of Virginia Capstone Project
+CS 4971: Capstone Practicum II
 Supervisor: Professor Mark Sherriff
 
 /* THANKS */
 University of Virginia School of Engineering and Applied Science
 
 /* SITE */
-Last update: 2025/10/08
+Last update: 2025/10/21
 Standards: HTML5, CSS3, JavaScript ES6+
 Components: React 19, Next.js 15, TypeScript 5
 Styling: Tailwind CSS 4
