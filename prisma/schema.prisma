@@ -67,7 +67,7 @@ model Task {
   id          String   @id @default(cuid())
   title       String
   description String   @db.Text
-  category    String   // e.g., Moving, Errands, Pet Sitting, Assembly, Other
+  category    String   @default("Other") // e.g., Moving, Errands, Pet Sitting, Assembly, Other
   location    String
   budget      Float
   status      String   @default("posted") // posted, accepted, completed
