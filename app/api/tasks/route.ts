@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { PrismaClient } from "@/app/generated/prisma";
+import { PrismaClient, Prisma } from "@/app/generated/prisma";
 
 const prisma = new PrismaClient();
 
@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const status = searchParams.get("status") || "posted";
 
     // Build filter object
-    const where: any = {
+    const where: Prisma.TaskWhereInput = {
       status,
     };
 

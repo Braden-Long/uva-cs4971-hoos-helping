@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 
 interface Task {
@@ -31,7 +31,7 @@ export default function TasksPage() {
   const [minBudgetFilter, setMinBudgetFilter] = useState("");
   const [maxBudgetFilter, setMaxBudgetFilter] = useState("");
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
@@ -62,11 +62,11 @@ export default function TasksPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [categoryFilter, locationFilter, minBudgetFilter, maxBudgetFilter]);
 
   useEffect(() => {
     fetchTasks();
-  }, [categoryFilter, locationFilter, minBudgetFilter, maxBudgetFilter]);
+  }, [fetchTasks]);
 
   const handleResetFilters = () => {
     setCategoryFilter("all");
