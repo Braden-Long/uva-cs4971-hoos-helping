@@ -64,9 +64,7 @@ export default function TaskDetailPage() {
     return (
       <div className="max-w-2xl mx-auto">
         <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-          <p className="text-sm text-red-800">
-            {error || "Task not found"}
-          </p>
+          <p className="text-sm text-red-800">{error || "Task not found"}</p>
         </div>
         <Link
           href="/app/tasks"
@@ -160,8 +158,8 @@ export default function TaskDetailPage() {
               task.status === "posted"
                 ? "bg-green-100 text-green-800"
                 : task.status === "accepted"
-                ? "bg-blue-100 text-blue-800"
-                : "bg-gray-100 text-gray-800"
+                  ? "bg-blue-100 text-blue-800"
+                  : "bg-gray-100 text-gray-800"
             }`}
           >
             {task.status.charAt(0).toUpperCase() + task.status.slice(1)}

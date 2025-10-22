@@ -20,10 +20,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
                 Hoos Helping
               </a>
               <div className="hidden md:flex gap-6">
-                <a
-                  href="/app/tasks"
-                  className="text-sm hover:text-gray-600"
-                >
+                <a href="/app/tasks" className="text-sm hover:text-gray-600">
                   Browse Tasks
                 </a>
                 <a

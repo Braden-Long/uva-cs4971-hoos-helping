@@ -78,7 +78,13 @@ export async function POST(req: Request) {
     const { title, description, category, location, budget } = body;
 
     // Validate required fields
-    if (!title || !description || !category || !location || budget === undefined) {
+    if (
+      !title ||
+      !description ||
+      !category ||
+      !location ||
+      budget === undefined
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
