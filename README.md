@@ -32,6 +32,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 This application is deployed on [Netlify](https://netlify.com). The project includes a `netlify.toml` configuration file that handles the Next.js deployment automatically.
 
 To deploy:
+
 1. Connect your repository to Netlify
 2. Configure environment variables in the Netlify dashboard
 3. Netlify will automatically deploy on each push to the main branch
