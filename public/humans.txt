@@ -15,7 +15,7 @@ Marketing Pages: Tailwind Plus Templates (https://tailwindcss.com/plus/templates
 Database: Prisma ORM with PostgreSQL
 Authentication: NextAuth.js 5
 Email: Resend
-Hosting: Vercel
+Hosting: Netlify
 
 /* FAQ */
 
@@ -26,7 +26,7 @@ Q: What technology stack does this use?
 A: The application is built with Next.js 15 (React 19) on the frontend, using TypeScript and Tailwind CSS for styling. The backend uses Prisma ORM for database management, NextAuth.js for authentication, and Resend for email services.
 
 Q: Where is this service hosted?
-A: The application is hosted on Vercel, which provides seamless deployment and hosting for Next.js applications.
+A: The application is hosted on Netlify, which provides seamless deployment and hosting for Next.js applications.
 
 Q: Is this a production service?
 A: This is an educational capstone project created as part of academic coursework at the University of Virginia.
