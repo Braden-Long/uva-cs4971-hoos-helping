@@ -7,6 +7,7 @@ A community task-sharing platform connecting the UVA and Charlottesville communi
 Hoos Helping enables students, faculty, and Charlottesville residents to post tasks (moving help, errands, pet sitting, tutoring, etc.) and connect with community members who can complete them. It's a trusted alternative to informal Facebook posts, with built-in verification and structured task management.
 
 **Key Features:**
+
 - Browse and filter tasks by category, location, and budget
 - Post tasks with detailed descriptions and compensation
 - Email-based authentication (magic links via Resend)
@@ -33,18 +34,21 @@ Hoos Helping enables students, faculty, and Charlottesville residents to post ta
 ### Local Development
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd capstone-orange-4
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables:
-Create a `.env` file with:
+   Create a `.env` file with:
+
 ```env
 DATABASE_URL="postgresql://user:password@host/database"
 AUTH_SECRET="your-auth-secret"
@@ -53,11 +57,13 @@ RESEND_FROM_EMAIL="noreply@hooshelping.com"
 ```
 
 4. Run database migrations:
+
 ```bash
 npm run db:migrate -- --name init
 ```
 
 5. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -75,6 +81,7 @@ npm run db:migrate -- --name your_change_name
 ```
 
 Examples:
+
 ```bash
 npm run db:migrate -- --name add_ratings
 npm run db:migrate -- --name add_task_images
@@ -96,12 +103,14 @@ npm run db:migrate -- --name add_task_images
 The app is hosted on Netlify and deploys automatically on push to `main`.
 
 **Environment Variables (set in Netlify dashboard):**
+
 - `DATABASE_URL` - PostgreSQL connection string (pooled)
 - `AUTH_SECRET` - NextAuth secret
 - `RESEND_API_KEY` - Resend API key
 - `RESEND_FROM_EMAIL` - Email sender address
 
 **Build Process:**
+
 1. `npm install` runs `postinstall` hook → generates Prisma Client
 2. `npm run build` runs `prisma migrate deploy && next build`
 3. Migrations apply automatically before build
