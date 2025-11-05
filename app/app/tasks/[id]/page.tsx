@@ -145,7 +145,9 @@ export default function TaskDetailPage() {
       setShowApplicationForm(false);
       fetchTask();
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to submit application");
+      alert(
+        err instanceof Error ? err.message : "Failed to submit application"
+      );
     } finally {
       setSubmitting(false);
     }
@@ -155,9 +157,12 @@ export default function TaskDetailPage() {
     if (!confirm("Are you sure you want to accept this application?")) return;
 
     try {
-      const response = await fetch(`/api/applications/${applicationId}/accept`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `/api/applications/${applicationId}/accept`,
+        {
+          method: "POST",
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to accept application");
 
@@ -172,9 +177,12 @@ export default function TaskDetailPage() {
     if (!confirm("Are you sure you want to reject this application?")) return;
 
     try {
-      const response = await fetch(`/api/applications/${applicationId}/reject`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `/api/applications/${applicationId}/reject`,
+        {
+          method: "POST",
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to reject application");
 
@@ -246,7 +254,11 @@ export default function TaskDetailPage() {
                 {key.replace(/([A-Z])/g, " $1").trim()}:
               </span>
               <span className="ml-2 text-gray-600">
-                {typeof value === "boolean" ? (value ? "Yes" : "No") : String(value)}
+                {typeof value === "boolean"
+                  ? value
+                    ? "Yes"
+                    : "No"
+                  : String(value)}
               </span>
             </div>
           ))}
@@ -287,7 +299,10 @@ export default function TaskDetailPage() {
         <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
           <p className="text-sm text-red-800">{error || "Task not found"}</p>
         </div>
-        <Link href="/app/tasks" className="text-primary hover:text-primary-hover font-medium">
+        <Link
+          href="/app/tasks"
+          className="text-primary hover:text-primary-hover font-medium"
+        >
           ← Back to tasks
         </Link>
       </div>
@@ -297,7 +312,10 @@ export default function TaskDetailPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <Link href="/app/tasks" className="text-primary hover:text-primary-hover font-medium text-sm">
+        <Link
+          href="/app/tasks"
+          className="text-primary hover:text-primary-hover font-medium text-sm"
+        >
           ← Back to tasks
         </Link>
       </div>
@@ -316,10 +334,10 @@ export default function TaskDetailPage() {
                   task.status === "open"
                     ? "bg-green-100 text-green-800"
                     : task.status === "assigned"
-                    ? "bg-blue-100 text-blue-800"
-                    : task.status === "in_progress"
-                    ? "bg-yellow-100 text-yellow-800"
-                    : "bg-gray-100 text-gray-800"
+                      ? "bg-blue-100 text-blue-800"
+                      : task.status === "in_progress"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-gray-100 text-gray-800"
                 }`}
               >
                 {task.status}
@@ -327,14 +345,34 @@ export default function TaskDetailPage() {
             </div>
             <div className="flex items-center gap-4 text-sm text-gray-500">
               <div className="flex items-center gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
                 </svg>
                 Posted by {task.createdBy.name || task.createdBy.email}
               </div>
               <div className="flex items-center gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
                 {new Date(task.createdAt).toLocaleDateString()}
               </div>
@@ -351,7 +389,9 @@ export default function TaskDetailPage() {
             )}
           </div>
           <div className="ml-6 text-right">
-            <div className="text-4xl font-bold text-primary">${task.budget.toFixed(2)}</div>
+            <div className="text-4xl font-bold text-primary">
+              ${task.budget.toFixed(2)}
+            </div>
             <div className="text-sm text-gray-500">budget</div>
           </div>
         </div>
@@ -370,9 +410,24 @@ export default function TaskDetailPage() {
       <div className="bg-white border rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold mb-3">Location</h2>
         <div className="flex items-center gap-2">
-          <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg
+            className="w-5 h-5 text-primary"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            />
           </svg>
           <p className="text-gray-700">{task.location}</p>
         </div>
@@ -559,7 +614,9 @@ export default function TaskDetailPage() {
                   >
                     <svg
                       className={`w-8 h-8 ${
-                        star <= reviewRating ? "text-yellow-400" : "text-gray-300"
+                        star <= reviewRating
+                          ? "text-yellow-400"
+                          : "text-gray-300"
                       }`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
@@ -595,7 +652,9 @@ export default function TaskDetailPage() {
 
       {hasReviewed && (
         <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-6">
-          <p className="text-sm text-green-800">You have already reviewed this task.</p>
+          <p className="text-sm text-green-800">
+            You have already reviewed this task.
+          </p>
         </div>
       )}
     </div>

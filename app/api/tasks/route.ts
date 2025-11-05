@@ -75,7 +75,15 @@ export async function POST(req: Request) {
 
     // Parse request body
     const body = await req.json();
-    const { title, description, category, location, budget, scheduledDate, categorySpecificData } = body;
+    const {
+      title,
+      description,
+      category,
+      location,
+      budget,
+      scheduledDate,
+      categorySpecificData,
+    } = body;
 
     // Validate required fields
     if (

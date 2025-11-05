@@ -38,7 +38,9 @@ interface Application {
 }
 
 export default function MyTasksPage() {
-  const [activeTab, setActiveTab] = useState<"posted" | "applied" | "assigned">("posted");
+  const [activeTab, setActiveTab] = useState<"posted" | "applied" | "assigned">(
+    "posted"
+  );
   const [postedTasks, setPostedTasks] = useState<Task[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [assignedTasks, setAssignedTasks] = useState<Task[]>([]);
@@ -153,7 +155,9 @@ export default function MyTasksPage() {
         <div className="space-y-4">
           {postedTasks.length === 0 ? (
             <div className="text-center py-12 bg-white border rounded-lg">
-              <p className="text-gray-600 mb-4">You haven&apos;t posted any tasks yet.</p>
+              <p className="text-gray-600 mb-4">
+                You haven&apos;t posted any tasks yet.
+              </p>
               <Link
                 href="/app/tasks/new"
                 className="inline-block bg-primary text-white px-6 py-2 rounded-md font-semibold hover:bg-primary-hover"
@@ -180,7 +184,9 @@ export default function MyTasksPage() {
                         {task.status}
                       </span>
                     </div>
-                    <p className="text-gray-600 mb-2 line-clamp-2">{task.description}</p>
+                    <p className="text-gray-600 mb-2 line-clamp-2">
+                      {task.description}
+                    </p>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <span>{task.category}</span>
                       <span>{task.location}</span>
@@ -307,7 +313,8 @@ export default function MyTasksPage() {
                       <span>{task.location}</span>
                       {task.createdBy && (
                         <span>
-                          Posted by {task.createdBy.name || task.createdBy.email}
+                          Posted by{" "}
+                          {task.createdBy.name || task.createdBy.email}
                         </span>
                       )}
                     </div>

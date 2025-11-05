@@ -141,7 +141,8 @@ export default function PublicProfilePage() {
               <div className="flex items-center gap-2 mb-3">
                 {renderStars(Math.round(profile.averageRating))}
                 <span className="text-sm text-gray-600">
-                  {profile.averageRating.toFixed(1)} ({profile.reviewsReceived.length}{" "}
+                  {profile.averageRating.toFixed(1)} (
+                  {profile.reviewsReceived.length}{" "}
                   {profile.reviewsReceived.length === 1 ? "review" : "reviews"})
                 </span>
               </div>
@@ -226,7 +227,10 @@ export default function PublicProfilePage() {
           </h2>
           <div className="space-y-6">
             {profile.reviewsReceived.map((review) => (
-              <div key={review.id} className="border-b last:border-b-0 pb-6 last:pb-0">
+              <div
+                key={review.id}
+                className="border-b last:border-b-0 pb-6 last:pb-0"
+              >
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <div className="font-medium text-gray-900">

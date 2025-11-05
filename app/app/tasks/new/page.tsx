@@ -34,11 +34,13 @@ export default function NewTaskPage() {
       categorySpecificData.propertyType = formData.get("propertyType");
       categorySpecificData.numberOfRooms = formData.get("numberOfRooms");
       categorySpecificData.cleaningType = formData.get("cleaningType");
-      categorySpecificData.bringSupplies = formData.get("bringSupplies") === "on";
+      categorySpecificData.bringSupplies =
+        formData.get("bringSupplies") === "on";
     } else if (selectedCategory === "Errands") {
       categorySpecificData.errandType = formData.get("errandType");
       categorySpecificData.requiresCar = formData.get("requiresCar") === "on";
-      categorySpecificData.estimatedDuration = formData.get("estimatedDuration");
+      categorySpecificData.estimatedDuration =
+        formData.get("estimatedDuration");
     }
 
     const data = {
@@ -48,7 +50,10 @@ export default function NewTaskPage() {
       location: formData.get("location") as string,
       budget: formData.get("budget") as string,
       scheduledDate: formData.get("scheduledDate") as string,
-      categorySpecificData: Object.keys(categorySpecificData).length > 0 ? categorySpecificData : null,
+      categorySpecificData:
+        Object.keys(categorySpecificData).length > 0
+          ? categorySpecificData
+          : null,
     };
 
     try {
@@ -140,7 +145,9 @@ export default function NewTaskPage() {
                   name="heavyItems"
                   className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />
-                <span className="text-sm text-gray-700">Heavy items (furniture, appliances)</span>
+                <span className="text-sm text-gray-700">
+                  Heavy items (furniture, appliances)
+                </span>
               </label>
 
               <label className="flex items-center space-x-2">
@@ -149,7 +156,9 @@ export default function NewTaskPage() {
                   name="requiresCar"
                   className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />
-                <span className="text-sm text-gray-700">Helper must have a car</span>
+                <span className="text-sm text-gray-700">
+                  Helper must have a car
+                </span>
               </label>
             </div>
           </div>
@@ -192,7 +201,9 @@ export default function NewTaskPage() {
                 name="bringTools"
                 className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
               />
-              <span className="text-sm text-gray-700">Helper should bring tools</span>
+              <span className="text-sm text-gray-700">
+                Helper should bring tools
+              </span>
             </label>
           </div>
         );
@@ -249,7 +260,9 @@ export default function NewTaskPage() {
                 name="bringSupplies"
                 className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
               />
-              <span className="text-sm text-gray-700">Helper should bring cleaning supplies</span>
+              <span className="text-sm text-gray-700">
+                Helper should bring cleaning supplies
+              </span>
             </label>
           </div>
         );
