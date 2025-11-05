@@ -7,6 +7,7 @@ export default function NewTaskPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -14,12 +15,45 @@ export default function NewTaskPage() {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
+
+    // Build category-specific data
+    const categorySpecificData: Record<string, unknown> = {};
+
+    if (selectedCategory === "Moving") {
+      categorySpecificData.startingAddress = formData.get("startingAddress");
+      categorySpecificData.endingAddress = formData.get("endingAddress");
+      categorySpecificData.floors = formData.get("floors");
+      categorySpecificData.bedrooms = formData.get("bedrooms");
+      categorySpecificData.heavyItems = formData.get("heavyItems") === "on";
+      categorySpecificData.requiresCar = formData.get("requiresCar") === "on";
+    } else if (selectedCategory === "Furniture Assembly") {
+      categorySpecificData.itemType = formData.get("itemType");
+      categorySpecificData.numberOfItems = formData.get("numberOfItems");
+      categorySpecificData.bringTools = formData.get("bringTools") === "on";
+    } else if (selectedCategory === "Cleaning") {
+      categorySpecificData.propertyType = formData.get("propertyType");
+      categorySpecificData.numberOfRooms = formData.get("numberOfRooms");
+      categorySpecificData.cleaningType = formData.get("cleaningType");
+      categorySpecificData.bringSupplies =
+        formData.get("bringSupplies") === "on";
+    } else if (selectedCategory === "Errands") {
+      categorySpecificData.errandType = formData.get("errandType");
+      categorySpecificData.requiresCar = formData.get("requiresCar") === "on";
+      categorySpecificData.estimatedDuration =
+        formData.get("estimatedDuration");
+    }
+
     const data = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       category: formData.get("category") as string,
       location: formData.get("location") as string,
       budget: formData.get("budget") as string,
+      scheduledDate: formData.get("scheduledDate") as string,
+      categorySpecificData:
+        Object.keys(categorySpecificData).length > 0
+          ? categorySpecificData
+          : null,
     };
 
     try {
@@ -36,11 +70,246 @@ export default function NewTaskPage() {
         throw new Error(errorData.error || "Failed to create task");
       }
 
-      // Success - redirect to dashboard
       router.push("/app/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       setIsSubmitting(false);
+    }
+  };
+
+  const renderCategorySpecificFields = () => {
+    switch (selectedCategory) {
+      case "Moving":
+        return (
+          <div className="space-y-4 bg-blue-50 p-4 rounded-md">
+            <h3 className="font-semibold text-gray-900">Moving Details</h3>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Starting Address
+              </label>
+              <input
+                type="text"
+                name="startingAddress"
+                required
+                placeholder="123 Main St, Charlottesville, VA"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Ending Address
+              </label>
+              <input
+                type="text"
+                name="endingAddress"
+                required
+                placeholder="456 Oak Ave, Charlottesville, VA"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Floors (Pickup)
+                </label>
+                <select
+                  name="floors"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                >
+                  <option value="1">1st Floor</option>
+                  <option value="2">2nd Floor</option>
+                  <option value="3">3rd Floor+</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Bedrooms
+                </label>
+                <input
+                  type="text"
+                  name="bedrooms"
+                  placeholder="e.g., Studio, 1BR, 2BR"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  name="heavyItems"
+                  className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                />
+                <span className="text-sm text-gray-700">
+                  Heavy items (furniture, appliances)
+                </span>
+              </label>
+
+              <label className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  name="requiresCar"
+                  className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                />
+                <span className="text-sm text-gray-700">
+                  Helper must have a car
+                </span>
+              </label>
+            </div>
+          </div>
+        );
+
+      case "Furniture Assembly":
+        return (
+          <div className="space-y-4 bg-blue-50 p-4 rounded-md">
+            <h3 className="font-semibold text-gray-900">Assembly Details</h3>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Item Type
+              </label>
+              <input
+                type="text"
+                name="itemType"
+                required
+                placeholder="e.g., IKEA desk, bookshelf, bed frame"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Number of Items
+              </label>
+              <input
+                type="number"
+                name="numberOfItems"
+                min="1"
+                defaultValue="1"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              />
+            </div>
+
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="bringTools"
+                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <span className="text-sm text-gray-700">
+                Helper should bring tools
+              </span>
+            </label>
+          </div>
+        );
+
+      case "Cleaning":
+        return (
+          <div className="space-y-4 bg-blue-50 p-4 rounded-md">
+            <h3 className="font-semibold text-gray-900">Cleaning Details</h3>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Property Type
+              </label>
+              <select
+                name="propertyType"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              >
+                <option value="apartment">Apartment</option>
+                <option value="house">House</option>
+                <option value="dorm">Dorm Room</option>
+                <option value="office">Office</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Number of Rooms/Size
+              </label>
+              <input
+                type="text"
+                name="numberOfRooms"
+                placeholder="e.g., 2 bedrooms, 1 bathroom"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Cleaning Type
+              </label>
+              <select
+                name="cleaningType"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              >
+                <option value="regular">Regular Cleaning</option>
+                <option value="deep">Deep Cleaning</option>
+                <option value="moveout">Move-out Cleaning</option>
+              </select>
+            </div>
+
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="bringSupplies"
+                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <span className="text-sm text-gray-700">
+                Helper should bring cleaning supplies
+              </span>
+            </label>
+          </div>
+        );
+
+      case "Errands":
+        return (
+          <div className="space-y-4 bg-blue-50 p-4 rounded-md">
+            <h3 className="font-semibold text-gray-900">Errand Details</h3>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Type of Errand
+              </label>
+              <input
+                type="text"
+                name="errandType"
+                required
+                placeholder="e.g., Grocery shopping, mail drop-off, package pickup"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Estimated Duration
+              </label>
+              <input
+                type="text"
+                name="estimatedDuration"
+                placeholder="e.g., 1 hour, 2-3 hours"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              />
+            </div>
+
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="requiresCar"
+                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <span className="text-sm text-gray-700">Requires a car</span>
+            </label>
+          </div>
+        );
+
+      default:
+        return null;
     }
   };
 
@@ -91,19 +360,24 @@ export default function NewTaskPage() {
             name="category"
             id="category"
             required
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="">Select a category</option>
             <option value="Moving">Moving</option>
+            <option value="Furniture Assembly">Furniture Assembly</option>
+            <option value="Cleaning">Cleaning</option>
             <option value="Errands">Errands</option>
             <option value="Pet Sitting">Pet Sitting</option>
-            <option value="Assembly">Assembly</option>
-            <option value="Cleaning">Cleaning</option>
             <option value="Yard Work">Yard Work</option>
             <option value="Tutoring">Tutoring</option>
             <option value="Other">Other</option>
           </select>
         </div>
+
+        {/* Category-Specific Fields */}
+        {renderCategorySpecificFields()}
 
         {/* Description */}
         <div>
@@ -123,6 +397,25 @@ export default function NewTaskPage() {
           />
         </div>
 
+        {/* Scheduled Date */}
+        <div>
+          <label
+            htmlFor="scheduledDate"
+            className="block text-sm font-medium text-gray-700"
+          >
+            When do you need this done?
+          </label>
+          <input
+            type="datetime-local"
+            name="scheduledDate"
+            id="scheduledDate"
+            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+          <p className="mt-1 text-sm text-gray-500">
+            Optional - leave blank if flexible
+          </p>
+        </div>
+
         {/* Location */}
         <div>
           <label
@@ -140,7 +433,7 @@ export default function NewTaskPage() {
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           />
           <p className="mt-1 text-sm text-gray-500">
-            Where should the helper meet you?
+            General area where the task will take place
           </p>
         </div>
 

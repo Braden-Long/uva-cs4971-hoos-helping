@@ -69,16 +69,34 @@ export default function UserMenu({ user }: UserMenuProps) {
               <p className="text-xs text-gray-500 truncate">{user.email}</p>
             </div>
             <Link
+              href="/app/dashboard"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/app/my-tasks"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              My Tasks
+            </Link>
+            <Link
               href="/app/profile"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               Your Profile
             </Link>
             <Link
-              href="/app/tasks"
+              href="/profile/edit"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              Your Tasks
+              Edit Helper Profile
+            </Link>
+            <Link
+              href="/onboarding/helper"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              Setup Helper Profile
             </Link>
             <button
               onClick={handleSignOut}

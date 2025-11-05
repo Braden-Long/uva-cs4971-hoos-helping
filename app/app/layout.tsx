@@ -30,6 +30,18 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
                 >
                   Post a Task
                 </Link>
+                <Link
+                  href="/app/my-tasks"
+                  className="text-sm hover:text-gray-600"
+                >
+                  My Tasks
+                </Link>
+                <Link
+                  href="/app/profile"
+                  className="text-sm hover:text-gray-600"
+                >
+                  Profile
+                </Link>
               </div>
             </div>
             <UserMenu user={session.user} />
