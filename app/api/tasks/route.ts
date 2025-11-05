@@ -16,7 +16,7 @@ export async function GET(req: Request) {
 
     // Build filter object
     const where: Prisma.TaskWhereInput = {
-      status,
+      status: status === "posted" ? "open" : status, // Map old "posted" status to "open"
     };
 
     if (category && category !== "all") {
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
 
     // Parse request body
     const body = await req.json();
-    const { title, description, category, location, budget } = body;
+    const { title, description, category, location, budget, scheduledDate, categorySpecificData } = body;
 
     // Validate required fields
     if (
@@ -108,6 +108,8 @@ export async function POST(req: Request) {
         category,
         location,
         budget: budgetNum,
+        scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
+        categorySpecificData: categorySpecificData || null,
         createdById: session.user.id,
       },
       include: {

@@ -16,9 +16,24 @@ model User {
   emailVerified DateTime?
   image         String?
   role          String    @default("user") // user, admin
+
+  // Helper Profile Fields
+  bio                      String?
+  skills                   String[] // Array of categories they can help with
+  hasCar                   Boolean   @default(false)
+  hourlyRate               Float?
+  isHelperProfileComplete  Boolean   @default(false)
+  averageRating            Float?
+  totalTasksAsHelper       Int       @default(0)
+
   accounts      Account[]
   sessions      Session[]
-  tasks         Task[]
+  tasks         Task[]    @relation("TaskCreator")
+  assignedTasks Task[]    @relation("AssignedHelper")
+  applications  Application[]
+  reviewsWritten   Review[] @relation("Reviewer")
+  reviewsReceived  Review[] @relation("Reviewee")
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -67,15 +82,56 @@ model Task {
   id          String   @id @default(cuid())
   title       String
   description String   @db.Text
-  category    String   @default("Other") // e.g., Moving, Errands, Pet Sitting, Assembly, Other
+  category    String   @default("Other") // e.g., Moving, Errands, Pet Sitting, Assembly, Cleaning, Yard Work, Tutoring, Other
   location    String
   budget      Float
-  status      String   @default("posted") // posted, accepted, completed
+  status      String   @default("open") // open, assigned, in_progress, completed, cancelled
+  scheduledDate DateTime?
+  categorySpecificData Json?
+  completedAt DateTime?
 
   // Relations
   createdById String
-  createdBy   User     @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdBy   User     @relation("TaskCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  assignedToId String?
+  assignedTo   User?    @relation("AssignedHelper", fields: [assignedToId], references: [id])
+
+  applications Application[]
+  reviews      Review[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// Application Model
+model Application {
+  id              String   @id @default(cuid())
+  taskId          String
+  task            Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  helperId        String
+  helper          User     @relation(fields: [helperId], references: [id], onDelete: Cascade)
+  message         String   @db.Text
+  proposedRate    Float?
+  status          String   @default("pending") // pending, accepted, rejected, withdrawn
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([taskId, helperId])
+}
+
+// Review Model
+model Review {
+  id              String   @id @default(cuid())
+  taskId          String
+  task            Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  reviewerId      String
+  reviewer        User     @relation("Reviewer", fields: [reviewerId], references: [id])
+  revieweeId      String
+  reviewee        User     @relation("Reviewee", fields: [revieweeId], references: [id])
+  rating          Int      // 1-5 stars
+  comment         String?  @db.Text
+  createdAt       DateTime @default(now())
+
+  @@unique([taskId, reviewerId])
 }
