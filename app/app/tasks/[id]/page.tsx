@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 
@@ -67,12 +67,32 @@ export default function TaskDetailPage() {
   const [reviewComment, setReviewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (!taskId) return;
-    fetchTask();
+  const fetchApplications = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/applications`);
+      if (response.ok) {
+        const data = await response.json();
+        setApplications(data);
+      }
+    } catch (err) {
+      console.error("Error fetching applications:", err);
+    }
   }, [taskId]);
 
-  const fetchTask = async () => {
+  const checkReviewStatus = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/review`);
+      if (response.ok) {
+        const data = await response.json();
+        setHasReviewed(data.hasReviewed);
+        setShowReviewForm(!data.hasReviewed);
+      }
+    } catch (err) {
+      console.error("Error checking review status:", err);
+    }
+  }, [taskId]);
+
+  const fetchTask = useCallback(async () => {
     try {
       const response = await fetch(`/api/tasks/${taskId}`);
       if (!response.ok) throw new Error("Failed to fetch task");
@@ -95,32 +115,12 @@ export default function TaskDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [taskId, fetchApplications, checkReviewStatus]);
 
-  const fetchApplications = async () => {
-    try {
-      const response = await fetch(`/api/tasks/${taskId}/applications`);
-      if (response.ok) {
-        const data = await response.json();
-        setApplications(data);
-      }
-    } catch (err) {
-      console.error("Error fetching applications:", err);
-    }
-  };
-
-  const checkReviewStatus = async () => {
-    try {
-      const response = await fetch(`/api/tasks/${taskId}/review`);
-      if (response.ok) {
-        const data = await response.json();
-        setHasReviewed(data.hasReviewed);
-        setShowReviewForm(!data.hasReviewed);
-      }
-    } catch (err) {
-      console.error("Error checking review status:", err);
-    }
-  };
+  useEffect(() => {
+    if (!taskId) return;
+    fetchTask();
+  }, [taskId, fetchTask]);
 
   const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
