@@ -11,8 +11,8 @@ export default async function DashboardPage() {
         Welcome back, {session?.user?.email}!
       </p>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="border rounded-lg p-6 bg-white hover:shadow-lg transition-shadow">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
           <h2 className="text-xl font-semibold mb-2">My Tasks</h2>
           <p className="text-gray-600 mb-4">
             View tasks you posted, applied to, and are assigned to
@@ -25,7 +25,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        <div className="border rounded-lg p-6 bg-white hover:shadow-lg transition-shadow">
+        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
           <h2 className="text-xl font-semibold mb-2">Browse Tasks</h2>
           <p className="text-gray-600 mb-4">
             Find tasks in your area that you can help with and earn money
@@ -38,7 +38,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        <div className="border rounded-lg p-6 bg-white hover:shadow-lg transition-shadow">
+        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
           <h2 className="text-xl font-semibold mb-2">Post a Task</h2>
           <p className="text-gray-600 mb-4">
             Need help? Post a task and get matched with skilled helpers
@@ -51,7 +51,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        <div className="border rounded-lg p-6 bg-white hover:shadow-lg transition-shadow">
+        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
           <h2 className="text-xl font-semibold mb-2">Become a Helper</h2>
           <p className="text-gray-600 mb-4">
             Set up your helper profile and start earning by helping others
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        <div className="border rounded-lg p-6 bg-white hover:shadow-lg transition-shadow">
+        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
           <h2 className="text-xl font-semibold mb-2">Your Profile</h2>
           <p className="text-gray-600 mb-4">
             Manage your account, helper settings, and view your ratings

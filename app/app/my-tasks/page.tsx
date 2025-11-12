@@ -115,34 +115,34 @@ export default function MyTasksPage() {
       <h1 className="text-3xl font-bold mb-6">My Tasks</h1>
 
       {/* Tabs */}
-      <div className="border-b mb-6">
-        <nav className="-mb-px flex space-x-8">
+      <div className="mb-6 border-b border-gray-200">
+        <nav className="-mb-px flex flex-wrap gap-4">
           <button
             onClick={() => setActiveTab("posted")}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`rounded-t-md px-4 py-2 text-sm font-semibold cursor-pointer ${
               activeTab === "posted"
-                ? "border-primary text-primary"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                ? "border-b-2 border-primary text-gray-900"
+                : "border-b-2 border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
             Posted by Me ({postedTasks.length})
           </button>
           <button
             onClick={() => setActiveTab("applied")}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`rounded-t-md px-4 py-2 text-sm font-semibold cursor-pointer ${
               activeTab === "applied"
-                ? "border-primary text-primary"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                ? "border-b-2 border-primary text-gray-900"
+                : "border-b-2 border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
             My Applications ({applications.length})
           </button>
           <button
             onClick={() => setActiveTab("assigned")}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`rounded-t-md px-4 py-2 text-sm font-semibold cursor-pointer ${
               activeTab === "assigned"
-                ? "border-primary text-primary"
-                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                ? "border-b-2 border-primary text-gray-900"
+                : "border-b-2 border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
             Assigned to Me ({assignedTasks.length})
@@ -154,7 +154,7 @@ export default function MyTasksPage() {
       {activeTab === "posted" && (
         <div className="space-y-4">
           {postedTasks.length === 0 ? (
-            <div className="text-center py-12 bg-white border rounded-lg">
+            <div className="text-center py-12 rounded-md bg-white px-6 shadow-sm">
               <p className="text-gray-600 mb-4">
                 You haven&apos;t posted any tasks yet.
               </p>
@@ -166,46 +166,51 @@ export default function MyTasksPage() {
               </Link>
             </div>
           ) : (
-            postedTasks.map((task) => (
-              <Link
-                key={task.id}
-                href={`/app/tasks/${task.id}`}
-                className="block bg-white border rounded-lg p-6 hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">{task.title}</h3>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeColor(
-                          task.status
-                        )}`}
-                      >
-                        {task.status}
-                      </span>
+            <ul role="list" className="space-y-3">
+              {postedTasks.map((task) => (
+                <li
+                  key={task.id}
+                  className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md"
+                >
+                  <Link href={`/app/tasks/${task.id}`} className="block">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold">
+                            {task.title}
+                          </h3>
+                          <span
+                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusBadgeColor(
+                              task.status
+                            )}`}
+                          >
+                            {task.status}
+                          </span>
+                        </div>
+                        <p className="text-gray-600 mb-2 line-clamp-2">
+                          {task.description}
+                        </p>
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
+                          <span>{task.category}</span>
+                          <span>{task.location}</span>
+                          {task._count && task._count.applications > 0 && (
+                            <span className="text-primary font-medium">
+                              {task._count.applications} application
+                              {task._count.applications !== 1 ? "s" : ""}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-primary">
+                          ${task.budget.toFixed(2)}
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-gray-600 mb-2 line-clamp-2">
-                      {task.description}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <span>{task.category}</span>
-                      <span>{task.location}</span>
-                      {task._count && task._count.applications > 0 && (
-                        <span className="text-primary font-medium">
-                          {task._count.applications} application
-                          {task._count.applications !== 1 ? "s" : ""}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="ml-6 text-right">
-                    <div className="text-2xl font-bold text-primary">
-                      ${task.budget.toFixed(2)}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))
+                  </Link>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       )}
@@ -213,7 +218,7 @@ export default function MyTasksPage() {
       {activeTab === "applied" && (
         <div className="space-y-4">
           {applications.length === 0 ? (
-            <div className="text-center py-12 bg-white border rounded-lg">
+            <div className="text-center py-12 rounded-md bg-white px-6 shadow-sm">
               <p className="text-gray-600 mb-4">
                 You haven&apos;t applied to any tasks yet.
               </p>
@@ -225,49 +230,57 @@ export default function MyTasksPage() {
               </Link>
             </div>
           ) : (
-            applications.map((application) => (
-              <div
-                key={application.id}
-                className="bg-white border rounded-lg p-6"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">
-                        <Link
-                          href={`/app/tasks/${application.task.id}`}
-                          className="hover:text-primary"
+            <ul role="list" className="space-y-3">
+              {applications.map((application) => (
+                <li
+                  key={application.id}
+                  className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-3 mb-2">
+                        <h3 className="text-lg font-semibold">
+                          <Link
+                            href={`/app/tasks/${application.task.id}`}
+                            className="hover:text-primary"
+                          >
+                            {application.task.title}
+                          </Link>
+                        </h3>
+                        <span
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusBadgeColor(
+                            application.status
+                          )}`}
                         >
-                          {application.task.title}
-                        </Link>
-                      </h3>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeColor(
-                          application.status
-                        )}`}
-                      >
-                        {application.status}
-                      </span>
+                          {application.status}
+                        </span>
+                      </div>
+                      <p className="text-gray-600 mb-2">
+                        {application.task.category} •{" "}
+                        {application.task.location}
+                      </p>
+                      <div className="border-t pt-3 text-sm text-gray-700">
+                        <p className="font-medium text-gray-600 mb-1">
+                          Your message:
+                        </p>
+                        <p>{application.message}</p>
+                        {application.proposedRate && (
+                          <p className="text-gray-600 mt-2">
+                            Proposed rate: $
+                            {application.proposedRate.toFixed(2)}/hour
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <p className="text-gray-600 mb-2">
-                      {application.task.category} • {application.task.location}
-                    </p>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-primary">
+                        ${application.task.budget.toFixed(2)}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-2xl font-bold text-primary">
-                    ${application.task.budget.toFixed(2)}
-                  </div>
-                </div>
-                <div className="border-t pt-4">
-                  <p className="text-sm text-gray-600 mb-2">Your message:</p>
-                  <p className="text-gray-700">{application.message}</p>
-                  {application.proposedRate && (
-                    <p className="text-sm text-gray-600 mt-2">
-                      Proposed rate: ${application.proposedRate.toFixed(2)}/hour
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       )}
@@ -275,7 +288,7 @@ export default function MyTasksPage() {
       {activeTab === "assigned" && (
         <div className="space-y-4">
           {assignedTasks.length === 0 ? (
-            <div className="text-center py-12 bg-white border rounded-lg">
+            <div className="text-center py-12 rounded-md bg-white px-6 shadow-sm">
               <p className="text-gray-600 mb-4">
                 You don&apos;t have any assigned tasks yet.
               </p>
@@ -287,52 +300,57 @@ export default function MyTasksPage() {
               </Link>
             </div>
           ) : (
-            assignedTasks.map((task) => (
-              <Link
-                key={task.id}
-                href={`/app/tasks/${task.id}`}
-                className="block bg-white border rounded-lg p-6 hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-xl font-semibold">{task.title}</h3>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeColor(
-                          task.status
-                        )}`}
-                      >
-                        {task.status}
-                      </span>
+            <ul role="list" className="space-y-3">
+              {assignedTasks.map((task) => (
+                <li
+                  key={task.id}
+                  className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md"
+                >
+                  <Link href={`/app/tasks/${task.id}`} className="block">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold">
+                            {task.title}
+                          </h3>
+                          <span
+                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusBadgeColor(
+                              task.status
+                            )}`}
+                          >
+                            {task.status}
+                          </span>
+                        </div>
+                        <p className="text-gray-600 mb-2 line-clamp-2">
+                          {task.description}
+                        </p>
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-gray-500">
+                          <span>{task.category}</span>
+                          <span>{task.location}</span>
+                          {task.createdBy && (
+                            <span>
+                              Posted by{" "}
+                              {task.createdBy.name || task.createdBy.email}
+                            </span>
+                          )}
+                        </div>
+                        {task.scheduledDate && (
+                          <p className="text-sm text-gray-600 mt-2">
+                            Scheduled:{" "}
+                            {new Date(task.scheduledDate).toLocaleString()}
+                          </p>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-primary">
+                          ${task.budget.toFixed(2)}
+                        </div>
+                      </div>
                     </div>
-                    <p className="text-gray-600 mb-2 line-clamp-2">
-                      {task.description}
-                    </p>
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <span>{task.category}</span>
-                      <span>{task.location}</span>
-                      {task.createdBy && (
-                        <span>
-                          Posted by{" "}
-                          {task.createdBy.name || task.createdBy.email}
-                        </span>
-                      )}
-                    </div>
-                    {task.scheduledDate && (
-                      <p className="text-sm text-gray-600 mt-2">
-                        Scheduled:{" "}
-                        {new Date(task.scheduledDate).toLocaleString()}
-                      </p>
-                    )}
-                  </div>
-                  <div className="ml-6 text-right">
-                    <div className="text-2xl font-bold text-primary">
-                      ${task.budget.toFixed(2)}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))
+                  </Link>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       )}

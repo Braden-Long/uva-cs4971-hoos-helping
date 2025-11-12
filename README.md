@@ -93,8 +93,21 @@ npm run db:migrate -- --name add_task_images
 - `npm run db:push` - Sync schema without migrations (prototyping only)
 - `npm run db:studio` - Open Prisma Studio to view/edit data
 - `npm run db:generate` - Regenerate Prisma Client
+- `npm run db:seed` - Insert reusable demo users/tasks/applications
+- `npm run db:reset` - Remove the demo data (safe, only touches `@demo.hooshelping.com`)
+- `npm run db:reseed` - Convenience command to reset then seed in one go
 
 **Important:** Commit migration files in `prisma/migrations/` to git. They're automatically applied during Netlify deployments.
+
+### Reusable Demo Data
+
+For school demos you can quickly spin up realistic content without touching real accounts:
+
+1. `npm run db:seed` adds 20 tasker accounts, multiple helpers, and 20+ tasks spanning every status (open, assigned, in-progress, completed) plus applications and reviews. All demo accounts use the `@demo.hooshelping.com` domain.
+2. `npm run db:reset` now fully clears **all** tables (users, tasks, applications, reviews, sessions, etc.). Only run this when you truly want a blank database.
+3. `npm run db:reseed` combines both, so you get a fresh empty database and the new sample data in one go.
+
+Feel free to tweak the seed lists inside `scripts/demo-seed.mjs` if you need different scenarios; just keep emails on the demo domain so the cleanup script can find them.
 
 ## Deployment
 

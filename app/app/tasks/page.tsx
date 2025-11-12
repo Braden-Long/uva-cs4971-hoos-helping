@@ -219,78 +219,45 @@ export default function TasksPage() {
               </button>
             </div>
           ) : (
-            <div className="grid gap-6">
+            <ul role="list" className="space-y-3">
               {tasks.map((task) => (
-                <Link
+                <li
                   key={task.id}
-                  href={`/app/tasks/${task.id}`}
-                  className="block bg-white border rounded-lg p-6 hover:shadow-lg transition-shadow"
+                  className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md"
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-xl font-semibold text-gray-900">
-                          {task.title}
-                        </h3>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                          {task.category}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 mb-3 line-clamp-2">
-                        {task.description}
-                      </p>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                            />
-                          </svg>
-                          {task.location}
+                  <Link href={`/app/tasks/${task.id}`} className="block">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {task.title}
+                          </h3>
+                          <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                            {task.category}
+                          </span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                            />
-                          </svg>
-                          Posted by{" "}
-                          {task.createdBy.name || task.createdBy.email}
+                        <p className="text-gray-600 mb-3 line-clamp-2">
+                          {task.description}
+                        </p>
+                        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500">
+                          <span>{task.location}</span>
+                          <span>
+                            Posted by{" "}
+                            {task.createdBy.name || task.createdBy.email}
+                          </span>
                         </div>
                       </div>
-                    </div>
-                    <div className="ml-6 text-right">
-                      <div className="text-2xl font-bold text-primary">
-                        ${task.budget.toFixed(2)}
+                      <div className="text-left md:text-right">
+                        <div className="text-2xl font-bold text-primary">
+                          ${task.budget.toFixed(2)}
+                        </div>
+                        <div className="text-sm text-gray-500">budget</div>
                       </div>
-                      <div className="text-sm text-gray-500">budget</div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </>
       )}
