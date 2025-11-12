@@ -15,7 +15,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="min-h-full bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       <nav className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
@@ -65,11 +65,16 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           <AppMobileMenu user={session.user} />
         </div>
       </nav>
-      <div className="py-8 sm:py-10">
+      <div className="flex-1 py-8 sm:py-10">
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {children}
         </main>
       </div>
+      <footer className="border-t border-gray-200 bg-gray-50">
+        <div className="mx-auto max-w-7xl px-4 py-4 text-sm text-gray-500 sm:px-6 lg:px-8">
+          © {new Date().getFullYear()} Hoos Helping · University of Virginia
+        </div>
+      </footer>
     </div>
   );
 }
