@@ -1,13 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+type TaskSummary = {
+  id: string;
+  title: string;
+  category: string;
+  location: string;
+  budget: number;
+  status: string;
+};
+
+type FullTask = TaskSummary & {
+  description: string;
+  scheduledDate: string | null;
+  categorySpecificData: Record<string, unknown> | null;
+};
 
 export default function NewTaskPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [recentTasks, setRecentTasks] = useState<TaskSummary[]>([]);
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
+  const [loadingTaskId, setLoadingTaskId] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [pendingCategoryData, setPendingCategoryData] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
+
+  const fetchUserTasks = async () => {
+    try {
+      const response = await fetch("/api/my-tasks/posted");
+      if (!response.ok) {
+        setRecentTasks([]);
+        return;
+      }
+      const data: TaskSummary[] = await response.json();
+      const activeTasks = data.filter((task) =>
+        ["open", "in_progress"].includes(task.status)
+      );
+      setRecentTasks(activeTasks.slice(0, 6));
+    } catch (fetchError) {
+      console.error("Error loading user tasks:", fetchError);
+      setRecentTasks([]);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserTasks();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,8 +103,13 @@ export default function NewTaskPage() {
     };
 
     try {
-      const response = await fetch("/api/tasks", {
-        method: "POST",
+      const endpoint = editingTaskId
+        ? `/api/tasks/${editingTaskId}`
+        : "/api/tasks";
+      const method = editingTaskId ? "PATCH" : "POST";
+
+      const response = await fetch(endpoint, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -70,11 +121,85 @@ export default function NewTaskPage() {
         throw new Error(errorData.error || "Failed to create task");
       }
 
-      router.push("/app/dashboard");
+      if (editingTaskId) {
+        await fetchUserTasks();
+        resetForm();
+        setIsSubmitting(false);
+      } else {
+        router.push("/app/dashboard");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
       setIsSubmitting(false);
     }
+  };
+
+  const handleSelectTask = async (taskId: string) => {
+    setLoadingTaskId(taskId);
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`);
+      if (!response.ok) throw new Error("Failed to load task");
+      const data: FullTask = await response.json();
+      setEditingTaskId(taskId);
+      setSelectedCategory(data.category);
+      populateForm(data);
+      setPendingCategoryData(data.categorySpecificData || null);
+    } catch (err) {
+      console.error("Failed to load task", err);
+    } finally {
+      setLoadingTaskId(null);
+    }
+  };
+
+  const resetForm = () => {
+    formRef.current?.reset();
+    setSelectedCategory("");
+    setEditingTaskId(null);
+    setPendingCategoryData(null);
+  };
+
+  const setFieldValue = (name: string, value: string | boolean | null) => {
+    const form = formRef.current;
+    if (!form) return;
+    const element = form.elements.namedItem(name);
+    if (!element) return;
+    if (element instanceof HTMLInputElement) {
+      if (element.type === "checkbox") {
+        element.checked = Boolean(value);
+      } else {
+        element.value = value ?? "";
+      }
+    } else if (
+      element instanceof HTMLTextAreaElement ||
+      element instanceof HTMLSelectElement
+    ) {
+      element.value = value ?? "";
+    }
+  };
+
+  const populateForm = (taskData: FullTask) => {
+    setFieldValue("title", taskData.title || "");
+    setFieldValue("description", taskData.description || "");
+    setFieldValue("category", taskData.category || "");
+    setFieldValue("scheduledDate", formatDateForInput(taskData.scheduledDate));
+    setFieldValue("location", taskData.location || "");
+    setFieldValue("budget", taskData.budget?.toString() || "");
+  };
+
+  useEffect(() => {
+    if (!pendingCategoryData) return;
+    Object.entries(pendingCategoryData).forEach(([key, value]) => {
+      setFieldValue(key, value as string | boolean | null);
+    });
+    setPendingCategoryData(null);
+  }, [pendingCategoryData, selectedCategory]);
+
+  const formatDateForInput = (isoString: string | null) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    const offset = date.getTimezoneOffset();
+    const local = new Date(date.getTime() - offset * 60 * 1000);
+    return local.toISOString().slice(0, 16);
   };
 
   const renderCategorySpecificFields = () => {
@@ -314,170 +439,258 @@ export default function NewTaskPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Post a Task</h1>
-        <p className="mt-2 text-gray-600">
-          Describe what you need help with and connect with trusted helpers in
-          the UVA and Charlottesville community.
-        </p>
-      </div>
-
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-800">{error}</p>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Title */}
+    <div className="max-w-6xl mx-auto">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Task Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            required
-            placeholder="e.g., Help moving furniture"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
-
-        {/* Category */}
-        <div>
-          <label
-            htmlFor="category"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Category
-          </label>
-          <select
-            name="category"
-            id="category"
-            required
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          >
-            <option value="">Select a category</option>
-            <option value="Moving">Moving</option>
-            <option value="Furniture Assembly">Furniture Assembly</option>
-            <option value="Cleaning">Cleaning</option>
-            <option value="Errands">Errands</option>
-            <option value="Pet Sitting">Pet Sitting</option>
-            <option value="Yard Work">Yard Work</option>
-            <option value="Tutoring">Tutoring</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        {/* Category-Specific Fields */}
-        {renderCategorySpecificFields()}
-
-        {/* Description */}
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Description
-          </label>
-          <textarea
-            name="description"
-            id="description"
-            required
-            rows={4}
-            placeholder="Provide details about the task, what needs to be done, and any special requirements..."
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-        </div>
-
-        {/* Scheduled Date */}
-        <div>
-          <label
-            htmlFor="scheduledDate"
-            className="block text-sm font-medium text-gray-700"
-          >
-            When do you need this done?
-          </label>
-          <input
-            type="datetime-local"
-            name="scheduledDate"
-            id="scheduledDate"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-          <p className="mt-1 text-sm text-gray-500">
-            Optional - leave blank if flexible
+          <h1 className="text-3xl font-bold text-gray-900">
+            {editingTaskId ? "Update your task" : "Post a Task"}
+          </h1>
+          <p className="mt-2 text-gray-600">
+            {editingTaskId
+              ? "Make edits and keep helpers in the loop."
+              : "Describe what you need help with and connect with trusted helpers."}
           </p>
         </div>
-
-        {/* Location */}
-        <div>
-          <label
-            htmlFor="location"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Location
-          </label>
-          <input
-            type="text"
-            name="location"
-            id="location"
-            required
-            placeholder="e.g., 123 Main St, Charlottesville, VA or UVA Grounds"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-          <p className="mt-1 text-sm text-gray-500">
-            General area where the task will take place
-          </p>
-        </div>
-
-        {/* Budget */}
-        <div>
-          <label
-            htmlFor="budget"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Budget ($)
-          </label>
-          <input
-            type="number"
-            name="budget"
-            id="budget"
-            required
-            min="0"
-            step="0.01"
-            placeholder="0.00"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          />
-          <p className="mt-1 text-sm text-gray-500">
-            How much are you willing to pay for this task?
-          </p>
-        </div>
-
-        {/* Submit Button */}
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="flex-1 bg-primary text-white px-4 py-2 rounded-md font-semibold hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? "Creating..." : "Post Task"}
-          </button>
+        {editingTaskId && (
           <button
             type="button"
-            onClick={() => router.push("/app/dashboard")}
-            className="px-4 py-2 border border-gray-300 rounded-md font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            onClick={resetForm}
+            className="text-sm font-semibold text-primary hover:text-primary-hover"
           >
-            Cancel
+            Cancel editing
           </button>
+        )}
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <div className="overflow-hidden rounded-md bg-white px-6 py-6 shadow-sm">
+            {error && (
+              <div className="mb-6 rounded-md border border-red-200 bg-red-50 p-4">
+                <p className="text-sm text-red-800">{error}</p>
+              </div>
+            )}
+
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+              {/* Title */}
+              <div>
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Task Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  id="title"
+                  required
+                  placeholder="e.g., Help moving furniture"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              {/* Category */}
+              <div>
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Category
+                </label>
+                <select
+                  name="category"
+                  id="category"
+                  required
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                >
+                  <option value="">Select a category</option>
+                  <option value="Moving">Moving</option>
+                  <option value="Furniture Assembly">Furniture Assembly</option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="Errands">Errands</option>
+                  <option value="Pet Sitting">Pet Sitting</option>
+                  <option value="Yard Work">Yard Work</option>
+                  <option value="Tutoring">Tutoring</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              {/* Category-Specific Fields */}
+              {renderCategorySpecificFields()}
+
+              {/* Description */}
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  id="description"
+                  required
+                  rows={4}
+                  placeholder="Provide details about the task, what needs to be done, and any special requirements..."
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              {/* Scheduled Date */}
+              <div>
+                <label
+                  htmlFor="scheduledDate"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  When do you need this done?
+                </label>
+                <input
+                  type="datetime-local"
+                  name="scheduledDate"
+                  id="scheduledDate"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  Optional - leave blank if flexible
+                </p>
+              </div>
+
+              {/* Location */}
+              <div>
+                <label
+                  htmlFor="location"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Location
+                </label>
+                <input
+                  type="text"
+                  name="location"
+                  id="location"
+                  required
+                  placeholder="e.g., 123 Main St, Charlottesville, VA or UVA Grounds"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  General area where the task will take place
+                </p>
+              </div>
+
+              {/* Budget */}
+              <div>
+                <label
+                  htmlFor="budget"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Budget ($)
+                </label>
+                <input
+                  type="number"
+                  name="budget"
+                  id="budget"
+                  required
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  How much are you willing to pay for this task?
+                </p>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 rounded-md bg-primary px-4 py-2 font-semibold text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {editingTaskId
+                    ? isSubmitting
+                      ? "Saving..."
+                      : "Save changes"
+                    : isSubmitting
+                      ? "Creating..."
+                      : "Post Task"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    editingTaskId ? resetForm() : router.push("/app/dashboard")
+                  }
+                  className="rounded-md border border-gray-300 px-4 py-2 font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                >
+                  {editingTaskId ? "Discard" : "Cancel"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
+
+        <aside className="space-y-4">
+          <div className="rounded-md bg-white px-6 py-5 shadow-sm">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Your active tasks
+            </h2>
+            <p className="mt-1 text-sm text-gray-500">
+              Drafting a similar task? Here are the ones you&apos;re currently
+              running.
+            </p>
+            <ul role="list" className="mt-4 space-y-3">
+              {recentTasks.length === 0 ? (
+                <li className="text-sm text-gray-500">
+                  You don&apos;t have any open or in-progress tasks yet.
+                </li>
+              ) : (
+                recentTasks.map((task) => (
+                  <li key={task.id}>
+                    <button
+                      type="button"
+                      onClick={() => handleSelectTask(task.id)}
+                      className={`w-full rounded-md border px-4 py-3 text-left text-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                        editingTaskId === task.id
+                          ? "border-primary/60 bg-primary/5"
+                          : "border-gray-100 hover:border-primary/40 hover:shadow-sm"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="font-semibold text-gray-900">
+                            {task.title}
+                          </p>
+                          <p className="text-gray-500">
+                            {task.category} • {task.location}
+                          </p>
+                          <p className="text-xs font-medium uppercase text-gray-400">
+                            {task.status.replace("_", " ")}
+                          </p>
+                        </div>
+                        <span className="text-primary font-semibold">
+                          {loadingTaskId === task.id
+                            ? "Loading…"
+                            : `$${task.budget.toFixed(2)}`}
+                        </span>
+                      </div>
+                    </button>
+                  </li>
+                ))
+              )}
+            </ul>
+            <div className="mt-4 text-right text-sm">
+              <Link
+                href="/app/tasks"
+                className="font-semibold text-primary hover:text-primary-hover"
+              >
+                View all tasks →
+              </Link>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 }

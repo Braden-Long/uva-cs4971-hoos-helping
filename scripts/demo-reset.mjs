@@ -10,7 +10,10 @@ async function main() {
     { label: "tasks", op: () => prisma.task.deleteMany() },
     { label: "sessions", op: () => prisma.session.deleteMany() },
     { label: "accounts", op: () => prisma.account.deleteMany() },
-    { label: "verification tokens", op: () => prisma.verificationToken.deleteMany() },
+    {
+      label: "verification tokens",
+      op: () => prisma.verificationToken.deleteMany(),
+    },
     { label: "users", op: () => prisma.user.deleteMany() },
   ];
 

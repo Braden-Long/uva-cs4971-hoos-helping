@@ -980,7 +980,8 @@ const applicationSeeds = [
     helper: "helper_noah",
     status: "pending",
     proposedRate: 35,
-    message: "Can work Friday afternoon or Saturday morning—have landscaping experience.",
+    message:
+      "Can work Friday afternoon or Saturday morning—have landscaping experience.",
   },
   {
     task: "grocery-pickup",
@@ -994,7 +995,8 @@ const applicationSeeds = [
     helper: "helper_jordan",
     status: "pending",
     proposedRate: 32,
-    message: "Pickup truck with covered bed; can deliver even if weather turns.",
+    message:
+      "Pickup truck with covered bed; can deliver even if weather turns.",
   },
   {
     task: "move-couch",
@@ -1022,7 +1024,8 @@ const applicationSeeds = [
     helper: "helper_wes",
     status: "accepted",
     proposedRate: 75,
-    message: "Already familiar with Rice Hall AV gear and can label all stations.",
+    message:
+      "Already familiar with Rice Hall AV gear and can label all stations.",
   },
   {
     task: "exam-proctor",
@@ -1043,7 +1046,8 @@ const applicationSeeds = [
     helper: "helper_noah",
     status: "accepted",
     proposedRate: 28,
-    message: "Happy to send photos after watering to confirm everything looks good.",
+    message:
+      "Happy to send photos after watering to confirm everything looks good.",
   },
   {
     task: "choir-setup",
@@ -1057,7 +1061,8 @@ const applicationSeeds = [
     helper: "helper_wes",
     status: "accepted",
     proposedRate: 45,
-    message: "I manage the same model at Clemons—firmware update will be quick.",
+    message:
+      "I manage the same model at Clemons—firmware update will be quick.",
   },
   {
     task: "calc-tutoring",
@@ -1116,21 +1121,24 @@ const reviewSeeds = [
     reviewer: "tasker_priya",
     reviewee: "helper_camila",
     rating: 5,
-    comment: "Camila worked fast and kept everything organized. Wardrobe looks perfect.",
+    comment:
+      "Camila worked fast and kept everything organized. Wardrobe looks perfect.",
   },
   {
     task: "assemble-wardrobe",
     reviewer: "helper_camila",
     reviewee: "tasker_priya",
     rating: 5,
-    comment: "Priya prepped the space and instructions ahead of time—a joy to work with.",
+    comment:
+      "Priya prepped the space and instructions ahead of time—a joy to work with.",
   },
   {
     task: "dog-walking",
     reviewer: "tasker_avery",
     reviewee: "helper_noah",
     rating: 5,
-    comment: "Noah handled Wahoo like a pro. Sent pics and a quick summary after the walk.",
+    comment:
+      "Noah handled Wahoo like a pro. Sent pics and a quick summary after the walk.",
   },
   {
     task: "dog-walking",
@@ -1172,7 +1180,8 @@ const reviewSeeds = [
     reviewer: "tasker_nolan",
     reviewee: "helper_wes",
     rating: 4,
-    comment: "Printers work again! Took a bit longer than expected but thorough.",
+    comment:
+      "Printers work again! Took a bit longer than expected but thorough.",
   },
   {
     task: "calc-tutoring",

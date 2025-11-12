@@ -8,7 +8,11 @@ interface AppNavLinkProps extends AppNavLinkConfig {
   className?: string;
 }
 
-export default function AppNavLink({ href, label, className = "" }: AppNavLinkProps) {
+export default function AppNavLink({
+  href,
+  label,
+  className = "",
+}: AppNavLinkProps) {
   const pathname = usePathname();
   const active = isActivePath(pathname, href);
 

@@ -11,7 +11,14 @@ export async function purgeDemoData(prisma) {
   });
 
   if (!demoUsers.length) {
-    return { users: 0, tasks: 0, applications: 0, reviews: 0, accounts: 0, sessions: 0 };
+    return {
+      users: 0,
+      tasks: 0,
+      applications: 0,
+      reviews: 0,
+      accounts: 0,
+      sessions: 0,
+    };
   }
 
   const demoUserIds = demoUsers.map((user) => user.id);
