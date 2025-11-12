@@ -86,61 +86,74 @@ export default function TasksPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white border rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-semibold mb-4">Filters</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Category Filter */}
+      <div className="mb-6 overflow-hidden rounded-md bg-white px-6 py-6 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Category
-            </label>
-            <select
-              id="category"
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              <option value="all">All Categories</option>
-              <option value="Moving">Moving</option>
-              <option value="Errands">Errands</option>
-              <option value="Pet Sitting">Pet Sitting</option>
-              <option value="Assembly">Assembly</option>
-              <option value="Cleaning">Cleaning</option>
-              <option value="Yard Work">Yard Work</option>
-              <option value="Tutoring">Tutoring</option>
-              <option value="Other">Other</option>
-            </select>
+            <p className="text-xs font-semibold uppercase text-gray-500">
+              Filters
+            </p>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Narrow your search
+            </h2>
           </div>
-
-          {/* Location Filter */}
-          <div>
-            <label
-              htmlFor="location"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Location
-            </label>
+          <button
+            onClick={handleResetFilters}
+            className="text-sm font-semibold text-primary hover:text-primary-hover"
+          >
+            Reset all
+          </button>
+        </div>
+        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <label className="flex flex-col gap-1 text-sm font-semibold text-gray-700">
+            Category
+            <div className="relative">
+              <select
+                id="category"
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="h-[38px] w-full appearance-none rounded-md border border-gray-300 bg-white px-3 pr-10 text-sm font-semibold text-gray-900 shadow-sm transition focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              >
+                <option value="all">All categories</option>
+                <option value="Moving">Moving</option>
+                <option value="Errands">Errands</option>
+                <option value="Pet Sitting">Pet Sitting</option>
+                <option value="Assembly">Assembly</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Yard Work">Yard Work</option>
+                <option value="Tutoring">Tutoring</option>
+                <option value="Other">Other</option>
+              </select>
+              <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-gray-500">
+                <svg
+                  viewBox="0 0 12 8"
+                  width="12"
+                  height="8"
+                  fill="none"
+                  className="stroke-current"
+                >
+                  <path
+                    d="M1 1.5 6 6l5-4.5"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
+          </label>
+          <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
+            Location
             <input
               type="text"
               id="location"
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
-              placeholder="Search by location..."
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="e.g., Charlottesville"
+              className="h-[38px] rounded-md border border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
-          </div>
-
-          {/* Min Budget Filter */}
-          <div>
-            <label
-              htmlFor="minBudget"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Min Budget ($)
-            </label>
+          </label>
+          <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
+            Min budget ($)
             <input
               type="number"
               id="minBudget"
@@ -149,18 +162,11 @@ export default function TasksPage() {
               placeholder="0"
               min="0"
               step="0.01"
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="h-[38px] rounded-md border border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
-          </div>
-
-          {/* Max Budget Filter */}
-          <div>
-            <label
-              htmlFor="maxBudget"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Max Budget ($)
-            </label>
+          </label>
+          <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
+            Max budget ($)
             <input
               type="number"
               id="maxBudget"
@@ -169,18 +175,9 @@ export default function TasksPage() {
               placeholder="Any"
               min="0"
               step="0.01"
-              className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="h-[38px] rounded-md border border-gray-300 px-3 text-sm text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
-          </div>
-        </div>
-
-        <div className="mt-4">
-          <button
-            onClick={handleResetFilters}
-            className="text-sm text-primary hover:text-primary-hover font-medium"
-          >
-            Reset Filters
-          </button>
+          </label>
         </div>
       </div>
 

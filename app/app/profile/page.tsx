@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@/app/generated/prisma";
+import Link from "next/link";
 
 const prisma = new PrismaClient();
 
@@ -16,6 +17,7 @@ export default async function ProfilePage() {
     where: { id: session.user.id },
     include: {
       tasks: true,
+      assignedTasks: true,
     },
   });
 
@@ -31,129 +33,234 @@ export default async function ProfilePage() {
 
   // For now, we'll set tasks completed for others to 0
   // We'll implement this properly when we add task acceptance/helper tracking
-  const tasksCompletedForOthers = 0;
+  const helperAssignments = user.assignedTasks || [];
+  const tasksCompletedForOthers = helperAssignments.filter(
+    (task) => task.status === "completed"
+  ).length;
+  const helperActiveTasks = helperAssignments.filter((task) =>
+    ["assigned", "in_progress"].includes(task.status)
+  ).length;
+
+  const isHelper = user.isHelperProfileComplete;
+  const isTasker = totalTasksPosted > 0;
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Your Profile</h1>
+    <div className="mx-auto max-w-5xl space-y-6">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="text-sm font-semibold text-primary">Profile</p>
+          <h1 className="text-3xl font-bold text-gray-900">Your profile</h1>
+          <p className="text-gray-600">
+            View your stats and account information in one place.
+          </p>
+        </div>
+        <div className="rounded-full bg-uva-blue px-4 py-2 text-sm font-semibold text-white shadow-sm">
+          {user.role}
+        </div>
+      </header>
 
-      {/* Profile Information Card */}
-      <div className="bg-white border rounded-lg p-8 mb-6">
-        <div className="flex items-start gap-6">
-          {/* Profile Picture Placeholder */}
-          <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-3xl font-semibold text-gray-600">
-            {user.name
-              ? user.name.charAt(0).toUpperCase()
-              : user.email.charAt(0).toUpperCase()}
+      <section className="overflow-hidden rounded-md bg-white px-6 py-6 shadow-sm">
+        <div className="flex flex-wrap items-center gap-6">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-uva-orange text-3xl font-semibold text-white">
+            {(user.name || user.email).slice(0, 1).toUpperCase()}
           </div>
-
-          {/* User Details */}
-          <div className="flex-1">
-            <h2 className="text-2xl font-semibold mb-2">
-              {user.name || "User"}
-            </h2>
-            <p className="text-gray-600 mb-4">{user.email}</p>
-            <div className="flex gap-2">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                {user.role}
-              </span>
+          <div className="min-w-[200px] flex-1 space-y-1">
+            <div className="flex flex-wrap items-center gap-3">
+              <h2 className="text-2xl font-semibold text-gray-900">
+                {user.name || "Your name"}
+              </h2>
+              {isTasker && (
+                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                  Tasker
+                </span>
+              )}
+              {isHelper && (
+                <span className="rounded-full bg-green-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-green-700">
+                  Helper
+                </span>
+              )}
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Statistics Cards */}
-      <div className="grid gap-6 md:grid-cols-3 mb-6">
-        <div className="bg-white border rounded-lg p-6">
-          <div className="text-3xl font-bold text-blue-600 mb-2">
-            {totalTasksPosted}
-          </div>
-          <h3 className="text-sm font-medium text-gray-600 mb-1">
-            Tasks Posted
-          </h3>
-          <p className="text-xs text-gray-500">Total tasks you created</p>
-        </div>
-
-        <div className="bg-white border rounded-lg p-6">
-          <div className="text-3xl font-bold text-green-600 mb-2">
-            {completedTasksPosted}
-          </div>
-          <h3 className="text-sm font-medium text-gray-600 mb-1">
-            Tasks Completed
-          </h3>
-          <p className="text-xs text-gray-500">
-            Your posted tasks that were completed
-          </p>
-        </div>
-
-        <div className="bg-white border rounded-lg p-6">
-          <div className="text-3xl font-bold text-purple-600 mb-2">
-            {tasksCompletedForOthers}
-          </div>
-          <h3 className="text-sm font-medium text-gray-600 mb-1">
-            Helped Others
-          </h3>
-          <p className="text-xs text-gray-500">
-            Tasks you completed for others
-          </p>
-        </div>
-      </div>
-
-      {/* Account Information */}
-      <div className="bg-white border rounded-lg p-8">
-        <h3 className="text-xl font-semibold mb-6">Account Information</h3>
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium text-gray-600 block mb-1">
-              Email Address
-            </label>
-            <p className="text-gray-900">{user.email}</p>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-gray-600 block mb-1">
-              Display Name
-            </label>
-            <p className="text-gray-900">{user.name || "Not set"}</p>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium text-gray-600 block mb-1">
-              Member Since
-            </label>
-            <p className="text-gray-900">
+            <p className="text-gray-600">{user.email}</p>
+            <p className="text-sm text-gray-500">
+              Member since{" "}
               {new Date(user.createdAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
-                day: "numeric",
               })}
             </p>
           </div>
+          <div className="text-sm text-gray-500">
+            {user.emailVerified ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-green-700">
+                ✓ Verified
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 rounded-full bg-yellow-50 px-3 py-1 text-yellow-700">
+                Pending verification
+              </span>
+            )}
+          </div>
+        </div>
+      </section>
 
-          <div>
-            <label className="text-sm font-medium text-gray-600 block mb-1">
-              Account Status
-            </label>
-            <p className="text-gray-900">
-              {user.emailVerified ? (
-                <span className="text-green-600">✓ Verified</span>
-              ) : (
-                <span className="text-yellow-600">Pending verification</span>
-              )}
-            </p>
+      <section className="grid gap-6 lg:grid-cols-2">
+        <div className="rounded-md bg-white px-6 py-6 shadow-sm">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+            <div>
+              <p className="text-xs font-semibold uppercase text-gray-500">
+                Tasker profile
+              </p>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Task posting overview
+              </h3>
+            </div>
+            <Link
+              href="/app/tasks/new"
+              className="rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary hover:bg-primary/20"
+            >
+              Post a task
+            </Link>
+          </div>
+          <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div>
+              <dt className="text-sm text-gray-500">Tasks posted</dt>
+              <dd className="text-3xl font-bold text-uva-blue">
+                {totalTasksPosted}
+              </dd>
+              <p className="text-xs text-gray-500">Total tasks created</p>
+            </div>
+            <div>
+              <dt className="text-sm text-gray-500">Tasks completed</dt>
+              <dd className="text-3xl font-bold text-green-600">
+                {completedTasksPosted}
+              </dd>
+              <p className="text-xs text-gray-500">
+                Completed by helpers you hired
+              </p>
+            </div>
+          </dl>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/app/my-tasks"
+              className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+            >
+              Manage tasks
+            </Link>
+            <Link
+              href="/app/tasks"
+              className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover"
+            >
+              Browse helpers
+            </Link>
           </div>
         </div>
 
-        {/* Edit Profile Button - Coming Soon */}
-        <div className="mt-6 pt-6 border-t">
+        <div className="rounded-md bg-white px-6 py-6 shadow-sm">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+            <div>
+              <p className="text-xs font-semibold uppercase text-gray-500">
+                Helper profile
+              </p>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Helping overview
+              </h3>
+            </div>
+            {isHelper ? (
+              <Link
+                href="/profile/edit"
+                className="rounded-full border border-gray-300 px-3 py-1 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+              >
+                Edit helper profile
+              </Link>
+            ) : (
+              <Link
+                href="/onboarding/helper"
+                className="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white hover:bg-primary-hover"
+              >
+                Become a helper
+              </Link>
+            )}
+          </div>
+
+          {isHelper ? (
+            <>
+              <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+                <div>
+                  <dt className="text-sm text-gray-500">
+                    Tasks completed for others
+                  </dt>
+                  <dd className="text-3xl font-bold text-purple-600">
+                    {tasksCompletedForOthers}
+                  </dd>
+                  <p className="text-xs text-gray-500">Completed assignments</p>
+                </div>
+                <div>
+                  <dt className="text-sm text-gray-500">Active assignments</dt>
+                  <dd className="text-3xl font-bold text-green-600">
+                    {helperActiveTasks}
+                  </dd>
+                  <p className="text-xs text-gray-500">Currently in progress</p>
+                </div>
+              </dl>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-md border border-gray-100 p-4">
+                  <dt className="text-sm text-gray-500">Hourly rate</dt>
+                  <dd className="text-lg font-semibold text-gray-900">
+                    {user.hourlyRate
+                      ? `$${user.hourlyRate.toFixed(2)}/hr`
+                      : "Not set"}
+                  </dd>
+                  <p className="text-xs text-gray-500">
+                    {user.hasCar ? "Has car for errands" : "No car listed"}
+                  </p>
+                </div>
+                <div className="rounded-md border border-gray-100 p-4">
+                  <dt className="text-sm text-gray-500">Skills</dt>
+                  <dd className="text-sm text-gray-900">
+                    {user.skills?.length
+                      ? user.skills.join(", ")
+                      : "No skills listed"}
+                  </dd>
+                </div>
+              </div>
+            </>
+          ) : (
+            <p className="mt-6 text-sm text-gray-600">
+              You haven&apos;t created a helper profile yet. Set up your helper
+              profile to start earning by helping other taskers.
+            </p>
+          )}
+        </div>
+      </section>
+
+      <section className="overflow-hidden rounded-md bg-white px-6 py-6 shadow-sm">
+        <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900">
+              Account information
+            </h3>
+            <p className="text-sm text-gray-500">
+              Keep your contact details up to date.
+            </p>
+          </div>
           <button
             disabled
-            className="px-4 py-2 bg-gray-200 text-gray-500 rounded-md cursor-not-allowed"
+            className="rounded-full border border-gray-300 px-4 py-1 text-sm font-semibold text-gray-400"
           >
-            Edit Profile (Coming Soon)
+            Edit coming soon
           </button>
         </div>
-      </div>
+        <dl className="mt-6 grid gap-6 sm:grid-cols-2">
+          <div>
+            <dt className="text-sm font-medium text-gray-600">Email address</dt>
+            <dd className="text-gray-900">{user.email}</dd>
+          </div>
+          <div>
+            <dt className="text-sm font-medium text-gray-600">Display name</dt>
+            <dd className="text-gray-900">{user.name || "Not set"}</dd>
+          </div>
+        </dl>
+      </section>
     </div>
   );
 }

@@ -273,7 +273,7 @@ const helperSeeds = [
   },
 ];
 
-const taskSeeds = [
+const baseTaskSeeds = [
   {
     key: "move-couch",
     createdBy: "tasker_avery",
@@ -967,7 +967,7 @@ const taskSeeds = [
   },
 ];
 
-const applicationSeeds = [
+const baseApplicationSeeds = [
   {
     task: "yard-cleanup",
     helper: "helper_jordan",
@@ -1206,6 +1206,352 @@ function mapByKey(records) {
   }, {});
 }
 
+const sampleLocations = [
+  "Charlottesville, VA",
+  "North Grounds",
+  "Corner District",
+  "Belmont",
+  "Downtown Mall",
+  "Ivy Road",
+  "Preston Avenue",
+];
+
+const yousifPostedTemplates = [
+  {
+    title: "Run student org merch pickup",
+    description:
+      "Need a Costco run for 12 cases of drinks and merch boxes, then deliver to Newcomb Hall for our fundraiser.",
+    category: "Errands",
+    location: "Costco → Newcomb Hall",
+    baseBudget: 85,
+    categorySpecificData: { requiresCar: true, reimbursesMileage: true },
+  },
+  {
+    title: "Assemble pop-up event kiosk",
+    description:
+      "We purchased a collapsible kiosk that needs to be assembled and tested before the housing fair.",
+    category: "Assembly",
+    location: "1515 University Ave",
+    baseBudget: 95,
+    categorySpecificData: { requiresPowerTools: false },
+  },
+  {
+    title: "Prep tailgate welcome table",
+    description:
+      "Set up tent, lights, and swag table for Saturday tailgate. Includes hanging signage and running extension cords.",
+    category: "Event Support",
+    location: "Scott Stadium lower lot",
+    baseBudget: 110,
+    categorySpecificData: { requiresCar: false, includesLifting: true },
+  },
+  {
+    title: "Host apartment move-out cleaning",
+    description:
+      "Post-studio deep clean for 2BR apartment (vacuum, mop, wipe surfaces, clean balcony). Supplies provided.",
+    category: "Cleaning",
+    location: "Preston Ave apartments",
+    baseBudget: 100,
+    categorySpecificData: { propertyType: "apartment" },
+  },
+  {
+    title: "Yard tidy before committee visit",
+    description:
+      "We need leaves bagged, planters watered, and string lights rehung before Monday evening visit.",
+    category: "Yard Work",
+    location: "University Circle",
+    baseBudget: 90,
+    categorySpecificData: { includesLadderWork: true },
+  },
+  {
+    title: "Large format print drop",
+    description:
+      "Pick up five 24x36 prints from Cavalier Copy and deliver to Darden conference room before noon.",
+    category: "Errands",
+    location: "Cavalier Copy → Darden",
+    baseBudget: 70,
+    categorySpecificData: { fragile: true },
+  },
+  {
+    title: "Tech check for startup pitch",
+    description:
+      "Need help testing HDMI/Zoom setup and staging demo laptop for Tuesday pitch night.",
+    category: "Tech Support",
+    location: "Batton School",
+    baseBudget: 95,
+    categorySpecificData: { requiresAdminAccess: false },
+  },
+  {
+    title: "Assemble IKEA Alex drawer trio",
+    description:
+      "Three Alex drawer units need assembly for our design studio. Instructions and tools on site.",
+    category: "Assembly",
+    location: "A-School studio",
+    baseBudget: 120,
+    categorySpecificData: { items: 3 },
+  },
+];
+
+const yousifHelperTemplates = [
+  {
+    title: "Volunteer check-in booth",
+    description:
+      "Manage volunteer check-in and swag distribution for Alumni Weekend for 2 hours.",
+    category: "Event Support",
+    location: "Alumni Hall",
+    baseBudget: 70,
+    categorySpecificData: { includesBriefing: true },
+  },
+  {
+    title: "Dog walk for grad student lab hours",
+    description:
+      "Take energetic lab mix for 40-minute walk around Observatory Hill while owner is in lab.",
+    category: "Pet Care",
+    location: "Observatory Hill",
+    baseBudget: 45,
+    categorySpecificData: { petType: "Dog" },
+  },
+  {
+    title: "Help break down film night",
+    description:
+      "Need an extra set of hands to coil cables, pack speakers, and fold chairs after screening.",
+    category: "Event Support",
+    location: "Culbreth Theatre",
+    baseBudget: 80,
+    categorySpecificData: { liftRequirement: true },
+  },
+  {
+    title: "Printer queue troubleshooting",
+    description:
+      "Reset firmware on two makerspace printers and create a quick troubleshooting guide for peer staff.",
+    category: "Tech Support",
+    location: "Rice Makerspace",
+    baseBudget: 95,
+    categorySpecificData: { printers: 2 },
+  },
+  {
+    title: "Grocery run for student parent",
+    description:
+      "Weekly Wegmans pickup and drop-off for family on JPA. Bring items up one flight of stairs.",
+    category: "Errands",
+    location: "Wegmans → JPA",
+    baseBudget: 75,
+    categorySpecificData: { requiresCar: true },
+  },
+  {
+    title: "Folding and labeling club merch",
+    description:
+      "Fold, bag, and label 200 shirts by size for club distribution event.",
+    category: "Event Support",
+    location: "Newcomb Ballroom",
+    baseBudget: 100,
+    categorySpecificData: { bagCount: 200 },
+  },
+  {
+    title: "STEM tutoring crash session",
+    description:
+      "Need Calc III refresher for 90 minutes before quiz (integration techniques).",
+    category: "Tutoring",
+    location: "Alderman Library",
+    baseBudget: 60,
+    categorySpecificData: { topic: "Calculus" },
+  },
+  {
+    title: "Move-in furniture assembly assist",
+    description:
+      "Assemble two standing desks and mount whiteboard shelves for incoming resident.",
+    category: "Assembly",
+    location: "Lambeth",
+    baseBudget: 110,
+    categorySpecificData: { items: 2 },
+  },
+];
+
+const yousifApplicationTemplates = [
+  {
+    title: "Pop-up shop cash wrap setup",
+    description:
+      "Need a helper to build Square cash wrap, hang signage, and stash boxes.",
+    category: "Assembly",
+    location: "Downtown Mall",
+    baseBudget: 85,
+    message:
+      "I set up several pop-up shops for student orgs—happy to build the cash wrap and cable-manage the Square gear.",
+  },
+  {
+    title: "Bike valet for rugby fundraiser",
+    description: "Monitor and tag bikes during fundraiser on Saturday morning.",
+    category: "Event Support",
+    location: "Carr's Hill",
+    baseBudget: 65,
+    message:
+      "I can handle the valet tags/log and bring clipboards. Let me know if you need cones set up as well.",
+  },
+  {
+    title: "Package assembly for HOOS Pantry",
+    description: "Assemble 150 meal kits and label with dietary notes.",
+    category: "Event Support",
+    location: "Newcomb",
+    baseBudget: 90,
+    message:
+      "I've helped HOOS Pantry before—comfortable with labeling and keeping allergens organized.",
+  },
+  {
+    title: "Move-out dump run",
+    description: "Need someone with SUV to haul boxes to recycling center.",
+    category: "Errands",
+    location: "JPA → Ivy Materials Recovery",
+    baseBudget: 80,
+    message:
+      "I have a hatchback and can take two trips if needed. Happy to send dump receipts afterward.",
+  },
+  {
+    title: "Pet sitting for two cats",
+    description: "Check on two cats twice daily for four days.",
+    category: "Pet Care",
+    location: "Belmont",
+    baseBudget: 120,
+    message:
+      "Comfortable with twice-daily visits and can text photos after each feeding.",
+  },
+];
+
+const yousifUserSeed = {
+  key: "user_yousif",
+  data: {
+    name: "Yousif Aboud",
+    email: "yousif@yabood.com",
+    bio: "Product-minded tasker who also helps with event logistics and tech setups.",
+    role: "user",
+    skills: ["Event Support", "Tech Support", "Errands"],
+    hasCar: true,
+    hourlyRate: 32,
+    isHelperProfileComplete: true,
+    totalTasksAsHelper: 42,
+    averageRating: 4.85,
+  },
+};
+
+const postedStatuses = [
+  ...Array(12).fill("open"),
+  ...Array(6).fill("in_progress"),
+  ...Array(6).fill("completed"),
+];
+
+const formatZonedDate = (month, day, hour) =>
+  new Date(
+    `2025-${month.toString().padStart(2, "0")}-${day
+      .toString()
+      .padStart(2, "0")}T${hour.toString().padStart(2, "0")}:00:00Z`
+  );
+
+const yousifPostedTasks = Array.from({ length: 24 }, (_, index) => {
+  const status = postedStatuses[index % postedStatuses.length];
+  const template = yousifPostedTemplates[index % yousifPostedTemplates.length];
+  const helperKey =
+    status === "open"
+      ? null
+      : (helperSeeds[index % helperSeeds.length]?.key ?? null);
+
+  return {
+    key: `yousif-posted-${index + 1}`,
+    createdBy: yousifUserSeed.key,
+    assignedTo: helperKey,
+    data: {
+      title: template.title,
+      description: template.description,
+      category: template.category,
+      location:
+        template.location || sampleLocations[index % sampleLocations.length],
+      budget: template.baseBudget + (index % 3) * 5,
+      status,
+      scheduledDate: formatZonedDate(3, (index % 9) + 1, 15),
+      categorySpecificData: template.categorySpecificData || null,
+    },
+  };
+});
+
+const yousifAssignedTaskSeeds = Array.from({ length: 22 }, (_, index) => {
+  const creatorKeys = [
+    "tasker_avery",
+    "tasker_priya",
+    "tasker_marcus",
+    "tasker_liam",
+    "tasker_sofia",
+  ];
+  const status =
+    index < 10 ? "assigned" : index < 16 ? "in_progress" : "completed";
+  const creator = creatorKeys[index % creatorKeys.length];
+  const template = yousifHelperTemplates[index % yousifHelperTemplates.length];
+  return {
+    key: `yousif-helper-${index + 1}`,
+    createdBy: creator,
+    assignedTo: yousifUserSeed.key,
+    data: {
+      title: template.title,
+      description: template.description,
+      category: template.category,
+      location:
+        template.location ||
+        sampleLocations[(index + 3) % sampleLocations.length],
+      budget: template.baseBudget + (index % 4) * 6,
+      status,
+      scheduledDate: formatZonedDate(2, (index % 10) + 5, 18),
+      categorySpecificData: template.categorySpecificData || null,
+    },
+  };
+});
+
+const applicationTaskCreators = [
+  "tasker_serena",
+  "tasker_gianna",
+  "tasker_carter",
+  "tasker_naomi",
+  "tasker_theo",
+];
+
+const yousifPendingTaskSeeds = Array.from({ length: 23 }, (_, index) => {
+  const template =
+    yousifApplicationTemplates[index % yousifApplicationTemplates.length];
+  return {
+    key: `yousif-application-${index + 1}`,
+    createdBy: applicationTaskCreators[index % applicationTaskCreators.length],
+    assignedTo: null,
+    data: {
+      title: template.title,
+      description: template.description,
+      category: template.category,
+      location:
+        template.location ||
+        sampleLocations[(index + 4) % sampleLocations.length],
+      budget: template.baseBudget + (index % 3) * 10,
+      status: "open",
+      scheduledDate: formatZonedDate(3, (index % 6) + 10, 20),
+      categorySpecificData: { flexibleTiming: index % 2 === 0 },
+    },
+  };
+});
+
+const taskSeeds = [
+  ...baseTaskSeeds,
+  ...yousifPostedTasks,
+  ...yousifAssignedTaskSeeds,
+  ...yousifPendingTaskSeeds,
+];
+
+const yousifApplicationSeeds = yousifPendingTaskSeeds.map((task, index) => {
+  const template =
+    yousifApplicationTemplates[index % yousifApplicationTemplates.length];
+  return {
+    task: task.key,
+    helper: yousifUserSeed.key,
+    status: "pending",
+    proposedRate: 28 + (index % 5) * 3,
+    message: template.message,
+  };
+});
+
+const applicationSeeds = [...baseApplicationSeeds, ...yousifApplicationSeeds];
+
 async function main() {
   console.log("Clearing existing demo data…");
   await purgeDemoData(prisma);
@@ -1224,7 +1570,11 @@ async function main() {
     helpers.push({ key: seed.key, record });
   }
 
+  console.log("Creating primary demo account…");
+  const yousifRecord = await prisma.user.create({ data: yousifUserSeed.data });
+
   const userMap = { ...mapByKey(taskers), ...mapByKey(helpers) };
+  userMap[yousifUserSeed.key] = yousifRecord;
 
   console.log(`Creating sample tasks (${taskSeeds.length})…`);
   const tasks = [];
