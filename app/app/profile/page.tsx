@@ -192,18 +192,14 @@ export default async function ProfilePage() {
                   <dd className="text-3xl font-bold text-purple-600">
                     {tasksCompletedForOthers}
                   </dd>
-                  <p className="text-xs text-gray-500">
-                    Completed assignments
-                  </p>
+                  <p className="text-xs text-gray-500">Completed assignments</p>
                 </div>
                 <div>
                   <dt className="text-sm text-gray-500">Active assignments</dt>
                   <dd className="text-3xl font-bold text-green-600">
                     {helperActiveTasks}
                   </dd>
-                  <p className="text-xs text-gray-500">
-                    Currently in progress
-                  </p>
+                  <p className="text-xs text-gray-500">Currently in progress</p>
                 </div>
               </dl>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">

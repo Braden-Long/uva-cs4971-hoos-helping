@@ -152,8 +152,8 @@ export default function MyTasksPage() {
           </p>
         </div>
         <div className="rounded-full border border-gray-200 px-4 py-1 text-sm text-gray-600">
-          {filterTasks(postedTasks).length} posted · {applications.length} applied
-          · {filterTasks(assignedTasks).length} assigned
+          {filterTasks(postedTasks).length} posted · {applications.length}{" "}
+          applied · {filterTasks(assignedTasks).length} assigned
         </div>
       </header>
 
@@ -161,8 +161,16 @@ export default function MyTasksPage() {
         <nav className="-mb-px flex flex-wrap gap-4 border-b border-gray-200 flex-1">
           {[
             { key: "posted", label: "Posted by me", count: postedTasks.length },
-            { key: "applied", label: "My applications", count: applications.length },
-            { key: "assigned", label: "Assigned to me", count: assignedTasks.length },
+            {
+              key: "applied",
+              label: "My applications",
+              count: applications.length,
+            },
+            {
+              key: "assigned",
+              label: "Assigned to me",
+              count: assignedTasks.length,
+            },
           ].map((tab) => (
             <button
               key={tab.key}
@@ -178,7 +186,10 @@ export default function MyTasksPage() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <label className="text-sm font-semibold text-gray-700" htmlFor="statusFilter">
+          <label
+            className="text-sm font-semibold text-gray-700"
+            htmlFor="statusFilter"
+          >
             Status
           </label>
           <select

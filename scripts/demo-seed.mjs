@@ -1379,8 +1379,7 @@ const yousifApplicationTemplates = [
   },
   {
     title: "Bike valet for rugby fundraiser",
-    description:
-      "Monitor and tag bikes during fundraiser on Saturday morning.",
+    description: "Monitor and tag bikes during fundraiser on Saturday morning.",
     category: "Event Support",
     location: "Carr's Hill",
     baseBudget: 65,
@@ -1389,8 +1388,7 @@ const yousifApplicationTemplates = [
   },
   {
     title: "Package assembly for HOOS Pantry",
-    description:
-      "Assemble 150 meal kits and label with dietary notes.",
+    description: "Assemble 150 meal kits and label with dietary notes.",
     category: "Event Support",
     location: "Newcomb",
     baseBudget: 90,
@@ -1399,8 +1397,7 @@ const yousifApplicationTemplates = [
   },
   {
     title: "Move-out dump run",
-    description:
-      "Need someone with SUV to haul boxes to recycling center.",
+    description: "Need someone with SUV to haul boxes to recycling center.",
     category: "Errands",
     location: "JPA → Ivy Materials Recovery",
     baseBudget: 80,
@@ -1409,8 +1406,7 @@ const yousifApplicationTemplates = [
   },
   {
     title: "Pet sitting for two cats",
-    description:
-      "Check on two cats twice daily for four days.",
+    description: "Check on two cats twice daily for four days.",
     category: "Pet Care",
     location: "Belmont",
     baseBudget: 120,
@@ -1445,7 +1441,7 @@ const formatZonedDate = (month, day, hour) =>
   new Date(
     `2025-${month.toString().padStart(2, "0")}-${day
       .toString()
-      .padStart(2, "0")}T${hour.toString().padStart(2, "0")}:00:00Z`,
+      .padStart(2, "0")}T${hour.toString().padStart(2, "0")}:00:00Z`
   );
 
 const yousifPostedTasks = Array.from({ length: 24 }, (_, index) => {
@@ -1454,7 +1450,7 @@ const yousifPostedTasks = Array.from({ length: 24 }, (_, index) => {
   const helperKey =
     status === "open"
       ? null
-      : helperSeeds[index % helperSeeds.length]?.key ?? null;
+      : (helperSeeds[index % helperSeeds.length]?.key ?? null);
 
   return {
     key: `yousif-posted-${index + 1}`,
@@ -1465,8 +1461,7 @@ const yousifPostedTasks = Array.from({ length: 24 }, (_, index) => {
       description: template.description,
       category: template.category,
       location:
-        template.location ||
-        sampleLocations[index % sampleLocations.length],
+        template.location || sampleLocations[index % sampleLocations.length],
       budget: template.baseBudget + (index % 3) * 5,
       status,
       scheduledDate: formatZonedDate(3, (index % 9) + 1, 15),
@@ -1555,10 +1550,7 @@ const yousifApplicationSeeds = yousifPendingTaskSeeds.map((task, index) => {
   };
 });
 
-const applicationSeeds = [
-  ...baseApplicationSeeds,
-  ...yousifApplicationSeeds,
-];
+const applicationSeeds = [...baseApplicationSeeds, ...yousifApplicationSeeds];
 
 async function main() {
   console.log("Clearing existing demo data…");
