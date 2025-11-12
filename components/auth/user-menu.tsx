@@ -32,79 +32,50 @@ export default function UserMenu({ user }: UserMenuProps) {
   };
 
   const initials = user.email ? user.email.substring(0, 2).toUpperCase() : "??";
+  const menuItems = [
+    { label: "Tasker profile", href: "/app/profile" },
+    { label: "Helper profile", href: "/profile/edit" },
+  ];
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative ml-3" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 hover:bg-gray-100 rounded-full p-2 transition-colors"
+        className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-uva-orange"
+        aria-expanded={isOpen}
+        aria-haspopup="true"
       >
-        <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-medium">
+        <span className="absolute -inset-1.5" aria-hidden="true" />
+        <span className="sr-only">Open user menu</span>
+        <div className="size-9 rounded-full bg-uva-blue text-white flex items-center justify-center text-sm font-semibold outline -outline-offset-1 outline-black/5">
           {initials}
         </div>
-        <svg
-          className={`h-4 w-4 text-gray-600 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-          <div className="py-1">
-            <div className="px-4 py-3 border-b">
-              <p className="text-sm font-medium text-gray-900 truncate">
-                {user.name || "User"}
-              </p>
-              <p className="text-xs text-gray-500 truncate">{user.email}</p>
-            </div>
+        <div
+          className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline outline-black/5 transition data-[state=closed]:scale-95 data-[state=closed]:opacity-0"
+          role="menu"
+          aria-label="User menu"
+        >
+          {menuItems.map((item) => (
             <Link
-              href="/app/dashboard"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              key={item.href}
+              href={item.href}
+              onClick={() => setIsOpen(false)}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden"
+              role="menuitem"
             >
-              Dashboard
+              {item.label}
             </Link>
-            <Link
-              href="/app/my-tasks"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              My Tasks
-            </Link>
-            <Link
-              href="/app/profile"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Your Profile
-            </Link>
-            <Link
-              href="/profile/edit"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Edit Helper Profile
-            </Link>
-            <Link
-              href="/onboarding/helper"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Setup Helper Profile
-            </Link>
-            <button
-              onClick={handleSignOut}
-              className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100 border-t"
-            >
-              Sign out
-            </button>
-          </div>
+          ))}
+          <button
+            onClick={handleSignOut}
+            className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden"
+            role="menuitem"
+          >
+            Sign out
+          </button>
         </div>
       )}
     </div>
