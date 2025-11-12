@@ -167,13 +167,13 @@ export default function NewTaskPage() {
       if (element.type === "checkbox") {
         element.checked = Boolean(value);
       } else {
-        element.value = value ?? "";
+        element.value = value != null ? String(value) : "";
       }
     } else if (
       element instanceof HTMLTextAreaElement ||
       element instanceof HTMLSelectElement
     ) {
-      element.value = value ?? "";
+      element.value = value != null ? String(value) : "";
     }
   };
 
