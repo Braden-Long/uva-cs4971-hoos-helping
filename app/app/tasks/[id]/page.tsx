@@ -245,9 +245,9 @@ export default function TaskDetailPage() {
     const data = task.categorySpecificData;
 
     return (
-      <div className="bg-white border rounded-lg p-6 mb-6">
+      <div className="overflow-hidden rounded-md bg-white px-6 py-5 shadow-sm">
         <h2 className="text-xl font-semibold mb-4">{task.category} Details</h2>
-        <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
           {Object.entries(data).map(([key, value]) => (
             <div key={key}>
               <span className="font-medium text-gray-700">
@@ -310,8 +310,8 @@ export default function TaskDetailPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-6">
+    <div className="mx-auto max-w-4xl space-y-4">
+      <div>
         <Link
           href="/app/tasks"
           className="text-primary hover:text-primary-hover font-medium text-sm"
@@ -321,7 +321,7 @@ export default function TaskDetailPage() {
       </div>
 
       {/* Task Header */}
-      <div className="bg-white border rounded-lg p-6 mb-6">
+      <div className="overflow-hidden rounded-md bg-white px-6 py-6 shadow-sm">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
@@ -398,7 +398,7 @@ export default function TaskDetailPage() {
       </div>
 
       {/* Description */}
-      <div className="bg-white border rounded-lg p-6 mb-6">
+      <div className="overflow-hidden rounded-md bg-white px-6 py-5 shadow-sm">
         <h2 className="text-xl font-semibold mb-3">Description</h2>
         <p className="text-gray-700 whitespace-pre-wrap">{task.description}</p>
       </div>
@@ -407,7 +407,7 @@ export default function TaskDetailPage() {
       {renderCategorySpecificData()}
 
       {/* Location */}
-      <div className="bg-white border rounded-lg p-6 mb-6">
+      <div className="overflow-hidden rounded-md bg-white px-6 py-5 shadow-sm">
         <h2 className="text-xl font-semibold mb-3">Location</h2>
         <div className="flex items-center gap-2">
           <svg
@@ -435,7 +435,7 @@ export default function TaskDetailPage() {
 
       {/* Application Form (for helpers) */}
       {!isOwner && !isAssigned && !hasApplied && task.status === "open" && (
-        <div className="bg-white border rounded-lg p-6 mb-6">
+        <div className="overflow-hidden rounded-md bg-white px-6 py-5 shadow-sm">
           <h2 className="text-xl font-semibold mb-4">Apply to Help</h2>
           {!showApplicationForm ? (
             <button
@@ -495,13 +495,16 @@ export default function TaskDetailPage() {
 
       {/* Applications (for task owners) */}
       {isOwner && task.status === "open" && applications.length > 0 && (
-        <div className="bg-white border rounded-lg p-6 mb-6">
+        <div className="overflow-hidden rounded-md bg-white px-6 py-5 shadow-sm">
           <h2 className="text-xl font-semibold mb-4">
             Applications ({applications.length})
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {applications.map((app) => (
-              <div key={app.id} className="border rounded-lg p-4">
+              <div
+                key={app.id}
+                className="rounded-md border border-gray-100 px-4 py-4"
+              >
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <Link
