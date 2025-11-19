@@ -109,7 +109,7 @@ For school demos you can quickly spin up realistic content without touching real
 
 Feel free to tweak the seed lists inside `scripts/demo-seed.mjs` if you need different scenarios; just keep emails on the demo domain so the cleanup script can find them.
 
-> Tip: the seed script now provisions a realistic end-to-end account (`yousif@yabood.com`) with 20+ posted tasks, helper assignments, and pending applications so the dashboard/profile/My Tasks views are fully populated for demos.
+> Tip: the seed script now provisions a realistic end-to-end account (`yousif@hooshelping.com`) with 20+ posted tasks, helper assignments, and pending applications so the dashboard/profile/My Tasks views are fully populated for demos.
 
 ## Deployment
 

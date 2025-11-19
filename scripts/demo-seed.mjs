@@ -1419,7 +1419,7 @@ const yousifUserSeed = {
   key: "user_yousif",
   data: {
     name: "Yousif Aboud",
-    email: "yousif@yabood.com",
+    email: "yousif@hooshelping.com",
     bio: "Product-minded tasker who also helps with event logistics and tech setups.",
     role: "user",
     skills: ["Event Support", "Tech Support", "Errands"],
