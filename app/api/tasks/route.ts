@@ -12,6 +12,7 @@ export async function GET(req: Request) {
     const location = searchParams.get("location");
     const minBudget = searchParams.get("minBudget");
     const maxBudget = searchParams.get("maxBudget");
+    const uvaVerified = searchParams.get("uvaVerified");
     const status = searchParams.get("status") || "posted";
 
     // Build filter object
@@ -36,6 +37,12 @@ export async function GET(req: Request) {
       if (maxBudget) where.budget.lte = parseFloat(maxBudget);
     }
 
+    if (uvaVerified === "true") {
+      where.createdBy = {
+        isUvaVerified: true,
+      };
+    }
+
     // Fetch tasks with filters
     const tasks = await prisma.task.findMany({
       where,
@@ -46,6 +53,7 @@ export async function GET(req: Request) {
             name: true,
             email: true,
             image: true,
+            isUvaVerified: true,
           },
         },
       },
@@ -127,6 +135,7 @@ export async function POST(req: Request) {
             name: true,
             email: true,
             image: true,
+            isUvaVerified: true,
           },
         },
       },

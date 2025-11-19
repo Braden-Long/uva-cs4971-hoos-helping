@@ -1,14 +1,27 @@
 import { auth } from "@/auth";
 import Link from "next/link";
+import { PrismaClient } from "@/app/generated/prisma";
+import UvaBadge from "@/components/uva-badge";
+
+const prisma = new PrismaClient();
 
 export default async function DashboardPage() {
   const session = await auth();
 
+  // Fetch user data to get isUvaVerified status
+  const user = session?.user?.id
+    ? await prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: { isUvaVerified: true },
+      })
+    : null;
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
-      <p className="text-gray-600 mb-8">
-        Welcome back, {session?.user?.email}!
+      <p className="text-gray-600 mb-8 flex items-center gap-2">
+        Welcome back, {session?.user?.email}
+        {user?.isUvaVerified && <UvaBadge />}
       </p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

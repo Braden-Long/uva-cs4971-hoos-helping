@@ -18,6 +18,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
+    async signIn({ user }) {
+      // Server-side UVA email verification: Check if email ends with @virginia.edu
+      // This runs after the user is created/looked up by PrismaAdapter
+      if (user?.email && user.id) {
+        try {
+          const isUvaEmail = user.email.toLowerCase().endsWith("@virginia.edu");
+
+          // Update user's UVA verification status
+          // Wrapped in try-catch to ensure sign-in always succeeds even if update fails
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { isUvaVerified: isUvaEmail },
+          });
+        } catch (error) {
+          // Log error but don't block sign-in if verification update fails
+          console.error("Error updating UVA verification status:", error);
+        }
+      }
+      // Always allow sign-in to proceed
+      return true;
+    },
     async jwt({ token, user }) {
       // Add custom fields to JWT token
       if (user?.id) {

@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import UvaBadge from "@/components/uva-badge";
 
 interface Task {
   id: string;
@@ -20,11 +21,13 @@ interface Task {
     name: string | null;
     email: string;
     image: string | null;
+    isUvaVerified: boolean;
   };
   assignedTo?: {
     id: string;
     name: string | null;
     email: string;
+    isUvaVerified: boolean;
   };
 }
 
@@ -344,7 +347,7 @@ export default function TaskDetailPage() {
               </span>
             </div>
             <div className="flex items-center gap-4 text-sm text-gray-500">
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -359,6 +362,7 @@ export default function TaskDetailPage() {
                   />
                 </svg>
                 Posted by {task.createdBy.name || task.createdBy.email}
+                {task.createdBy.isUvaVerified && <UvaBadge className="ml-2" />}
               </div>
               <div className="flex items-center gap-1">
                 <svg
@@ -383,8 +387,9 @@ export default function TaskDetailPage() {
               </p>
             )}
             {task.assignedTo && (
-              <p className="text-sm text-gray-600 mt-2">
+              <p className="text-sm text-gray-600 mt-2 flex items-center gap-1.5">
                 Assigned to: {task.assignedTo.name || task.assignedTo.email}
+                {task.assignedTo.isUvaVerified && <UvaBadge className="ml-2" />}
               </p>
             )}
           </div>
