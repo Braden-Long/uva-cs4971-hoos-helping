@@ -1013,6 +1013,342 @@ const baseTaskSeeds = [
       },
     },
   },
+  // Additional completed tasks for new reviews
+  {
+    key: "furniture-move",
+    createdBy: "tasker_sofia",
+    assignedTo: "helper_jordan",
+    data: {
+      title: "Move furniture to new apartment",
+      description:
+        "Need help relocating furniture from storage to my new place on Preston Ave.",
+      category: "Moving",
+      location: "1234 Preston Ave, Charlottesville, VA 22903",
+      addressLine1: "1234 Preston Ave",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 120,
+      status: "completed",
+      scheduledDate: new Date("2025-01-25T14:00:00Z"),
+      completedAt: new Date("2025-01-25T17:30:00Z"),
+      categorySpecificData: {
+        requiresTruck: true,
+        flightsOfStairs: 1,
+      },
+    },
+  },
+  {
+    key: "desk-assembly",
+    createdBy: "tasker_ethan",
+    assignedTo: "helper_camila",
+    data: {
+      title: "Assemble standing desk",
+      description:
+        "Need help assembling a new standing desk and organizing cables.",
+      category: "Assembly",
+      location: "800 Madison Ln, Charlottesville, VA 22903",
+      addressLine1: "800 Madison Ln",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 90,
+      status: "completed",
+      scheduledDate: new Date("2025-01-20T10:00:00Z"),
+      completedAt: new Date("2025-01-20T13:00:00Z"),
+      categorySpecificData: {
+        requiresPowerTools: false,
+      },
+    },
+  },
+  {
+    key: "study-space-setup",
+    createdBy: "tasker_oliver",
+    assignedTo: "helper_camila",
+    data: {
+      title: "Set up study space layout",
+      description:
+        "Need design help organizing furniture and creating an efficient study area.",
+      category: "Interior Setup",
+      location: "North Grounds Apartments",
+      budget: 85,
+      status: "completed",
+      scheduledDate: new Date("2025-01-22T16:00:00Z"),
+      completedAt: new Date("2025-01-22T19:00:00Z"),
+      categorySpecificData: {},
+    },
+  },
+  {
+    key: "event-registration",
+    createdBy: "tasker_declan",
+    assignedTo: "helper_samira",
+    data: {
+      title: "Event check-in support",
+      description:
+        "Need someone to handle registration for a drama department event.",
+      category: "Event Support",
+      location: "Drama Building",
+      budget: 75,
+      status: "completed",
+      scheduledDate: new Date("2025-02-01T17:00:00Z"),
+      completedAt: new Date("2025-02-01T20:00:00Z"),
+      categorySpecificData: {
+        expectedAttendees: 100,
+      },
+    },
+  },
+  {
+    key: "admin-support",
+    createdBy: "tasker_isla",
+    assignedTo: "helper_samira",
+    data: {
+      title: "File organization and admin help",
+      description:
+        "Need help organizing music department files and creating a filing system.",
+      category: "Admin",
+      location: "Old Cabell Hall",
+      budget: 80,
+      status: "completed",
+      scheduledDate: new Date("2025-01-27T13:00:00Z"),
+      completedAt: new Date("2025-01-27T17:00:00Z"),
+      categorySpecificData: {},
+    },
+  },
+  {
+    key: "event-planning",
+    createdBy: "tasker_serena",
+    assignedTo: "helper_samira",
+    data: {
+      title: "Green event coordination",
+      description:
+        "Need help planning and coordinating a sustainability fair on Grounds.",
+      category: "Event Support",
+      location: "Amphitheatre",
+      budget: 100,
+      status: "completed",
+      scheduledDate: new Date("2025-02-03T09:00:00Z"),
+      completedAt: new Date("2025-02-03T16:00:00Z"),
+      categorySpecificData: {
+        expectedAttendees: 200,
+      },
+    },
+  },
+  {
+    key: "yard-cleanup-lila",
+    createdBy: "tasker_lila",
+    assignedTo: "helper_elena",
+    data: {
+      title: "Yard cleanup and maintenance",
+      description:
+        "Need help cleaning up yard and doing general maintenance work.",
+      category: "Yard Work",
+      location: "1111 Wertland St, Charlottesville, VA 22903",
+      addressLine1: "1111 Wertland St",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 90,
+      status: "completed",
+      scheduledDate: new Date("2025-01-24T10:00:00Z"),
+      completedAt: new Date("2025-01-24T14:00:00Z"),
+      categorySpecificData: {
+        suppliesProvided: true,
+      },
+    },
+  },
+  {
+    key: "garden-maintenance",
+    createdBy: "tasker_rowan",
+    assignedTo: "helper_elena",
+    data: {
+      title: "Garden bed maintenance",
+      description:
+        "Need help maintaining garden beds and planting new flowers.",
+      category: "Yard Work",
+      location: "2222 University Cir, Charlottesville, VA 22903",
+      addressLine1: "2222 University Cir",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 95,
+      status: "completed",
+      scheduledDate: new Date("2025-01-26T11:00:00Z"),
+      completedAt: new Date("2025-01-26T15:00:00Z"),
+      categorySpecificData: {
+        suppliesProvided: false,
+      },
+    },
+  },
+  {
+    key: "outdoor-repairs",
+    createdBy: "tasker_gianna",
+    assignedTo: "helper_elena",
+    data: {
+      title: "Fence repair and outdoor cleanup",
+      description:
+        "Need help fixing wooden fence and general outdoor maintenance.",
+      category: "Handyman",
+      location: "3333 Main St, Charlottesville, VA 22903",
+      addressLine1: "3333 Main St",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 110,
+      status: "completed",
+      scheduledDate: new Date("2025-01-29T09:00:00Z"),
+      completedAt: new Date("2025-01-29T14:00:00Z"),
+      categorySpecificData: {},
+    },
+  },
+  {
+    key: "laptop-setup",
+    createdBy: "tasker_carter",
+    assignedTo: "helper_wes",
+    data: {
+      title: "Configure laptops for orientation",
+      description:
+        "Need help setting up and configuring laptops for orientation leaders.",
+      category: "Tech Support",
+      location: "Orientation Office",
+      budget: 100,
+      status: "completed",
+      scheduledDate: new Date("2025-01-31T10:00:00Z"),
+      completedAt: new Date("2025-01-31T14:00:00Z"),
+      categorySpecificData: {
+        numberOfDevices: 10,
+      },
+    },
+  },
+  {
+    key: "cat-sitting",
+    createdBy: "tasker_theo",
+    assignedTo: "helper_noah",
+    data: {
+      title: "Cat sitting for weekend",
+      description:
+        "Need someone to check on my two cats twice daily while I'm away.",
+      category: "Pet Care",
+      location: "4444 Elliott Ave, Charlottesville, VA 22903",
+      addressLine1: "4444 Elliott Ave",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 100,
+      status: "completed",
+      scheduledDate: new Date("2025-02-07T09:00:00Z"),
+      completedAt: new Date("2025-02-09T18:00:00Z"),
+      categorySpecificData: {
+        petType: "Cat",
+        numberOfPets: 2,
+        visitsPerDay: 2,
+      },
+    },
+  },
+  {
+    key: "furniture-delivery",
+    createdBy: "tasker_avery",
+    assignedTo: "helper_jordan",
+    data: {
+      title: "Furniture delivery from IKEA",
+      description: "Need help picking up and delivering furniture from IKEA.",
+      category: "Errands",
+      location: "5555 Emmet St, Charlottesville, VA 22903",
+      addressLine1: "5555 Emmet St",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 85,
+      status: "completed",
+      scheduledDate: new Date("2025-02-04T13:00:00Z"),
+      completedAt: new Date("2025-02-04T16:00:00Z"),
+      categorySpecificData: {
+        requiresCar: true,
+      },
+    },
+  },
+  {
+    key: "tutoring-session",
+    createdBy: "tasker_priya",
+    assignedTo: "helper_wes",
+    data: {
+      title: "Computer science tutoring",
+      description: "Need tutoring help for data structures and algorithms.",
+      category: "Tutoring",
+      location: "Alderman Library",
+      budget: 70,
+      status: "completed",
+      scheduledDate: new Date("2025-02-06T15:00:00Z"),
+      completedAt: new Date("2025-02-06T17:00:00Z"),
+      categorySpecificData: {
+        subject: "Computer Science",
+      },
+    },
+  },
+  {
+    key: "yard-work",
+    createdBy: "tasker_marcus",
+    assignedTo: "helper_elena",
+    data: {
+      title: "Yard work and edging",
+      description:
+        "Need help with yard maintenance including mowing and edging.",
+      category: "Yard Work",
+      location: "6666 Rugby Rd, Charlottesville, VA 22903",
+      addressLine1: "6666 Rugby Rd",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 95,
+      status: "completed",
+      scheduledDate: new Date("2025-02-08T10:00:00Z"),
+      completedAt: new Date("2025-02-08T14:00:00Z"),
+      categorySpecificData: {
+        suppliesProvided: true,
+      },
+    },
+  },
+  {
+    key: "event-support-liam",
+    createdBy: "tasker_liam",
+    assignedTo: "helper_samira",
+    data: {
+      title: "Event volunteer coordination",
+      description:
+        "Need help coordinating volunteers for a large campus event.",
+      category: "Event Support",
+      location: "Newcomb Hall",
+      budget: 90,
+      status: "completed",
+      scheduledDate: new Date("2025-02-10T08:00:00Z"),
+      completedAt: new Date("2025-02-10T14:00:00Z"),
+      categorySpecificData: {
+        numberOfVolunteers: 20,
+      },
+    },
+  },
+  {
+    key: "assembly-help",
+    createdBy: "tasker_maya",
+    assignedTo: "helper_camila",
+    data: {
+      title: "Bookshelf assembly",
+      description:
+        "Need help assembling three tall bookshelves for my apartment.",
+      category: "Assembly",
+      location: "7777 14th St NW, Charlottesville, VA 22903",
+      addressLine1: "7777 14th St NW",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
+      budget: 105,
+      status: "completed",
+      scheduledDate: new Date("2025-02-11T11:00:00Z"),
+      completedAt: new Date("2025-02-11T15:00:00Z"),
+      categorySpecificData: {
+        items: 3,
+      },
+    },
+  },
 ];
 
 const baseApplicationSeeds = [
@@ -1164,6 +1500,7 @@ const baseApplicationSeeds = [
 ];
 
 const reviewSeeds = [
+  // Existing reviews
   {
     task: "assemble-wardrobe",
     reviewer: "tasker_priya",
@@ -1244,6 +1581,265 @@ const reviewSeeds = [
     reviewee: "helper_noah",
     rating: 5,
     comment: "Translation captured the right tone for parents—thank you!",
+  },
+
+  // Additional reviews for helper_jordan
+  {
+    task: "move-couch",
+    reviewer: "tasker_marcus",
+    reviewee: "helper_jordan",
+    rating: 5,
+    comment:
+      "Jordan moved everything safely and was super respectful of the space. Highly recommend!",
+  },
+  {
+    task: "move-couch",
+    reviewer: "helper_jordan",
+    reviewee: "tasker_marcus",
+    rating: 5,
+    comment: "Marcus had everything ready to go. Made the job smooth and easy.",
+  },
+  {
+    task: "furniture-move",
+    reviewer: "tasker_sofia",
+    reviewee: "helper_jordan",
+    rating: 5,
+    comment:
+      "Showed up on time with all the right equipment. Professional and efficient.",
+  },
+  {
+    task: "furniture-move",
+    reviewer: "helper_jordan",
+    reviewee: "tasker_sofia",
+    rating: 5,
+    comment:
+      "Great communication and had refreshments waiting. Very considerate!",
+  },
+
+  // Additional reviews for helper_camila
+  {
+    task: "desk-assembly",
+    reviewer: "tasker_ethan",
+    reviewee: "helper_camila",
+    rating: 5,
+    comment:
+      "Camila assembled my desk perfectly and even organized the cables. Amazing work!",
+  },
+  {
+    task: "desk-assembly",
+    reviewer: "helper_camila",
+    reviewee: "tasker_ethan",
+    rating: 5,
+    comment:
+      "Ethan had all the parts laid out and ready. Very organized poster.",
+  },
+  {
+    task: "study-space-setup",
+    reviewer: "tasker_oliver",
+    reviewee: "helper_camila",
+    rating: 4,
+    comment:
+      "Really helped transform the space. Only minor issue was running a bit late.",
+  },
+  {
+    task: "study-space-setup",
+    reviewer: "helper_camila",
+    reviewee: "tasker_oliver",
+    rating: 5,
+    comment:
+      "Oliver was flexible and had a clear vision for the space. Great to work with!",
+  },
+
+  // Reviews for helper_samira
+  {
+    task: "event-registration",
+    reviewer: "tasker_declan",
+    reviewee: "helper_samira",
+    rating: 5,
+    comment:
+      "Samira handled check-ins flawlessly. Very professional and friendly with guests.",
+  },
+  {
+    task: "event-registration",
+    reviewer: "helper_samira",
+    reviewee: "tasker_declan",
+    rating: 5,
+    comment:
+      "Declan provided clear instructions and all materials were ready. Smooth event!",
+  },
+  {
+    task: "admin-support",
+    reviewer: "tasker_isla",
+    reviewee: "helper_samira",
+    rating: 5,
+    comment:
+      "Organized all my files and created a great system. Saved me hours of work!",
+  },
+  {
+    task: "admin-support",
+    reviewer: "helper_samira",
+    reviewee: "tasker_isla",
+    rating: 5,
+    comment: "Isla knew exactly what she needed. Very clear communicator.",
+  },
+  {
+    task: "event-planning",
+    reviewer: "tasker_serena",
+    reviewee: "helper_samira",
+    rating: 5,
+    comment:
+      "Samira's operations background really showed. Everything ran like clockwork!",
+  },
+  {
+    task: "event-planning",
+    reviewer: "helper_samira",
+    reviewee: "tasker_serena",
+    rating: 5,
+    comment: "Serena had a detailed timeline and was great to coordinate with.",
+  },
+
+  // Reviews for helper_elena
+  {
+    task: "yard-cleanup-lila",
+    reviewer: "tasker_lila",
+    reviewee: "helper_elena",
+    rating: 5,
+    comment:
+      "Elena did an amazing job with the yard. It looks better than ever!",
+  },
+  {
+    task: "yard-cleanup-lila",
+    reviewer: "helper_elena",
+    reviewee: "tasker_lila",
+    rating: 5,
+    comment:
+      "Lila provided all the tools and was very appreciative. Great experience!",
+  },
+  {
+    task: "garden-maintenance",
+    reviewer: "tasker_rowan",
+    reviewee: "helper_elena",
+    rating: 5,
+    comment:
+      "Very knowledgeable about plants and did excellent work. Will hire again!",
+  },
+  {
+    task: "garden-maintenance",
+    reviewer: "helper_elena",
+    reviewee: "tasker_rowan",
+    rating: 4,
+    comment:
+      "Rowan was friendly but the tools were a bit dull. Still a good task overall.",
+  },
+  {
+    task: "outdoor-repairs",
+    reviewer: "tasker_gianna",
+    reviewee: "helper_elena",
+    rating: 5,
+    comment: "Fixed the fence and cleaned up perfectly. Very skilled helper!",
+  },
+  {
+    task: "outdoor-repairs",
+    reviewer: "helper_elena",
+    reviewee: "tasker_gianna",
+    rating: 5,
+    comment:
+      "Gianna had all materials ready and was very clear about expectations.",
+  },
+
+  // More reviews for helper_wes
+  {
+    task: "laptop-setup",
+    reviewer: "tasker_carter",
+    reviewee: "helper_wes",
+    rating: 5,
+    comment: "Wes got all our laptops configured in record time. Tech wizard!",
+  },
+  {
+    task: "laptop-setup",
+    reviewer: "helper_wes",
+    reviewee: "tasker_carter",
+    rating: 5,
+    comment:
+      "Carter had admin credentials ready and clear specs. Very organized!",
+  },
+
+  // More reviews for helper_noah
+  {
+    task: "cat-sitting",
+    reviewer: "tasker_theo",
+    reviewee: "helper_noah",
+    rating: 5,
+    comment: "Noah sent photos and updates every visit. My cats loved him!",
+  },
+  {
+    task: "cat-sitting",
+    reviewer: "helper_noah",
+    reviewee: "tasker_theo",
+    rating: 5,
+    comment:
+      "Theo left detailed care instructions and treats. Made pet sitting easy!",
+  },
+
+  // Reviews from taskers who haven't reviewed yet
+  {
+    task: "furniture-delivery",
+    reviewer: "tasker_avery",
+    reviewee: "helper_jordan",
+    rating: 5,
+    comment:
+      "Second time hiring Jordan. Always reliable and careful with furniture!",
+  },
+  {
+    task: "tutoring-session",
+    reviewer: "tasker_priya",
+    reviewee: "helper_wes",
+    rating: 5,
+    comment:
+      "Wes explained concepts clearly and was very patient. Excellent tutor!",
+  },
+  {
+    task: "yard-work",
+    reviewer: "tasker_marcus",
+    reviewee: "helper_elena",
+    rating: 4,
+    comment:
+      "Good work overall. Finished most tasks but ran out of time for edging.",
+  },
+  {
+    task: "yard-work",
+    reviewer: "helper_elena",
+    reviewee: "tasker_marcus",
+    rating: 5,
+    comment: "Marcus was understanding about the time and paid fairly.",
+  },
+  {
+    task: "event-support-liam",
+    reviewer: "tasker_liam",
+    reviewee: "helper_samira",
+    rating: 5,
+    comment: "Samira coordinated volunteers perfectly. Very professional!",
+  },
+  {
+    task: "event-support-liam",
+    reviewer: "helper_samira",
+    reviewee: "tasker_liam",
+    rating: 5,
+    comment: "Liam had everything organized. Great event to be part of!",
+  },
+  {
+    task: "assembly-help",
+    reviewer: "tasker_maya",
+    reviewee: "helper_camila",
+    rating: 5,
+    comment: "Camila assembled three bookshelves flawlessly. Highly recommend!",
+  },
+  {
+    task: "assembly-help",
+    reviewer: "helper_camila",
+    reviewee: "tasker_maya",
+    rating: 5,
+    comment: "Maya had all parts organized and instructions ready. Perfect!",
   },
 ];
 

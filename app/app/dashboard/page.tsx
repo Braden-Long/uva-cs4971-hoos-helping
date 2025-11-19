@@ -8,11 +8,16 @@ const prisma = new PrismaClient();
 export default async function DashboardPage() {
   const session = await auth();
 
-  // Fetch user data to get isUvaVerified status
+  // Fetch user data to get isUvaVerified and helper profile status
   const user = session?.user?.id
     ? await prisma.user.findUnique({
         where: { id: session.user.id },
-        select: { isUvaVerified: true },
+        select: {
+          isUvaVerified: true,
+          isHelperProfileComplete: true,
+          skills: true,
+          hourlyRate: true,
+        },
       })
     : null;
 
@@ -64,18 +69,40 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
-          <h2 className="text-xl font-semibold mb-2">Become a Helper</h2>
-          <p className="text-gray-600 mb-4">
-            Set up your helper profile and start earning by helping others
-          </p>
-          <Link
-            href="/onboarding/helper"
-            className="text-primary hover:text-primary-hover font-medium text-sm"
-          >
-            Setup profile →
-          </Link>
-        </div>
+        {user?.isHelperProfileComplete ? (
+          <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Helper Profile</h2>
+            <p className="text-gray-600 mb-2">
+              {user.skills && user.skills.length > 0
+                ? `Skills: ${user.skills.join(", ")}`
+                : "Your helper profile is active"}
+            </p>
+            {user.hourlyRate && (
+              <p className="text-gray-600 mb-4">
+                Rate: ${user.hourlyRate.toFixed(2)}/hr
+              </p>
+            )}
+            <Link
+              href="/app/profile"
+              className="text-primary hover:text-primary-hover font-medium text-sm"
+            >
+              Manage profile →
+            </Link>
+          </div>
+        ) : (
+          <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+            <h2 className="text-xl font-semibold mb-2">Become a Helper</h2>
+            <p className="text-gray-600 mb-4">
+              Set up your helper profile and start earning by helping others
+            </p>
+            <Link
+              href="/onboarding/helper"
+              className="text-primary hover:text-primary-hover font-medium text-sm"
+            >
+              Setup profile →
+            </Link>
+          </div>
+        )}
 
         <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
           <h2 className="text-xl font-semibold mb-2">Your Profile</h2>

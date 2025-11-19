@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import UvaBadge from "@/components/uva-badge";
 
 interface Task {
   id: string;
@@ -33,7 +34,8 @@ export default function TasksPage() {
   const [minBudgetFilter, setMinBudgetFilter] = useState("");
   const [maxBudgetFilter, setMaxBudgetFilter] = useState("");
   const [uvaVerifiedFilter, setUvaVerifiedFilter] = useState(false);
-  const [backgroundVerifiedFilter, setBackgroundVerifiedFilter] = useState(false);
+  const [backgroundVerifiedFilter, setBackgroundVerifiedFilter] =
+    useState(false);
 
   const fetchTasks = useCallback(async () => {
     try {

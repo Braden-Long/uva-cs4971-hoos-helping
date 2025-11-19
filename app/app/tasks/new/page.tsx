@@ -321,7 +321,9 @@ export default function NewTaskPage() {
 
             {/* Starting Address */}
             <div className="space-y-3 border-b border-blue-200 pb-4">
-              <h4 className="text-sm font-semibold text-gray-900">Starting Address (Pickup)</h4>
+              <h4 className="text-sm font-semibold text-gray-900">
+                Starting Address (Pickup)
+              </h4>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -397,7 +399,9 @@ export default function NewTaskPage() {
 
             {/* Ending Address */}
             <div className="space-y-3 border-b border-blue-200 pb-4">
-              <h4 className="text-sm font-semibold text-gray-900">Ending Address (Drop-off)</h4>
+              <h4 className="text-sm font-semibold text-gray-900">
+                Ending Address (Drop-off)
+              </h4>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">

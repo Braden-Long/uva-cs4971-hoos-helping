@@ -3,11 +3,18 @@
  * Uses SerpAPI to perform background verification searches
  */
 
+interface SearchResult {
+  title?: string;
+  link?: string;
+  snippet?: string;
+  [key: string]: unknown;
+}
+
 interface BackgroundCheckResult {
   success: boolean;
   data?: {
-    searchResults: any[];
-    newsResults: any[];
+    searchResults: SearchResult[];
+    newsResults: SearchResult[];
     summary: string;
   };
   error?: string;
@@ -67,7 +74,12 @@ export async function performBackgroundCheck(
 
     // Generate a summary
     const resultCount = organicResults.length + newsResults.length;
-    const summary = generateSummary(fullName, resultCount, organicResults, newsResults);
+    const summary = generateSummary(
+      fullName,
+      resultCount,
+      organicResults,
+      newsResults
+    );
 
     return {
       success: true,
@@ -92,8 +104,8 @@ export async function performBackgroundCheck(
 function generateSummary(
   fullName: string,
   resultCount: number,
-  searchResults: any[],
-  newsResults: any[]
+  searchResults: SearchResult[],
+  newsResults: SearchResult[]
 ): string {
   if (resultCount === 0) {
     return `No significant online presence found for ${fullName}.`;

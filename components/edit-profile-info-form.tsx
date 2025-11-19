@@ -4,12 +4,10 @@ import { useState, useEffect } from "react";
 import { US_STATES } from "@/lib/address-validation";
 
 interface EditProfileInfoFormProps {
-  userId: string;
   onSuccess?: () => void;
 }
 
 export default function EditProfileInfoForm({
-  userId,
   onSuccess,
 }: EditProfileInfoFormProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -75,11 +73,9 @@ export default function EditProfileInfoForm({
         if (data.errors) {
           // Handle field-specific errors
           const errors: Record<string, string> = {};
-          data.errors.forEach(
-            (err: { field: string; message: string }) => {
-              errors[err.field] = err.message;
-            }
-          );
+          data.errors.forEach((err: { field: string; message: string }) => {
+            errors[err.field] = err.message;
+          });
           setFieldErrors(errors);
         } else {
           setError(data.error || "Failed to update profile");
@@ -125,7 +121,9 @@ export default function EditProfileInfoForm({
             <dd className="text-gray-900">{formData.name || "Not set"}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-600">Street address</dt>
+            <dt className="text-sm font-medium text-gray-600">
+              Street address
+            </dt>
             <dd className="text-gray-900">
               {formData.addressLine1 || "Not set"}
               {formData.addressLine2 && (
@@ -137,7 +135,9 @@ export default function EditProfileInfoForm({
             </dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-600">City, State, ZIP</dt>
+            <dt className="text-sm font-medium text-gray-600">
+              City, State, ZIP
+            </dt>
             <dd className="text-gray-900">
               {formData.city && formData.state && formData.zipCode
                 ? `${formData.city}, ${formData.state} ${formData.zipCode}`
@@ -167,7 +167,10 @@ export default function EditProfileInfoForm({
 
       {/* Name */}
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Full Name <span className="text-red-500">*</span>
         </label>
         <input
@@ -182,7 +185,10 @@ export default function EditProfileInfoForm({
 
       {/* Address Line 1 */}
       <div>
-        <label htmlFor="addressLine1" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="addressLine1"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Street Address <span className="text-red-500">*</span>
         </label>
         <input
@@ -199,13 +205,18 @@ export default function EditProfileInfoForm({
           required
         />
         {fieldErrors.addressLine1 && (
-          <p className="mt-1 text-sm text-red-600">{fieldErrors.addressLine1}</p>
+          <p className="mt-1 text-sm text-red-600">
+            {fieldErrors.addressLine1}
+          </p>
         )}
       </div>
 
       {/* Address Line 2 */}
       <div>
-        <label htmlFor="addressLine2" className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor="addressLine2"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           Apartment, suite, etc. (optional)
         </label>
         <input
@@ -224,7 +235,10 @@ export default function EditProfileInfoForm({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* City */}
         <div className="sm:col-span-1">
-          <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="city"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             City <span className="text-red-500">*</span>
           </label>
           <input
@@ -245,13 +259,18 @@ export default function EditProfileInfoForm({
 
         {/* State */}
         <div className="sm:col-span-1">
-          <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="state"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             State <span className="text-red-500">*</span>
           </label>
           <select
             id="state"
             value={formData.state}
-            onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, state: e.target.value })
+            }
             className={`block w-full rounded-md border ${
               fieldErrors.state ? "border-red-300" : "border-gray-300"
             } px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
@@ -271,7 +290,10 @@ export default function EditProfileInfoForm({
 
         {/* ZIP Code */}
         <div className="sm:col-span-1">
-          <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="zipCode"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             ZIP Code <span className="text-red-500">*</span>
           </label>
           <input

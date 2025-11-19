@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { PrismaClient } from "@/app/generated/prisma";
+import { PrismaClient, Prisma } from "@/app/generated/prisma";
 import {
   performBackgroundCheck,
   isProfileCompleteForVerification,
@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
  * POST /api/users/verify-background
  * Requests a background verification check for the authenticated user
  */
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const session = await auth();
 
@@ -88,9 +88,8 @@ export async function POST(req: NextRequest) {
     });
 
     // Perform background check with location
-    const location = user.city && user.state
-      ? `${user.city}, ${user.state}`
-      : undefined;
+    const location =
+      user.city && user.state ? `${user.city}, ${user.state}` : undefined;
     const result = await performBackgroundCheck(user.name!, location);
 
     if (!result.success) {
@@ -106,8 +105,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error: "Verification failed",
-          message:
-            result.error || "Unable to complete background verification",
+          message: result.error || "Unable to complete background verification",
         },
         { status: 500 }
       );
@@ -125,7 +123,7 @@ export async function POST(req: NextRequest) {
         isBackgroundVerified: isVerified,
         backgroundVerificationStatus: isVerified ? "verified" : "failed",
         backgroundVerificationCompletedAt: new Date(),
-        backgroundVerificationData: result.data as any,
+        backgroundVerificationData: result.data as Prisma.InputJsonValue,
       },
     });
 
@@ -153,7 +151,7 @@ export async function POST(req: NextRequest) {
  * GET /api/users/verify-background
  * Gets the current background verification status
  */
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
 
@@ -182,7 +180,7 @@ export async function GET(req: NextRequest) {
       requestedAt: user.backgroundVerificationRequestedAt,
       completedAt: user.backgroundVerificationCompletedAt,
       summary: user.backgroundVerificationData
-        ? (user.backgroundVerificationData as any).summary
+        ? (user.backgroundVerificationData as Record<string, unknown>).summary
         : null,
     });
   } catch (error) {
