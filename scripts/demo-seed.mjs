@@ -11,6 +11,8 @@ const taskerSeeds = [
       email: `avery.chen@${DEMO_EMAIL_DOMAIN}`,
       bio: "Fourth-year Comm student juggling consulting recruiting and capstone studio projects.",
       skills: [],
+      isUvaVerified: true, // UVA verified only
+      isBackgroundVerified: false,
     },
   },
   {
@@ -20,6 +22,8 @@ const taskerSeeds = [
       email: `priya.patel@${DEMO_EMAIL_DOMAIN}`,
       bio: "MBA candidate focused on venture capital interviews—outsources errands to stay organized.",
       skills: [],
+      isUvaVerified: false,
+      isBackgroundVerified: true, // Background verified only
     },
   },
   {
@@ -29,6 +33,8 @@ const taskerSeeds = [
       email: `marcus.allen@${DEMO_EMAIL_DOMAIN}`,
       bio: "Resident advisor who posts yard work and event prep tasks for his community.",
       skills: [],
+      isUvaVerified: true,
+      isBackgroundVerified: true, // Both verifications
     },
   },
   {
@@ -38,6 +44,8 @@ const taskerSeeds = [
       email: `liam.brooks@${DEMO_EMAIL_DOMAIN}`,
       bio: "Computer science TA who constantly sets up demo equipment for hackathons.",
       skills: [],
+      isUvaVerified: false,
+      isBackgroundVerified: false, // No verifications
     },
   },
   {
@@ -47,6 +55,8 @@ const taskerSeeds = [
       email: `sofia.reyes@${DEMO_EMAIL_DOMAIN}`,
       bio: "Nursing student on clinical rotations who needs flexible help during night shifts.",
       skills: [],
+      isUvaVerified: true,
+      isBackgroundVerified: true, // Both verifications
     },
   },
   {
@@ -56,6 +66,8 @@ const taskerSeeds = [
       email: `ethan.ward@${DEMO_EMAIL_DOMAIN}`,
       bio: "Student filmmaker always sourcing props and signage for shoots.",
       skills: [],
+      isUvaVerified: true, // UVA verified only
+      isBackgroundVerified: false,
     },
   },
   {
@@ -65,6 +77,8 @@ const taskerSeeds = [
       email: `maya.johnson@${DEMO_EMAIL_DOMAIN}`,
       bio: "Architecture student coordinating studio crit events and supply runs.",
       skills: [],
+      isUvaVerified: false,
+      isBackgroundVerified: true, // Background verified only
     },
   },
   {
@@ -74,6 +88,8 @@ const taskerSeeds = [
       email: `oliver.wright@${DEMO_EMAIL_DOMAIN}`,
       bio: "Economics student leading a consulting club—hosts frequent workshops.",
       skills: [],
+      isUvaVerified: false,
+      isBackgroundVerified: false, // No verifications
     },
   },
   {
@@ -199,6 +215,8 @@ const helperSeeds = [
       isHelperProfileComplete: true,
       totalTasksAsHelper: 18,
       averageRating: 4.9,
+      isUvaVerified: true,
+      isBackgroundVerified: true, // Both verifications
     },
   },
   {
@@ -213,6 +231,8 @@ const helperSeeds = [
       isHelperProfileComplete: true,
       totalTasksAsHelper: 14,
       averageRating: 4.8,
+      isUvaVerified: false,
+      isBackgroundVerified: true, // Background verified only
     },
   },
   {
@@ -227,6 +247,8 @@ const helperSeeds = [
       isHelperProfileComplete: true,
       totalTasksAsHelper: 21,
       averageRating: 4.95,
+      isUvaVerified: true, // UVA verified only
+      isBackgroundVerified: false,
     },
   },
   {
@@ -241,6 +263,8 @@ const helperSeeds = [
       isHelperProfileComplete: true,
       totalTasksAsHelper: 11,
       averageRating: 4.7,
+      isUvaVerified: false,
+      isBackgroundVerified: false, // No verifications
     },
   },
   {
@@ -255,6 +279,8 @@ const helperSeeds = [
       isHelperProfileComplete: true,
       totalTasksAsHelper: 9,
       averageRating: 4.85,
+      isUvaVerified: true,
+      isBackgroundVerified: true, // Both verifications
     },
   },
   {
@@ -269,6 +295,8 @@ const helperSeeds = [
       isHelperProfileComplete: true,
       totalTasksAsHelper: 16,
       averageRating: 4.92,
+      isUvaVerified: true, // UVA verified only
+      isBackgroundVerified: false,
     },
   },
 ];
@@ -283,7 +311,11 @@ const baseTaskSeeds = [
       description:
         "Need help moving a sectional sofa from Lambeth to an apartment near the Corner. Two flights of stairs at pickup.",
       category: "Moving",
-      location: "Charlottesville, VA",
+      location: "500 Lambeth Field Rd, Charlottesville, VA 22904",
+      addressLine1: "500 Lambeth Field Rd",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22904",
       budget: 140,
       status: "in_progress",
       scheduledDate: new Date("2025-02-18T15:30:00Z"),
@@ -303,7 +335,11 @@ const baseTaskSeeds = [
       description:
         "Brand new wardrobe that needs careful assembly before roommates arrive. Instructions included.",
       category: "Assembly",
-      location: "Ivy Gardens, Charlottesville",
+      location: "2530 Old Ivy Rd, Charlottesville, VA 22903",
+      addressLine1: "2530 Old Ivy Rd",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
       budget: 110,
       status: "completed",
       scheduledDate: new Date("2025-01-28T18:00:00Z"),
@@ -323,7 +359,11 @@ const baseTaskSeeds = [
       description:
         "Need leaves bagged, patio swept, and string lights tested before Saturday alumni dinner.",
       category: "Yard Work",
-      location: "Woodrow apartments",
+      location: "1905 Woodrow Ave, Charlottesville, VA 22903",
+      addressLine1: "1905 Woodrow Ave",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
       budget: 95,
       status: "open",
       scheduledDate: new Date("2025-02-22T14:00:00Z"),
@@ -342,7 +382,11 @@ const baseTaskSeeds = [
       description:
         "30-minute walk around Scott Stadium area while I'm in lab. Wahoo is leash trained but strong.",
       category: "Pet Care",
-      location: "Scott Stadium",
+      location: "350 Massie Rd, Charlottesville, VA 22903",
+      addressLine1: "350 Massie Rd",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
       budget: 35,
       status: "completed",
       scheduledDate: new Date("2025-02-05T20:00:00Z"),
@@ -362,7 +406,11 @@ const baseTaskSeeds = [
       description:
         "Need someone with a car to pick up a short Costco run (list provided) and deliver to Brandon Ave.",
       category: "Errands",
-      location: "Costco then Brandon Ave",
+      location: "1510 Brandon Ave, Charlottesville, VA 22903",
+      addressLine1: "1510 Brandon Ave",
+      city: "Charlottesville",
+      state: "VA",
+      zipCode: "22903",
       budget: 60,
       status: "open",
       scheduledDate: new Date("2025-02-16T17:30:00Z"),

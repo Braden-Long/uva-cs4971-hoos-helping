@@ -100,7 +100,15 @@ model Task {
   title       String
   description String   @db.Text
   category    String   @default("Other") // e.g., Moving, Errands, Pet Sitting, Assembly, Cleaning, Yard Work, Tutoring, Other
-  location    String
+  location    String   // Legacy field - kept for backward compatibility, stores full address string
+
+  // Structured address fields
+  addressLine1  String?
+  addressLine2  String?
+  city          String?
+  state         String?
+  zipCode       String?
+
   budget      Float
   status      String   @default("open") // open, assigned, in_progress, completed, cancelled
   scheduledDate DateTime?

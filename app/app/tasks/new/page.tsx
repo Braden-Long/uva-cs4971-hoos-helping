@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { US_STATES, validateUSAddress } from "@/lib/address-validation";
 
 type TaskSummary = {
   id: string;
@@ -62,38 +63,147 @@ export default function NewTaskPage() {
 
     const formData = new FormData(e.currentTarget);
 
+    // Validate address
+    let addressLine1: string;
+    let addressLine2: string;
+    let city: string;
+    let state: string;
+    let zipCode: string;
+    let locationString: string;
+
     // Build category-specific data
     const categorySpecificData: Record<string, unknown> = {};
 
     if (selectedCategory === "Moving") {
-      categorySpecificData.startingAddress = formData.get("startingAddress");
-      categorySpecificData.endingAddress = formData.get("endingAddress");
+      // For moving tasks, validate both starting and ending addresses
+      const startAddressLine1 = formData.get("startAddressLine1") as string;
+      const startAddressLine2 = formData.get("startAddressLine2") as string;
+      const startCity = formData.get("startCity") as string;
+      const startState = formData.get("startState") as string;
+      const startZipCode = formData.get("startZipCode") as string;
+
+      const endAddressLine1 = formData.get("endAddressLine1") as string;
+      const endAddressLine2 = formData.get("endAddressLine2") as string;
+      const endCity = formData.get("endCity") as string;
+      const endState = formData.get("endState") as string;
+      const endZipCode = formData.get("endZipCode") as string;
+
+      // Validate starting address
+      const startValidation = validateUSAddress({
+        addressLine1: startAddressLine1,
+        addressLine2: startAddressLine2,
+        city: startCity,
+        state: startState,
+        zipCode: startZipCode,
+      });
+
+      if (!startValidation.valid) {
+        setError(
+          `Starting address validation failed: ${startValidation.errors.map((e) => e.message).join(", ")}`
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Validate ending address
+      const endValidation = validateUSAddress({
+        addressLine1: endAddressLine1,
+        addressLine2: endAddressLine2,
+        city: endCity,
+        state: endState,
+        zipCode: endZipCode,
+      });
+
+      if (!endValidation.valid) {
+        setError(
+          `Ending address validation failed: ${endValidation.errors.map((e) => e.message).join(", ")}`
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Store addresses in category-specific data
+      categorySpecificData.startingAddress = {
+        addressLine1: startAddressLine1,
+        addressLine2: startAddressLine2,
+        city: startCity,
+        state: startState,
+        zipCode: startZipCode,
+      };
+      categorySpecificData.endingAddress = {
+        addressLine1: endAddressLine1,
+        addressLine2: endAddressLine2,
+        city: endCity,
+        state: endState,
+        zipCode: endZipCode,
+      };
       categorySpecificData.floors = formData.get("floors");
       categorySpecificData.bedrooms = formData.get("bedrooms");
       categorySpecificData.heavyItems = formData.get("heavyItems") === "on";
       categorySpecificData.requiresCar = formData.get("requiresCar") === "on";
-    } else if (selectedCategory === "Furniture Assembly") {
-      categorySpecificData.itemType = formData.get("itemType");
-      categorySpecificData.numberOfItems = formData.get("numberOfItems");
-      categorySpecificData.bringTools = formData.get("bringTools") === "on";
-    } else if (selectedCategory === "Cleaning") {
-      categorySpecificData.propertyType = formData.get("propertyType");
-      categorySpecificData.numberOfRooms = formData.get("numberOfRooms");
-      categorySpecificData.cleaningType = formData.get("cleaningType");
-      categorySpecificData.bringSupplies =
-        formData.get("bringSupplies") === "on";
-    } else if (selectedCategory === "Errands") {
-      categorySpecificData.errandType = formData.get("errandType");
-      categorySpecificData.requiresCar = formData.get("requiresCar") === "on";
-      categorySpecificData.estimatedDuration =
-        formData.get("estimatedDuration");
+
+      // Use starting address as the main task location
+      addressLine1 = startAddressLine1;
+      addressLine2 = startAddressLine2;
+      city = startCity;
+      state = startState;
+      zipCode = startZipCode;
+      locationString = `${startAddressLine1}${startAddressLine2 ? ", " + startAddressLine2 : ""}, ${startCity}, ${startState} ${startZipCode} → ${endAddressLine1}, ${endCity}, ${endState}`;
+    } else {
+      // For non-moving tasks, use the main task location fields
+      addressLine1 = formData.get("addressLine1") as string;
+      addressLine2 = formData.get("addressLine2") as string;
+      city = formData.get("city") as string;
+      state = formData.get("state") as string;
+      zipCode = formData.get("zipCode") as string;
+
+      const addressValidation = validateUSAddress({
+        addressLine1,
+        addressLine2,
+        city,
+        state,
+        zipCode,
+      });
+
+      if (!addressValidation.valid) {
+        setError(
+          `Address validation failed: ${addressValidation.errors.map((e) => e.message).join(", ")}`
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      locationString = `${addressLine1}${addressLine2 ? ", " + addressLine2 : ""}, ${city}, ${state} ${zipCode}`;
+
+      // Handle other category-specific data
+      if (selectedCategory === "Furniture Assembly") {
+        categorySpecificData.itemType = formData.get("itemType");
+        categorySpecificData.numberOfItems = formData.get("numberOfItems");
+        categorySpecificData.bringTools = formData.get("bringTools") === "on";
+      } else if (selectedCategory === "Cleaning") {
+        categorySpecificData.propertyType = formData.get("propertyType");
+        categorySpecificData.numberOfRooms = formData.get("numberOfRooms");
+        categorySpecificData.cleaningType = formData.get("cleaningType");
+        categorySpecificData.bringSupplies =
+          formData.get("bringSupplies") === "on";
+      } else if (selectedCategory === "Errands") {
+        categorySpecificData.errandType = formData.get("errandType");
+        categorySpecificData.requiresCar = formData.get("requiresCar") === "on";
+        categorySpecificData.estimatedDuration =
+          formData.get("estimatedDuration");
+      }
     }
 
     const data = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       category: formData.get("category") as string,
-      location: formData.get("location") as string,
+      location: locationString,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      zipCode,
       budget: formData.get("budget") as string,
       scheduledDate: formData.get("scheduledDate") as string,
       categorySpecificData:
@@ -209,32 +319,159 @@ export default function NewTaskPage() {
           <div className="space-y-4 bg-blue-50 p-4 rounded-md">
             <h3 className="font-semibold text-gray-900">Moving Details</h3>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Starting Address
-              </label>
-              <input
-                type="text"
-                name="startingAddress"
-                required
-                placeholder="123 Main St, Charlottesville, VA"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
+            {/* Starting Address */}
+            <div className="space-y-3 border-b border-blue-200 pb-4">
+              <h4 className="text-sm font-semibold text-gray-900">Starting Address (Pickup)</h4>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Street Address <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="startAddressLine1"
+                  required
+                  placeholder="123 Main St"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Apartment, suite, etc. (optional)
+                </label>
+                <input
+                  type="text"
+                  name="startAddressLine2"
+                  placeholder="Apt 4B"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    City <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="startCity"
+                    required
+                    placeholder="Charlottesville"
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    State <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="startState"
+                    required
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  >
+                    <option value="">Select</option>
+                    {US_STATES.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    ZIP <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="startZipCode"
+                    required
+                    placeholder="22903"
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Ending Address
-              </label>
-              <input
-                type="text"
-                name="endingAddress"
-                required
-                placeholder="456 Oak Ave, Charlottesville, VA"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-              />
+            {/* Ending Address */}
+            <div className="space-y-3 border-b border-blue-200 pb-4">
+              <h4 className="text-sm font-semibold text-gray-900">Ending Address (Drop-off)</h4>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Street Address <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="endAddressLine1"
+                  required
+                  placeholder="456 Oak Ave"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Apartment, suite, etc. (optional)
+                </label>
+                <input
+                  type="text"
+                  name="endAddressLine2"
+                  placeholder="Unit 2C"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    City <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="endCity"
+                    required
+                    placeholder="Charlottesville"
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    State <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="endState"
+                    required
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  >
+                    <option value="">Select</option>
+                    {US_STATES.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    ZIP <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="endZipCode"
+                    required
+                    placeholder="22903"
+                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                  />
+                </div>
+              </div>
             </div>
 
+            {/* Additional Details */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">
@@ -282,7 +519,7 @@ export default function NewTaskPage() {
                   className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />
                 <span className="text-sm text-gray-700">
-                  Helper must have a car
+                  Helper must have a truck
                 </span>
               </label>
             </div>
@@ -558,26 +795,108 @@ export default function NewTaskPage() {
                 </p>
               </div>
 
-              {/* Location */}
-              <div>
-                <label
-                  htmlFor="location"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Location
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  id="location"
-                  required
-                  placeholder="e.g., 123 Main St, Charlottesville, VA or UVA Grounds"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-                <p className="mt-1 text-sm text-gray-500">
-                  General area where the task will take place
-                </p>
-              </div>
+              {/* Location - Structured Address (hidden for Moving tasks) */}
+              {selectedCategory !== "Moving" && (
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    Task Location
+                  </h3>
+
+                  {/* Address Line 1 */}
+                  <div>
+                    <label
+                      htmlFor="addressLine1"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Street Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="addressLine1"
+                      id="addressLine1"
+                      required
+                      placeholder="123 Main St"
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                  </div>
+
+                  {/* Address Line 2 */}
+                  <div>
+                    <label
+                      htmlFor="addressLine2"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Apartment, suite, etc. (optional)
+                    </label>
+                    <input
+                      type="text"
+                      name="addressLine2"
+                      id="addressLine2"
+                      placeholder="Apt 4B"
+                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                    />
+                  </div>
+
+                  {/* City, State, ZIP */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="sm:col-span-1">
+                      <label
+                        htmlFor="city"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        City <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="city"
+                        id="city"
+                        required
+                        placeholder="Charlottesville"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-1">
+                      <label
+                        htmlFor="state"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        State <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        name="state"
+                        id="state"
+                        required
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      >
+                        <option value="">Select</option>
+                        {US_STATES.map((state) => (
+                          <option key={state} value={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="sm:col-span-1">
+                      <label
+                        htmlFor="zipCode"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        ZIP Code <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="zipCode"
+                        id="zipCode"
+                        required
+                        placeholder="22903"
+                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Budget */}
               <div>
