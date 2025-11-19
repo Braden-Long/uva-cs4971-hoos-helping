@@ -22,6 +22,7 @@ export async function GET(
             name: true,
             email: true,
             image: true,
+            isUvaVerified: true,
           },
         },
         assignedTo: {
@@ -29,6 +30,7 @@ export async function GET(
             id: true,
             name: true,
             email: true,
+            isUvaVerified: true,
           },
         },
       },

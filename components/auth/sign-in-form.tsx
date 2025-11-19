@@ -67,6 +67,13 @@ export default function SignInForm() {
           className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           placeholder="you@example.com"
         />
+        <p className="mt-2 text-xs text-gray-600">
+          <span className="font-medium" style={{ color: "#E57200" }}>
+            UVA community:
+          </span>{" "}
+          Use your @virginia.edu email to get a verified UVA badge on your
+          profile
+        </p>
       </div>
 
       {error && (

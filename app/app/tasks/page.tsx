@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import UvaBadge from "@/components/uva-badge";
 
 interface Task {
   id: string;
@@ -17,6 +18,7 @@ interface Task {
     name: string | null;
     email: string;
     image: string | null;
+    isUvaVerified: boolean;
   };
 }
 
@@ -30,6 +32,7 @@ export default function TasksPage() {
   const [locationFilter, setLocationFilter] = useState("");
   const [minBudgetFilter, setMinBudgetFilter] = useState("");
   const [maxBudgetFilter, setMaxBudgetFilter] = useState("");
+  const [uvaVerifiedFilter, setUvaVerifiedFilter] = useState(false);
 
   const fetchTasks = useCallback(async () => {
     try {
@@ -48,6 +51,9 @@ export default function TasksPage() {
       if (maxBudgetFilter) {
         params.append("maxBudget", maxBudgetFilter);
       }
+      if (uvaVerifiedFilter) {
+        params.append("uvaVerified", "true");
+      }
 
       const response = await fetch(`/api/tasks?${params.toString()}`);
       if (!response.ok) {
@@ -62,7 +68,7 @@ export default function TasksPage() {
     } finally {
       setLoading(false);
     }
-  }, [categoryFilter, locationFilter, minBudgetFilter, maxBudgetFilter]);
+  }, [categoryFilter, locationFilter, minBudgetFilter, maxBudgetFilter, uvaVerifiedFilter]);
 
   useEffect(() => {
     fetchTasks();
@@ -73,6 +79,7 @@ export default function TasksPage() {
     setLocationFilter("");
     setMinBudgetFilter("");
     setMaxBudgetFilter("");
+    setUvaVerifiedFilter(false);
   };
 
   return (
@@ -179,6 +186,20 @@ export default function TasksPage() {
             />
           </label>
         </div>
+        <div className="mt-4">
+          <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={uvaVerifiedFilter}
+              onChange={(e) => setUvaVerifiedFilter(e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <span className="flex items-center gap-1.5">
+              Show only UVA verified users
+              <UvaBadge />
+            </span>
+          </label>
+        </div>
       </div>
 
       {/* Error Message */}
@@ -238,9 +259,10 @@ export default function TasksPage() {
                         </p>
                         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500">
                           <span>{task.location}</span>
-                          <span>
+                          <span className="flex items-center gap-1.5">
                             Posted by{" "}
                             {task.createdBy.name || task.createdBy.email}
+                            {task.createdBy.isUvaVerified && <UvaBadge />}
                           </span>
                         </div>
                       </div>

@@ -18,6 +18,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     ...authConfig.callbacks,
+    async signIn({ user }) {
+      // Server-side UVA email verification: Check if email ends with @virginia.edu
+      if (user?.email && user.id) {
+        const isUvaEmail = user.email.toLowerCase().endsWith("@virginia.edu");
+
+        // Update user's UVA verification status in database
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { isUvaVerified: isUvaEmail },
+        });
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       // Add custom fields to JWT token
       if (user?.id) {
