@@ -262,7 +262,9 @@ export default function TasksPage() {
                           <span className="flex items-center gap-1.5">
                             Posted by{" "}
                             {task.createdBy.name || task.createdBy.email}
-                            {task.createdBy.isUvaVerified && <UvaBadge />}
+                            {task.createdBy.isUvaVerified && (
+                              <UvaBadge className="ml-2" />
+                            )}
                           </span>
                         </div>
                       </div>

@@ -362,7 +362,7 @@ export default function TaskDetailPage() {
                   />
                 </svg>
                 Posted by {task.createdBy.name || task.createdBy.email}
-                {task.createdBy.isUvaVerified && <UvaBadge />}
+                {task.createdBy.isUvaVerified && <UvaBadge className="ml-2" />}
               </div>
               <div className="flex items-center gap-1">
                 <svg
@@ -389,7 +389,7 @@ export default function TaskDetailPage() {
             {task.assignedTo && (
               <p className="text-sm text-gray-600 mt-2 flex items-center gap-1.5">
                 Assigned to: {task.assignedTo.name || task.assignedTo.email}
-                {task.assignedTo.isUvaVerified && <UvaBadge />}
+                {task.assignedTo.isUvaVerified && <UvaBadge className="ml-2" />}
               </p>
             )}
           </div>

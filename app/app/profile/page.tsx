@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@/app/generated/prisma";
 import Link from "next/link";
+import UvaBadge from "@/components/uva-badge";
 
 const prisma = new PrismaClient();
 
@@ -80,7 +81,10 @@ export default async function ProfilePage() {
                 </span>
               )}
             </div>
-            <p className="text-gray-600">{user.email}</p>
+            <p className="text-gray-600 flex items-center gap-2">
+              {user.email}
+              {user.isUvaVerified && <UvaBadge />}
+            </p>
             <p className="text-sm text-gray-500">
               Member since{" "}
               {new Date(user.createdAt).toLocaleDateString("en-US", {
