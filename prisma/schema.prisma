@@ -17,6 +17,13 @@ model User {
   image         String?
   role          String    @default("user") // user, admin
 
+  // Address fields for background verification
+  addressLine1  String?
+  addressLine2  String?
+  city          String?
+  state         String?
+  zipCode       String?
+
   // Helper Profile Fields
   bio                      String?
   skills                   String[] // Array of categories they can help with
@@ -28,6 +35,13 @@ model User {
 
   // UVA Verification
   isUvaVerified            Boolean   @default(false) // Auto-set server-side based on @virginia.edu email
+
+  // Background Verification (SerpAPI)
+  isBackgroundVerified     Boolean   @default(false)
+  backgroundVerificationStatus String? // pending, verified, failed, null
+  backgroundVerificationRequestedAt DateTime?
+  backgroundVerificationCompletedAt DateTime?
+  backgroundVerificationData Json? // Store SerpAPI results
 
   accounts      Account[]
   sessions      Session[]
@@ -86,7 +100,15 @@ model Task {
   title       String
   description String   @db.Text
   category    String   @default("Other") // e.g., Moving, Errands, Pet Sitting, Assembly, Cleaning, Yard Work, Tutoring, Other
-  location    String
+  location    String   // Legacy field - kept for backward compatibility, stores full address string
+
+  // Structured address fields
+  addressLine1  String?
+  addressLine2  String?
+  city          String?
+  state         String?
+  zipCode       String?
+
   budget      Float
   status      String   @default("open") // open, assigned, in_progress, completed, cancelled
   scheduledDate DateTime?

@@ -19,6 +19,7 @@ interface Task {
     email: string;
     image: string | null;
     isUvaVerified: boolean;
+    isBackgroundVerified: boolean;
   };
 }
 
@@ -33,6 +34,8 @@ export default function TasksPage() {
   const [minBudgetFilter, setMinBudgetFilter] = useState("");
   const [maxBudgetFilter, setMaxBudgetFilter] = useState("");
   const [uvaVerifiedFilter, setUvaVerifiedFilter] = useState(false);
+  const [backgroundVerifiedFilter, setBackgroundVerifiedFilter] =
+    useState(false);
 
   const fetchTasks = useCallback(async () => {
     try {
@@ -54,6 +57,9 @@ export default function TasksPage() {
       if (uvaVerifiedFilter) {
         params.append("uvaVerified", "true");
       }
+      if (backgroundVerifiedFilter) {
+        params.append("backgroundVerified", "true");
+      }
 
       const response = await fetch(`/api/tasks?${params.toString()}`);
       if (!response.ok) {
@@ -74,6 +80,7 @@ export default function TasksPage() {
     minBudgetFilter,
     maxBudgetFilter,
     uvaVerifiedFilter,
+    backgroundVerifiedFilter,
   ]);
 
   useEffect(() => {
@@ -86,6 +93,7 @@ export default function TasksPage() {
     setMinBudgetFilter("");
     setMaxBudgetFilter("");
     setUvaVerifiedFilter(false);
+    setBackgroundVerifiedFilter(false);
   };
 
   return (
@@ -192,7 +200,7 @@ export default function TasksPage() {
             />
           </label>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 flex flex-wrap gap-4">
           <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
             <input
               type="checkbox"
@@ -200,10 +208,16 @@ export default function TasksPage() {
               onChange={(e) => setUvaVerifiedFilter(e.target.checked)}
               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
-            <span className="flex items-center gap-1.5">
-              Show only UVA verified users
-              <UvaBadge />
-            </span>
+            <span>Show only UVA verified users</span>
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={backgroundVerifiedFilter}
+              onChange={(e) => setBackgroundVerifiedFilter(e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <span>Show only background verified users</span>
           </label>
         </div>
       </div>

@@ -32,10 +32,7 @@ export default function UserMenu({ user }: UserMenuProps) {
   };
 
   const initials = user.email ? user.email.substring(0, 2).toUpperCase() : "??";
-  const menuItems = [
-    { label: "Tasker profile", href: "/app/profile" },
-    { label: "Helper profile", href: "/profile/edit" },
-  ];
+  const menuItems = [{ label: "Profile", href: "/app/profile" }];
 
   return (
     <div className="relative ml-3" ref={menuRef}>

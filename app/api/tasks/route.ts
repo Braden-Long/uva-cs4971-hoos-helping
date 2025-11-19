@@ -13,6 +13,7 @@ export async function GET(req: Request) {
     const minBudget = searchParams.get("minBudget");
     const maxBudget = searchParams.get("maxBudget");
     const uvaVerified = searchParams.get("uvaVerified");
+    const backgroundVerified = searchParams.get("backgroundVerified");
     const status = searchParams.get("status") || "posted";
 
     // Build filter object
@@ -37,10 +38,15 @@ export async function GET(req: Request) {
       if (maxBudget) where.budget.lte = parseFloat(maxBudget);
     }
 
-    if (uvaVerified === "true") {
-      where.createdBy = {
-        isUvaVerified: true,
-      };
+    // Handle verification filters
+    if (uvaVerified === "true" || backgroundVerified === "true") {
+      where.createdBy = {};
+      if (uvaVerified === "true") {
+        where.createdBy.isUvaVerified = true;
+      }
+      if (backgroundVerified === "true") {
+        where.createdBy.isBackgroundVerified = true;
+      }
     }
 
     // Fetch tasks with filters
@@ -54,6 +60,7 @@ export async function GET(req: Request) {
             email: true,
             image: true,
             isUvaVerified: true,
+            isBackgroundVerified: true,
           },
         },
       },
@@ -88,6 +95,11 @@ export async function POST(req: Request) {
       description,
       category,
       location,
+      addressLine1,
+      addressLine2,
+      city,
+      state,
+      zipCode,
       budget,
       scheduledDate,
       categorySpecificData,
@@ -123,6 +135,11 @@ export async function POST(req: Request) {
         description,
         category,
         location,
+        addressLine1: addressLine1 || null,
+        addressLine2: addressLine2 || null,
+        city: city || null,
+        state: state || null,
+        zipCode: zipCode || null,
         budget: budgetNum,
         scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
         categorySpecificData: categorySpecificData || null,
