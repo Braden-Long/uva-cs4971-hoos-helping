@@ -68,7 +68,13 @@ export default function TasksPage() {
     } finally {
       setLoading(false);
     }
-  }, [categoryFilter, locationFilter, minBudgetFilter, maxBudgetFilter, uvaVerifiedFilter]);
+  }, [
+    categoryFilter,
+    locationFilter,
+    minBudgetFilter,
+    maxBudgetFilter,
+    uvaVerifiedFilter,
+  ]);
 
   useEffect(() => {
     fetchTasks();
