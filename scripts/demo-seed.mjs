@@ -1418,7 +1418,7 @@ const yousifApplicationTemplates = [
 const yousifUserSeed = {
   key: "user_yousif",
   data: {
-    name: "Yousif Aboud",
+    name: "Yousif Abood",
     email: "yousif@hooshelping.com",
     bio: "Product-minded tasker who also helps with event logistics and tech setups.",
     role: "user",
