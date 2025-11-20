@@ -218,10 +218,7 @@ export default function TasksPage() {
               onChange={(e) => setBackgroundVerifiedFilter(e.target.checked)}
               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
-            <span className="flex items-center gap-1.5">
-              Show only background verified users
-              <BgVerifiedBadge />
-            </span>
+            <span>Show only background verified users</span>
           </label>
         </div>
       </div>
