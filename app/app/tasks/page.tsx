@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import UvaBadge from "@/components/uva-badge";
+import BgVerifiedBadge from "@/components/bg-verified-badge";
 
 interface Task {
   id: string;
@@ -217,7 +218,10 @@ export default function TasksPage() {
               onChange={(e) => setBackgroundVerifiedFilter(e.target.checked)}
               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
-            <span>Show only background verified users</span>
+            <span className="flex items-center gap-1.5">
+              Show only background verified users
+              <BgVerifiedBadge />
+            </span>
           </label>
         </div>
       </div>
@@ -284,6 +288,9 @@ export default function TasksPage() {
                             {task.createdBy.name || task.createdBy.email}
                             {task.createdBy.isUvaVerified && (
                               <UvaBadge className="ml-2" />
+                            )}
+                            {task.createdBy.isBackgroundVerified && (
+                              <BgVerifiedBadge className="ml-2" />
                             )}
                           </span>
                         </div>

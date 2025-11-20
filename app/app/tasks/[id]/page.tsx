@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import UvaBadge from "@/components/uva-badge";
+import BgVerifiedBadge from "@/components/bg-verified-badge";
 
 interface Task {
   id: string;
@@ -22,12 +23,14 @@ interface Task {
     email: string;
     image: string | null;
     isUvaVerified: boolean;
+    isBackgroundVerified: boolean;
   };
   assignedTo?: {
     id: string;
     name: string | null;
     email: string;
     isUvaVerified: boolean;
+    isBackgroundVerified: boolean;
   };
 }
 
@@ -418,6 +421,9 @@ export default function TaskDetailPage() {
                     {task.createdBy.isUvaVerified && (
                       <UvaBadge className="ml-2" />
                     )}
+                    {task.createdBy.isBackgroundVerified && (
+                      <BgVerifiedBadge className="ml-2" />
+                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     <svg
@@ -446,6 +452,9 @@ export default function TaskDetailPage() {
                     Assigned to: {task.assignedTo.name || task.assignedTo.email}
                     {task.assignedTo.isUvaVerified && (
                       <UvaBadge className="ml-2" />
+                    )}
+                    {task.assignedTo.isBackgroundVerified && (
+                      <BgVerifiedBadge className="ml-2" />
                     )}
                   </p>
                 )}
