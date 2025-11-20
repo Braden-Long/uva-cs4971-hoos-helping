@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import UvaBadge from "@/components/uva-badge";
+import BgVerifiedBadge from "@/components/bg-verified-badge";
 
 interface Task {
   id: string;
@@ -284,6 +285,9 @@ export default function TasksPage() {
                             {task.createdBy.name || task.createdBy.email}
                             {task.createdBy.isUvaVerified && (
                               <UvaBadge className="ml-2" />
+                            )}
+                            {task.createdBy.isBackgroundVerified && (
+                              <BgVerifiedBadge className="ml-2" />
                             )}
                           </span>
                         </div>
