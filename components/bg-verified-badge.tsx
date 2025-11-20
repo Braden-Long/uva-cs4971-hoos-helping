@@ -2,7 +2,9 @@ interface BgVerifiedBadgeProps {
   className?: string;
 }
 
-export default function BgVerifiedBadge({ className = "" }: BgVerifiedBadgeProps) {
+export default function BgVerifiedBadge({
+  className = "",
+}: BgVerifiedBadgeProps) {
   return (
     <span
       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold ${className}`}
