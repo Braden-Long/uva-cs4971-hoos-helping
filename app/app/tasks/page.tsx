@@ -2,6 +2,9 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Alert from "@/components/ui/alert";
+import { PageLoader } from "@/components/ui/loading-spinner";
+import Badge from "@/components/ui/badge";
 import UvaBadge from "@/components/uva-badge";
 import BgVerifiedBadge from "@/components/bg-verified-badge";
 
@@ -225,18 +228,13 @@ export default function TasksPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-800">{error}</p>
-        </div>
+        <Alert variant="error" className="mb-6">
+          {error}
+        </Alert>
       )}
 
       {/* Loading State */}
-      {loading && (
-        <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-          <p className="mt-4 text-gray-600">Loading tasks...</p>
-        </div>
-      )}
+      {loading && <PageLoader text="Loading tasks..." />}
 
       {/* Tasks List */}
       {!loading && !error && (
@@ -271,9 +269,7 @@ export default function TasksPage() {
                           <h3 className="text-lg font-semibold text-gray-900">
                             {task.title}
                           </h3>
-                          <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-                            {task.category}
-                          </span>
+                          <Badge variant="category">{task.category}</Badge>
                         </div>
                         <p className="text-gray-600 mb-3 line-clamp-2">
                           {task.description}

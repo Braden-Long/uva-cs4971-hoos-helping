@@ -2,6 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { PageLoader } from "@/components/ui/loading-spinner";
+import Badge from "@/components/ui/badge";
+import Button from "@/components/ui/button";
 
 interface Task {
   id: string;
@@ -133,12 +136,7 @@ export default function MyTasksPage() {
   }, [applications, statusFilter]);
 
   if (loading) {
-    return (
-      <div className="py-12 text-center">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent" />
-        <p className="mt-4 text-gray-600">Loading your tasks...</p>
-      </div>
-    );
+    return <PageLoader text="Loading your tasks..." />;
   }
 
   return (
@@ -248,11 +246,8 @@ function TaskList({ tasks, emptyMessage, cta }: TaskListProps) {
     return (
       <div className="rounded-md bg-white px-6 py-12 text-center shadow-sm">
         <p className="mb-4 text-gray-600">{emptyMessage}</p>
-        <Link
-          href={cta.href}
-          className="inline-block rounded-md bg-primary px-6 py-2 font-semibold text-white hover:bg-primary-hover"
-        >
-          {cta.label}
+        <Link href={cta.href}>
+          <Button>{cta.label}</Button>
         </Link>
       </div>
     );
@@ -272,13 +267,22 @@ function TaskList({ tasks, emptyMessage, cta }: TaskListProps) {
                   <h3 className="text-lg font-semibold text-gray-900">
                     {task.title}
                   </h3>
-                  <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusBadgeColor(
-                      task.status
-                    )}`}
+                  <Badge
+                    variant="status"
+                    status={
+                      task.status as
+                        | "pending"
+                        | "completed"
+                        | "open"
+                        | "accepted"
+                        | "assigned"
+                        | "rejected"
+                        | "in_progress"
+                        | "cancelled"
+                    }
                   >
                     {task.status}
-                  </span>
+                  </Badge>
                 </div>
                 <p className="mb-2 text-gray-600 line-clamp-2">
                   {task.description}
