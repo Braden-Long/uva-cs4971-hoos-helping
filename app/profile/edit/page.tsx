@@ -168,8 +168,8 @@ export default function EditProfilePage() {
                 bio.trim().length >= 20
                   ? "text-green-600"
                   : bio.trim().length > 0
-                  ? "text-yellow-600"
-                  : "text-gray-500"
+                    ? "text-yellow-600"
+                    : "text-gray-500"
               }`}
             >
               {bio.trim().length}/20
