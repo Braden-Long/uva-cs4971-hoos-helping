@@ -3,6 +3,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Badge from "@/components/ui/badge";
+import Alert from "@/components/ui/alert";
+import { PageLoader } from "@/components/ui/loading-spinner";
+import { useToast } from "@/components/ui/toast";
 import UvaBadge from "@/components/uva-badge";
 import BgVerifiedBadge from "@/components/bg-verified-badge";
 
@@ -84,6 +88,7 @@ interface PosterProfile {
 export default function TaskDetailPage() {
   const params = useParams();
   const taskId = params?.id as string;
+  const toast = useToast();
 
   const [task, setTask] = useState<Task | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -195,11 +200,11 @@ export default function TaskDetailPage() {
         throw new Error(error.error);
       }
 
-      alert("Application submitted successfully!");
+      toast.success("Application submitted successfully!");
       setShowApplicationForm(false);
       fetchTask();
     } catch (err) {
-      alert(
+      toast.error(
         err instanceof Error ? err.message : "Failed to submit application"
       );
     } finally {
@@ -220,10 +225,12 @@ export default function TaskDetailPage() {
 
       if (!response.ok) throw new Error("Failed to accept application");
 
-      alert("Application accepted! The helper has been assigned to your task.");
+      toast.success(
+        "Application accepted! The helper has been assigned to your task."
+      );
       fetchTask();
     } catch {
-      alert("Failed to accept application");
+      toast.error("Failed to accept application");
     }
   };
 
@@ -240,10 +247,10 @@ export default function TaskDetailPage() {
 
       if (!response.ok) throw new Error("Failed to reject application");
 
-      alert("Application rejected.");
+      toast.success("Application rejected.");
       fetchApplications();
     } catch {
-      alert("Failed to reject application");
+      toast.error("Failed to reject application");
     }
   };
 
@@ -257,10 +264,10 @@ export default function TaskDetailPage() {
 
       if (!response.ok) throw new Error("Failed to complete task");
 
-      alert("Task marked as completed! You can now leave a review.");
+      toast.success("Task marked as completed! You can now leave a review.");
       fetchTask();
     } catch {
-      alert("Failed to complete task");
+      toast.error("Failed to complete task");
     }
   };
 
@@ -283,11 +290,13 @@ export default function TaskDetailPage() {
         throw new Error(error.error);
       }
 
-      alert("Review submitted successfully!");
+      toast.success("Review submitted successfully!");
       setShowReviewForm(false);
       setHasReviewed(true);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to submit review");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to submit review"
+      );
     } finally {
       setSubmitting(false);
     }
@@ -339,20 +348,15 @@ export default function TaskDetailPage() {
   };
 
   if (loading) {
-    return (
-      <div className="text-center py-12">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-        <p className="mt-4 text-gray-600">Loading task...</p>
-      </div>
-    );
+    return <PageLoader text="Loading task..." />;
   }
 
   if (error || !task) {
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-          <p className="text-sm text-red-800">{error || "Task not found"}</p>
-        </div>
+        <Alert variant="error" className="mb-6">
+          {error || "Task not found"}
+        </Alert>
         <Link
           href="/app/tasks"
           className="text-primary hover:text-primary-hover font-medium"
@@ -385,22 +389,23 @@ export default function TaskDetailPage() {
                   {task.title}
                 </h1>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
-                    {task.category}
-                  </span>
-                  <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                      task.status === "open"
-                        ? "bg-green-100 text-green-800"
-                        : task.status === "assigned"
-                          ? "bg-blue-100 text-blue-800"
-                          : task.status === "in_progress"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-gray-100 text-gray-800"
-                    }`}
+                  <Badge variant="category">{task.category}</Badge>
+                  <Badge
+                    variant="status"
+                    status={
+                      task.status as
+                        | "pending"
+                        | "completed"
+                        | "open"
+                        | "accepted"
+                        | "assigned"
+                        | "rejected"
+                        | "in_progress"
+                        | "cancelled"
+                    }
                   >
                     {task.status}
-                  </span>
+                  </Badge>
                 </div>
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <div className="flex items-center gap-1.5">
@@ -418,12 +423,6 @@ export default function TaskDetailPage() {
                       />
                     </svg>
                     Posted by {task.createdBy.name || task.createdBy.email}
-                    {task.createdBy.isUvaVerified && (
-                      <UvaBadge className="ml-2" />
-                    )}
-                    {task.createdBy.isBackgroundVerified && (
-                      <BgVerifiedBadge className="ml-2" />
-                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     <svg
@@ -450,12 +449,6 @@ export default function TaskDetailPage() {
                 {task.assignedTo && (
                   <p className="text-sm text-gray-600 mt-2 flex items-center gap-1.5">
                     Assigned to: {task.assignedTo.name || task.assignedTo.email}
-                    {task.assignedTo.isUvaVerified && (
-                      <UvaBadge className="ml-2" />
-                    )}
-                    {task.assignedTo.isBackgroundVerified && (
-                      <BgVerifiedBadge className="ml-2" />
-                    )}
                   </p>
                 )}
               </div>
@@ -554,16 +547,16 @@ export default function TaskDetailPage() {
                           );
                           if (response.ok) {
                             setHasApplied(false);
-                            alert("Application withdrawn successfully");
+                            toast.success("Application withdrawn successfully");
                             fetchTask();
                           } else {
                             const error = await response.json();
-                            alert(
+                            toast.error(
                               error.error || "Failed to withdraw application"
                             );
                           }
                         } catch {
-                          alert("Failed to withdraw application");
+                          toast.error("Failed to withdraw application");
                         } finally {
                           setSubmitting(false);
                         }
@@ -829,16 +822,8 @@ export default function TaskDetailPage() {
                     {posterProfile.name || "Anonymous"}
                   </p>
                   <div className="flex items-center gap-2 mt-1">
-                    {posterProfile.isUvaVerified && (
-                      <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">
-                        UVA Verified
-                      </span>
-                    )}
-                    {posterProfile.isBackgroundVerified && (
-                      <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
-                        Background Verified
-                      </span>
-                    )}
+                    {posterProfile.isUvaVerified && <UvaBadge />}
+                    {posterProfile.isBackgroundVerified && <BgVerifiedBadge />}
                   </div>
                 </div>
               </div>

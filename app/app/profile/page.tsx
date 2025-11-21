@@ -98,7 +98,7 @@ export default async function ProfilePage() {
           <div className="flex flex-col gap-2">
             <div className="text-sm text-gray-500">
               {user.emailVerified ? (
-                <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-green-700">
+                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-blue-700">
                   ✓ UVA Email Verified
                 </span>
               ) : (
@@ -108,7 +108,7 @@ export default async function ProfilePage() {
               )}
             </div>
             {user.isBackgroundVerified && (
-              <div className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-blue-700 text-sm">
+              <div className="inline-flex items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-green-700 text-sm">
                 <svg
                   className="h-4 w-4"
                   fill="currentColor"

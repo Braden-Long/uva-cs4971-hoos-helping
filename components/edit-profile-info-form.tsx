@@ -2,6 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { US_STATES } from "@/lib/address-validation";
+import Alert from "@/components/ui/alert";
+import Button from "@/components/ui/button";
+import { FormInput, FormSelect } from "@/components/ui/form-input";
+import { InlineLoader } from "@/components/ui/loading-spinner";
 
 interface EditProfileInfoFormProps {
   onSuccess?: () => void;
@@ -105,7 +109,7 @@ export default function EditProfileInfoForm({
   };
 
   if (isLoading) {
-    return <div className="text-sm text-gray-500">Loading...</div>;
+    return <InlineLoader />;
   }
 
   if (!isEditing) {
@@ -146,12 +150,13 @@ export default function EditProfileInfoForm({
           </div>
         </dl>
         <div className="mt-6">
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => setIsEditing(true)}
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
           >
             Edit information
-          </button>
+          </Button>
         </div>
       </>
     );
@@ -159,121 +164,70 @@ export default function EditProfileInfoForm({
 
   return (
     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-      {error && (
-        <div className="rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
-          {error}
-        </div>
-      )}
+      {error && <Alert variant="error">{error}</Alert>}
 
       {/* Name */}
-      <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Full Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-          required
-        />
-      </div>
+      <FormInput
+        label="Full Name *"
+        type="text"
+        id="name"
+        value={formData.name}
+        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        required
+      />
 
       {/* Address Line 1 */}
-      <div>
-        <label
-          htmlFor="addressLine1"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Street Address <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="addressLine1"
-          value={formData.addressLine1}
-          onChange={(e) =>
-            setFormData({ ...formData, addressLine1: e.target.value })
-          }
-          placeholder="123 Main St"
-          className={`block w-full rounded-md border ${
-            fieldErrors.addressLine1 ? "border-red-300" : "border-gray-300"
-          } px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
-          required
-        />
-        {fieldErrors.addressLine1 && (
-          <p className="mt-1 text-sm text-red-600">
-            {fieldErrors.addressLine1}
-          </p>
-        )}
-      </div>
+      <FormInput
+        label="Street Address *"
+        type="text"
+        id="addressLine1"
+        value={formData.addressLine1}
+        onChange={(e) =>
+          setFormData({ ...formData, addressLine1: e.target.value })
+        }
+        placeholder="123 Main St"
+        error={fieldErrors.addressLine1}
+        required
+      />
 
       {/* Address Line 2 */}
-      <div>
-        <label
-          htmlFor="addressLine2"
-          className="block text-sm font-medium text-gray-700 mb-1"
-        >
-          Apartment, suite, etc. (optional)
-        </label>
-        <input
-          type="text"
-          id="addressLine2"
-          value={formData.addressLine2}
-          onChange={(e) =>
-            setFormData({ ...formData, addressLine2: e.target.value })
-          }
-          placeholder="Apt 4B"
-          className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-        />
-      </div>
+      <FormInput
+        label="Apartment, suite, etc. (optional)"
+        type="text"
+        id="addressLine2"
+        value={formData.addressLine2}
+        onChange={(e) =>
+          setFormData({ ...formData, addressLine2: e.target.value })
+        }
+        placeholder="Apt 4B"
+      />
 
       {/* City, State, ZIP in a grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* City */}
         <div className="sm:col-span-1">
-          <label
-            htmlFor="city"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            City <span className="text-red-500">*</span>
-          </label>
-          <input
+          <FormInput
+            label="City *"
             type="text"
             id="city"
             value={formData.city}
             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             placeholder="Charlottesville"
-            className={`block w-full rounded-md border ${
-              fieldErrors.city ? "border-red-300" : "border-gray-300"
-            } px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
+            error={fieldErrors.city}
             required
           />
-          {fieldErrors.city && (
-            <p className="mt-1 text-sm text-red-600">{fieldErrors.city}</p>
-          )}
         </div>
 
         {/* State */}
         <div className="sm:col-span-1">
-          <label
-            htmlFor="state"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            State <span className="text-red-500">*</span>
-          </label>
-          <select
+          <FormSelect
+            label="State *"
             id="state"
             value={formData.state}
             onChange={(e) =>
               setFormData({ ...formData, state: e.target.value })
             }
-            className={`block w-full rounded-md border ${
-              fieldErrors.state ? "border-red-300" : "border-gray-300"
-            } px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
+            error={fieldErrors.state}
             required
           >
             <option value="">Select</option>
@@ -282,21 +236,13 @@ export default function EditProfileInfoForm({
                 {state}
               </option>
             ))}
-          </select>
-          {fieldErrors.state && (
-            <p className="mt-1 text-sm text-red-600">{fieldErrors.state}</p>
-          )}
+          </FormSelect>
         </div>
 
         {/* ZIP Code */}
         <div className="sm:col-span-1">
-          <label
-            htmlFor="zipCode"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            ZIP Code <span className="text-red-500">*</span>
-          </label>
-          <input
+          <FormInput
+            label="ZIP Code *"
             type="text"
             id="zipCode"
             value={formData.zipCode}
@@ -304,33 +250,25 @@ export default function EditProfileInfoForm({
               setFormData({ ...formData, zipCode: e.target.value })
             }
             placeholder="22903"
-            className={`block w-full rounded-md border ${
-              fieldErrors.zipCode ? "border-red-300" : "border-gray-300"
-            } px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary`}
+            error={fieldErrors.zipCode}
             required
           />
-          {fieldErrors.zipCode && (
-            <p className="mt-1 text-sm text-red-600">{fieldErrors.zipCode}</p>
-          )}
         </div>
       </div>
 
       {/* Action buttons */}
       <div className="flex gap-3 pt-2">
-        <button
-          type="submit"
-          disabled={isSaving}
-          className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        <Button type="submit" size="sm" disabled={isSaving}>
           {isSaving ? "Saving..." : "Save changes"}
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={handleCancel}
-          className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
         >
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

@@ -4,6 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { US_STATES, validateUSAddress } from "@/lib/address-validation";
+import Alert from "@/components/ui/alert";
+import Button from "@/components/ui/button";
+import {
+  FormInput,
+  FormSelect,
+  FormTextarea,
+} from "@/components/ui/form-input";
 
 type TaskSummary = {
   id: string;
@@ -325,73 +332,50 @@ export default function NewTaskPage() {
                 Starting Address (Pickup)
               </h4>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Street Address <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="startAddressLine1"
-                  required
-                  placeholder="123 Main St"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                />
-              </div>
+              <FormInput
+                label="Street Address *"
+                type="text"
+                name="startAddressLine1"
+                required
+                placeholder="123 Main St"
+              />
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Apartment, suite, etc. (optional)
-                </label>
-                <input
-                  type="text"
-                  name="startAddressLine2"
-                  placeholder="Apt 4B"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                />
-              </div>
+              <FormInput
+                label="Apartment, suite, etc. (optional)"
+                type="text"
+                name="startAddressLine2"
+                placeholder="Apt 4B"
+              />
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <input
+                  <FormInput
+                    label="City *"
                     type="text"
                     name="startCity"
                     required
                     placeholder="Charlottesville"
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    State <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="startState"
-                    required
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                  >
+                  <FormSelect label="State *" name="startState" required>
                     <option value="">Select</option>
                     {US_STATES.map((state) => (
                       <option key={state} value={state}>
                         {state}
                       </option>
                     ))}
-                  </select>
+                  </FormSelect>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    ZIP <span className="text-red-500">*</span>
-                  </label>
-                  <input
+                  <FormInput
+                    label="ZIP *"
                     type="text"
                     name="startZipCode"
                     required
                     placeholder="22903"
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                   />
                 </div>
               </div>
@@ -403,73 +387,50 @@ export default function NewTaskPage() {
                 Ending Address (Drop-off)
               </h4>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Street Address <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="endAddressLine1"
-                  required
-                  placeholder="456 Oak Ave"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                />
-              </div>
+              <FormInput
+                label="Street Address *"
+                type="text"
+                name="endAddressLine1"
+                required
+                placeholder="456 Oak Ave"
+              />
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Apartment, suite, etc. (optional)
-                </label>
-                <input
-                  type="text"
-                  name="endAddressLine2"
-                  placeholder="Unit 2C"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                />
-              </div>
+              <FormInput
+                label="Apartment, suite, etc. (optional)"
+                type="text"
+                name="endAddressLine2"
+                placeholder="Unit 2C"
+              />
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <input
+                  <FormInput
+                    label="City *"
                     type="text"
                     name="endCity"
                     required
                     placeholder="Charlottesville"
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    State <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="endState"
-                    required
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                  >
+                  <FormSelect label="State *" name="endState" required>
                     <option value="">Select</option>
                     {US_STATES.map((state) => (
                       <option key={state} value={state}>
                         {state}
                       </option>
                     ))}
-                  </select>
+                  </FormSelect>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    ZIP <span className="text-red-500">*</span>
-                  </label>
-                  <input
+                  <FormInput
+                    label="ZIP *"
                     type="text"
                     name="endZipCode"
                     required
                     placeholder="22903"
-                    className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                   />
                 </div>
               </div>
@@ -478,28 +439,19 @@ export default function NewTaskPage() {
             {/* Additional Details */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Floors (Pickup)
-                </label>
-                <select
-                  name="floors"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-                >
+                <FormSelect label="Floors (Pickup)" name="floors">
                   <option value="1">1st Floor</option>
                   <option value="2">2nd Floor</option>
                   <option value="3">3rd Floor+</option>
-                </select>
+                </FormSelect>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Bedrooms
-                </label>
-                <input
+                <FormInput
+                  label="Bedrooms"
                   type="text"
                   name="bedrooms"
                   placeholder="e.g., Studio, 1BR, 2BR"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                 />
               </div>
             </div>
@@ -535,31 +487,21 @@ export default function NewTaskPage() {
           <div className="space-y-4 bg-blue-50 p-4 rounded-md">
             <h3 className="font-semibold text-gray-900">Assembly Details</h3>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Item Type
-              </label>
-              <input
-                type="text"
-                name="itemType"
-                required
-                placeholder="e.g., IKEA desk, bookshelf, bed frame"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-              />
-            </div>
+            <FormInput
+              label="Item Type"
+              type="text"
+              name="itemType"
+              required
+              placeholder="e.g., IKEA desk, bookshelf, bed frame"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Number of Items
-              </label>
-              <input
-                type="number"
-                name="numberOfItems"
-                min="1"
-                defaultValue="1"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-              />
-            </div>
+            <FormInput
+              label="Number of Items"
+              type="number"
+              name="numberOfItems"
+              min="1"
+              defaultValue="1"
+            />
 
             <label className="flex items-center space-x-2">
               <input
@@ -579,46 +521,25 @@ export default function NewTaskPage() {
           <div className="space-y-4 bg-blue-50 p-4 rounded-md">
             <h3 className="font-semibold text-gray-900">Cleaning Details</h3>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Property Type
-              </label>
-              <select
-                name="propertyType"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-              >
-                <option value="apartment">Apartment</option>
-                <option value="house">House</option>
-                <option value="dorm">Dorm Room</option>
-                <option value="office">Office</option>
-              </select>
-            </div>
+            <FormSelect label="Property Type" name="propertyType">
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="dorm">Dorm Room</option>
+              <option value="office">Office</option>
+            </FormSelect>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Number of Rooms/Size
-              </label>
-              <input
-                type="text"
-                name="numberOfRooms"
-                placeholder="e.g., 2 bedrooms, 1 bathroom"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-              />
-            </div>
+            <FormInput
+              label="Number of Rooms/Size"
+              type="text"
+              name="numberOfRooms"
+              placeholder="e.g., 2 bedrooms, 1 bathroom"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Cleaning Type
-              </label>
-              <select
-                name="cleaningType"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-              >
-                <option value="regular">Regular Cleaning</option>
-                <option value="deep">Deep Cleaning</option>
-                <option value="moveout">Move-out Cleaning</option>
-              </select>
-            </div>
+            <FormSelect label="Cleaning Type" name="cleaningType">
+              <option value="regular">Regular Cleaning</option>
+              <option value="deep">Deep Cleaning</option>
+              <option value="moveout">Move-out Cleaning</option>
+            </FormSelect>
 
             <label className="flex items-center space-x-2">
               <input
@@ -638,30 +559,20 @@ export default function NewTaskPage() {
           <div className="space-y-4 bg-blue-50 p-4 rounded-md">
             <h3 className="font-semibold text-gray-900">Errand Details</h3>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Type of Errand
-              </label>
-              <input
-                type="text"
-                name="errandType"
-                required
-                placeholder="e.g., Grocery shopping, mail drop-off, package pickup"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-              />
-            </div>
+            <FormInput
+              label="Type of Errand"
+              type="text"
+              name="errandType"
+              required
+              placeholder="e.g., Grocery shopping, mail drop-off, package pickup"
+            />
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Estimated Duration
-              </label>
-              <input
-                type="text"
-                name="estimatedDuration"
-                placeholder="e.g., 1 hour, 2-3 hours"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
-              />
-            </div>
+            <FormInput
+              label="Estimated Duration"
+              type="text"
+              name="estimatedDuration"
+              placeholder="e.g., 1 hour, 2-3 hours"
+            />
 
             <label className="flex items-center space-x-2">
               <input
@@ -707,97 +618,63 @@ export default function NewTaskPage() {
         <div className="lg:col-span-2">
           <div className="overflow-hidden rounded-md bg-white px-6 py-6 shadow-sm">
             {error && (
-              <div className="mb-6 rounded-md border border-red-200 bg-red-50 p-4">
-                <p className="text-sm text-red-800">{error}</p>
-              </div>
+              <Alert variant="error" className="mb-6">
+                {error}
+              </Alert>
             )}
 
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               {/* Title */}
-              <div>
-                <label
-                  htmlFor="title"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Task Title
-                </label>
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  required
-                  placeholder="e.g., Help moving furniture"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-              </div>
+              <FormInput
+                label="Task Title"
+                type="text"
+                name="title"
+                id="title"
+                required
+                placeholder="e.g., Help moving furniture"
+              />
 
               {/* Category */}
-              <div>
-                <label
-                  htmlFor="category"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Category
-                </label>
-                <select
-                  name="category"
-                  id="category"
-                  required
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                >
-                  <option value="">Select a category</option>
-                  <option value="Moving">Moving</option>
-                  <option value="Furniture Assembly">Furniture Assembly</option>
-                  <option value="Cleaning">Cleaning</option>
-                  <option value="Errands">Errands</option>
-                  <option value="Pet Sitting">Pet Sitting</option>
-                  <option value="Yard Work">Yard Work</option>
-                  <option value="Tutoring">Tutoring</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
+              <FormSelect
+                label="Category"
+                name="category"
+                id="category"
+                required
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value="">Select a category</option>
+                <option value="Moving">Moving</option>
+                <option value="Furniture Assembly">Furniture Assembly</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Errands">Errands</option>
+                <option value="Pet Sitting">Pet Sitting</option>
+                <option value="Yard Work">Yard Work</option>
+                <option value="Tutoring">Tutoring</option>
+                <option value="Other">Other</option>
+              </FormSelect>
 
               {/* Category-Specific Fields */}
               {renderCategorySpecificFields()}
 
               {/* Description */}
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  id="description"
-                  required
-                  rows={4}
-                  placeholder="Provide details about the task, what needs to be done, and any special requirements..."
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-              </div>
+              <FormTextarea
+                label="Description"
+                name="description"
+                id="description"
+                required
+                rows={4}
+                placeholder="Provide details about the task, what needs to be done, and any special requirements..."
+              />
 
               {/* Scheduled Date */}
-              <div>
-                <label
-                  htmlFor="scheduledDate"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  When do you need this done?
-                </label>
-                <input
-                  type="datetime-local"
-                  name="scheduledDate"
-                  id="scheduledDate"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-                <p className="mt-1 text-sm text-gray-500">
-                  Optional - leave blank if flexible
-                </p>
-              </div>
+              <FormInput
+                label="When do you need this done?"
+                type="datetime-local"
+                name="scheduledDate"
+                id="scheduledDate"
+                helperText="Optional - leave blank if flexible"
+              />
 
               {/* Location - Structured Address (hidden for Moving tasks) */}
               {selectedCategory !== "Moving" && (
@@ -807,71 +684,43 @@ export default function NewTaskPage() {
                   </h3>
 
                   {/* Address Line 1 */}
-                  <div>
-                    <label
-                      htmlFor="addressLine1"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Street Address <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="addressLine1"
-                      id="addressLine1"
-                      required
-                      placeholder="123 Main St"
-                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
-                  </div>
+                  <FormInput
+                    label="Street Address *"
+                    type="text"
+                    name="addressLine1"
+                    id="addressLine1"
+                    required
+                    placeholder="123 Main St"
+                  />
 
                   {/* Address Line 2 */}
-                  <div>
-                    <label
-                      htmlFor="addressLine2"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Apartment, suite, etc. (optional)
-                    </label>
-                    <input
-                      type="text"
-                      name="addressLine2"
-                      id="addressLine2"
-                      placeholder="Apt 4B"
-                      className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
-                  </div>
+                  <FormInput
+                    label="Apartment, suite, etc. (optional)"
+                    type="text"
+                    name="addressLine2"
+                    id="addressLine2"
+                    placeholder="Apt 4B"
+                  />
 
                   {/* City, State, ZIP */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="sm:col-span-1">
-                      <label
-                        htmlFor="city"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        City <span className="text-red-500">*</span>
-                      </label>
-                      <input
+                      <FormInput
+                        label="City *"
                         type="text"
                         name="city"
                         id="city"
                         required
                         placeholder="Charlottesville"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </div>
 
                     <div className="sm:col-span-1">
-                      <label
-                        htmlFor="state"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        State <span className="text-red-500">*</span>
-                      </label>
-                      <select
+                      <FormSelect
+                        label="State *"
                         name="state"
                         id="state"
                         required
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       >
                         <option value="">Select</option>
                         {US_STATES.map((state) => (
@@ -879,23 +728,17 @@ export default function NewTaskPage() {
                             {state}
                           </option>
                         ))}
-                      </select>
+                      </FormSelect>
                     </div>
 
                     <div className="sm:col-span-1">
-                      <label
-                        htmlFor="zipCode"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        ZIP Code <span className="text-red-500">*</span>
-                      </label>
-                      <input
+                      <FormInput
+                        label="ZIP Code *"
                         type="text"
                         name="zipCode"
                         id="zipCode"
                         required
                         placeholder="22903"
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                       />
                     </div>
                   </div>
@@ -903,35 +746,21 @@ export default function NewTaskPage() {
               )}
 
               {/* Budget */}
-              <div>
-                <label
-                  htmlFor="budget"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Budget ($)
-                </label>
-                <input
-                  type="number"
-                  name="budget"
-                  id="budget"
-                  required
-                  min="0"
-                  step="0.01"
-                  placeholder="0.00"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-                <p className="mt-1 text-sm text-gray-500">
-                  How much are you willing to pay for this task?
-                </p>
-              </div>
+              <FormInput
+                label="Budget ($)"
+                type="number"
+                name="budget"
+                id="budget"
+                required
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+                helperText="How much are you willing to pay for this task?"
+              />
 
               {/* Submit Button */}
               <div className="flex gap-4">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 rounded-md bg-primary px-4 py-2 font-semibold text-white hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                >
+                <Button type="submit" disabled={isSubmitting} fullWidth>
                   {editingTaskId
                     ? isSubmitting
                       ? "Saving..."
@@ -939,16 +768,16 @@ export default function NewTaskPage() {
                     : isSubmitting
                       ? "Creating..."
                       : "Post Task"}
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="secondary"
                   onClick={() =>
                     editingTaskId ? resetForm() : router.push("/app/dashboard")
                   }
-                  className="rounded-md border border-gray-300 px-4 py-2 font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 >
                   {editingTaskId ? "Discard" : "Cancel"}
-                </button>
+                </Button>
               </div>
             </form>
           </div>

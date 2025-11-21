@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import Link from "next/link";
 import { PrismaClient } from "@/app/generated/prisma";
 import UvaBadge from "@/components/uva-badge";
+import Card from "@/components/ui/card";
 
 const prisma = new PrismaClient();
 
@@ -30,7 +31,7 @@ export default async function DashboardPage() {
       </p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+        <Card hover>
           <h2 className="text-xl font-semibold mb-2">My Tasks</h2>
           <p className="text-gray-600 mb-4">
             View tasks you posted, applied to, and are assigned to
@@ -41,9 +42,9 @@ export default async function DashboardPage() {
           >
             Manage my tasks →
           </Link>
-        </div>
+        </Card>
 
-        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+        <Card hover>
           <h2 className="text-xl font-semibold mb-2">Browse Tasks</h2>
           <p className="text-gray-600 mb-4">
             Find tasks in your area that you can help with and earn money
@@ -54,9 +55,9 @@ export default async function DashboardPage() {
           >
             View all tasks →
           </Link>
-        </div>
+        </Card>
 
-        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+        <Card hover>
           <h2 className="text-xl font-semibold mb-2">Post a Task</h2>
           <p className="text-gray-600 mb-4">
             Need help? Post a task and get matched with skilled helpers
@@ -67,10 +68,10 @@ export default async function DashboardPage() {
           >
             Create task →
           </Link>
-        </div>
+        </Card>
 
         {user?.isHelperProfileComplete ? (
-          <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+          <Card hover>
             <h2 className="text-xl font-semibold mb-2">Helper Profile</h2>
             <p className="text-gray-600 mb-2">
               {user.skills && user.skills.length > 0
@@ -88,9 +89,9 @@ export default async function DashboardPage() {
             >
               Manage profile →
             </Link>
-          </div>
+          </Card>
         ) : (
-          <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+          <Card hover>
             <h2 className="text-xl font-semibold mb-2">Become a Helper</h2>
             <p className="text-gray-600 mb-4">
               Set up your helper profile and start earning by helping others
@@ -101,10 +102,10 @@ export default async function DashboardPage() {
             >
               Setup profile →
             </Link>
-          </div>
+          </Card>
         )}
 
-        <div className="overflow-hidden rounded-md bg-white px-6 py-4 shadow-sm transition hover:shadow-md">
+        <Card hover>
           <h2 className="text-xl font-semibold mb-2">Your Profile</h2>
           <p className="text-gray-600 mb-4">
             Manage your account, helper settings, and view your ratings
@@ -115,7 +116,7 @@ export default async function DashboardPage() {
           >
             View profile →
           </Link>
-        </div>
+        </Card>
       </div>
     </div>
   );
