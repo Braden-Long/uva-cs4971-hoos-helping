@@ -87,7 +87,7 @@ export default function BackgroundVerificationBadge({
   // Render based on status
   if (localIsVerified) {
     return (
-      <div className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-blue-700 text-sm">
+      <div className="inline-flex items-center gap-1 rounded-full bg-green-50 px-3 py-1 text-green-700 text-sm">
         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
           <path
             fillRule="evenodd"

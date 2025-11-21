@@ -3,8 +3,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import UvaBadge from "@/components/uva-badge";
-import BgVerifiedBadge from "@/components/bg-verified-badge";
 
 interface Task {
   id: string;
@@ -418,12 +416,6 @@ export default function TaskDetailPage() {
                       />
                     </svg>
                     Posted by {task.createdBy.name || task.createdBy.email}
-                    {task.createdBy.isUvaVerified && (
-                      <UvaBadge className="ml-2" />
-                    )}
-                    {task.createdBy.isBackgroundVerified && (
-                      <BgVerifiedBadge className="ml-2" />
-                    )}
                   </div>
                   <div className="flex items-center gap-1">
                     <svg
@@ -450,12 +442,6 @@ export default function TaskDetailPage() {
                 {task.assignedTo && (
                   <p className="text-sm text-gray-600 mt-2 flex items-center gap-1.5">
                     Assigned to: {task.assignedTo.name || task.assignedTo.email}
-                    {task.assignedTo.isUvaVerified && (
-                      <UvaBadge className="ml-2" />
-                    )}
-                    {task.assignedTo.isBackgroundVerified && (
-                      <BgVerifiedBadge className="ml-2" />
-                    )}
                   </p>
                 )}
               </div>
@@ -830,12 +816,12 @@ export default function TaskDetailPage() {
                   </p>
                   <div className="flex items-center gap-2 mt-1">
                     {posterProfile.isUvaVerified && (
-                      <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">
+                      <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
                         UVA Verified
                       </span>
                     )}
                     {posterProfile.isBackgroundVerified && (
-                      <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+                      <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">
                         Background Verified
                       </span>
                     )}

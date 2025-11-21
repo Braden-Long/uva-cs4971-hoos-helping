@@ -202,23 +202,23 @@ export default function TasksPage() {
           </label>
         </div>
         <div className="mt-4 flex flex-wrap gap-4">
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               checked={uvaVerifiedFilter}
               onChange={(e) => setUvaVerifiedFilter(e.target.checked)}
               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
-            <span>Show only UVA verified users</span>
+            <UvaBadge />
           </label>
-          <label className="flex items-center gap-2 text-sm font-medium text-gray-700 cursor-pointer">
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               checked={backgroundVerifiedFilter}
               onChange={(e) => setBackgroundVerifiedFilter(e.target.checked)}
               className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
             />
-            <span>Show only background verified users</span>
+            <BgVerifiedBadge />
           </label>
         </div>
       </div>

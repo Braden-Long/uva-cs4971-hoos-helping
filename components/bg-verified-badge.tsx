@@ -22,7 +22,7 @@ export default function BgVerifiedBadge({
           clipRule="evenodd"
         />
       </svg>
-      BG Verified
+      BKG
     </span>
   );
 }
