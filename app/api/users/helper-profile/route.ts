@@ -23,6 +23,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate bio length (required for background verification)
+    if (bio.trim().length < 20) {
+      return NextResponse.json(
+        {
+          error:
+            "Bio must be at least 20 characters long (required for background verification)",
+        },
+        { status: 400 }
+      );
+    }
+
     // Update user with helper profile
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },

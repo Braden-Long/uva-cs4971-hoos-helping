@@ -20,6 +20,7 @@ export default function HelperOnboardingPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [hasCar, setHasCar] = useState(false);
+  const [bio, setBio] = useState("");
 
   const toggleSkill = (skill: string) => {
     if (selectedSkills.includes(skill)) {
@@ -36,7 +37,7 @@ export default function HelperOnboardingPage() {
 
     const formData = new FormData(e.currentTarget);
     const data = {
-      bio: formData.get("bio") as string,
+      bio,
       skills: selectedSkills,
       hasCar,
       hourlyRate: formData.get("hourlyRate") as string,
@@ -44,6 +45,12 @@ export default function HelperOnboardingPage() {
 
     if (selectedSkills.length === 0) {
       setError("Please select at least one skill");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (bio.trim().length < 20) {
+      setError("Bio must be at least 20 characters long");
       setIsSubmitting(false);
       return;
     }
@@ -98,19 +105,35 @@ export default function HelperOnboardingPage() {
               htmlFor="bio"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              About You
+              About You <span className="text-red-500">*</span>
             </label>
             <textarea
               name="bio"
               id="bio"
               required
+              minLength={20}
               rows={4}
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
               placeholder="Tell people a bit about yourself, your experience, and why you'd be a great helper..."
               className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
-            <p className="mt-1 text-sm text-gray-500">
-              This will be shown on your public profile
-            </p>
+            <div className="mt-1 flex items-center justify-between">
+              <p className="text-sm text-gray-500">
+                Required for background verification (minimum 20 characters)
+              </p>
+              <p
+                className={`text-sm font-medium ${
+                  bio.trim().length >= 20
+                    ? "text-green-600"
+                    : bio.trim().length > 0
+                    ? "text-yellow-600"
+                    : "text-gray-500"
+                }`}
+              >
+                {bio.trim().length}/20
+              </p>
+            </div>
           </div>
 
           {/* Skills */}
