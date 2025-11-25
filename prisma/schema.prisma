@@ -43,6 +43,10 @@ model User {
   backgroundVerificationCompletedAt DateTime?
   backgroundVerificationData Json? // Store SerpAPI results
 
+  // Stripe Payment Fields
+  stripeCustomerId         String?   @unique // For making payments as tasker
+  stripeAccountId          String?   @unique // For receiving payments as helper (Stripe Connect)
+
   accounts      Account[]
   sessions      Session[]
   tasks         Task[]    @relation("TaskCreator")
@@ -114,6 +118,10 @@ model Task {
   scheduledDate DateTime?
   categorySpecificData Json?
   completedAt DateTime?
+
+  // Stripe Payment Fields
+  stripePaymentIntentId String?   @unique // Stripe PaymentIntent ID
+  paymentStatus         String    @default("pending") // pending, authorized, paid, transferred, failed
 
   // Relations
   createdById String

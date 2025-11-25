@@ -108,6 +108,8 @@ export default function TaskDetailPage() {
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [creatingPaymentLink, setCreatingPaymentLink] = useState(false);
+  const [paymentLinkUrl, setPaymentLinkUrl] = useState<string | null>(null);
 
   const fetchApplications = useCallback(async () => {
     try {
@@ -299,6 +301,31 @@ export default function TaskDetailPage() {
       );
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleCreatePaymentLink = async () => {
+    setCreatingPaymentLink(true);
+
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/payment-link`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const data = await response.json();
+      setPaymentLinkUrl(data.paymentLinkUrl);
+      toast.success("Payment link created! Click to proceed to payment.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to create payment link"
+      );
+    } finally {
+      setCreatingPaymentLink(false);
     }
   };
 
@@ -798,6 +825,60 @@ export default function TaskDetailPage() {
               <p className="text-sm text-green-800">
                 You have already reviewed this task.
               </p>
+            </div>
+          )}
+
+          {/* Payment Section - Only show for task owner on completed tasks */}
+          {task.status === "completed" && isOwner && task.assignedTo && (
+            <div className="bg-white border rounded-lg p-6 mb-6">
+              <h2 className="text-xl font-semibold mb-4">Payment</h2>
+              <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+                  <p className="text-sm text-gray-700 mb-2">
+                    <span className="font-semibold">Helper:</span>{" "}
+                    {task.assignedTo.name || task.assignedTo.email}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    <span className="font-semibold">Amount:</span> $
+                    {task.budget.toFixed(2)}
+                  </p>
+                </div>
+
+                {paymentLinkUrl ? (
+                  <div className="space-y-3">
+                    <Alert variant="success">
+                      Payment link created successfully!
+                    </Alert>
+                    <a
+                      href={paymentLinkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block w-full bg-primary text-white px-6 py-3 rounded-md font-semibold hover:bg-primary-hover text-center"
+                    >
+                      Proceed to Payment →
+                    </a>
+                    <p className="text-xs text-gray-500 text-center">
+                      You will be redirected to Stripe to complete the payment
+                      (sandbox mode for testing)
+                    </p>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleCreatePaymentLink}
+                    disabled={creatingPaymentLink}
+                    className="w-full bg-primary text-white px-6 py-3 rounded-md font-semibold hover:bg-primary-hover disabled:opacity-50"
+                  >
+                    {creatingPaymentLink
+                      ? "Creating Payment Link..."
+                      : "Create Payment Link"}
+                  </button>
+                )}
+
+                <p className="text-xs text-gray-500">
+                  Note: This is a demonstration of Stripe payment integration in
+                  sandbox mode. No real money will be charged.
+                </p>
+              </div>
             </div>
           )}
         </div>
