@@ -926,8 +926,8 @@ export default function TaskDetailPage() {
                         : "Confirm Payment Completed"}
                     </button>
                     <p className="text-xs text-gray-500 text-center">
-                      After completing payment in Stripe, click &quot;Confirm Payment
-                      Completed&quot; to transfer earnings to the helper
+                      After completing payment in Stripe, click &quot;Confirm
+                      Payment Completed&quot; to transfer earnings to the helper
                     </p>
                   </div>
                 ) : (
