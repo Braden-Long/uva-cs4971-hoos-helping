@@ -46,6 +46,7 @@ model User {
   // Stripe Payment Fields
   stripeCustomerId         String?   @unique // For making payments as tasker
   stripeAccountId          String?   @unique // For receiving payments as helper (Stripe Connect)
+  totalEarnings            Float     @default(0) // Total earnings as helper
 
   accounts      Account[]
   sessions      Session[]

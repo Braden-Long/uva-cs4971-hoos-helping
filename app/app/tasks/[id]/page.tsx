@@ -21,6 +21,7 @@ interface Task {
   scheduledDate: string | null;
   categorySpecificData: Record<string, unknown> | null;
   createdAt: string;
+  paymentStatus?: string;
   createdBy: {
     id: string;
     name: string | null;
@@ -110,6 +111,7 @@ export default function TaskDetailPage() {
   const [submitting, setSubmitting] = useState(false);
   const [creatingPaymentLink, setCreatingPaymentLink] = useState(false);
   const [paymentLinkUrl, setPaymentLinkUrl] = useState<string | null>(null);
+  const [confirmingPayment, setConfirmingPayment] = useState(false);
 
   const fetchApplications = useCallback(async () => {
     try {
@@ -326,6 +328,40 @@ export default function TaskDetailPage() {
       );
     } finally {
       setCreatingPaymentLink(false);
+    }
+  };
+
+  const handleConfirmPayment = async () => {
+    if (
+      !confirm(
+        "Confirm that you have completed the payment and want to transfer it to the helper?"
+      )
+    )
+      return;
+
+    setConfirmingPayment(true);
+
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/confirm-payment`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const data = await response.json();
+      toast.success(
+        `Payment of $${data.amount.toFixed(2)} transferred to ${data.helper.name}!`
+      );
+      fetchTask(); // Refresh task to show updated payment status
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to confirm payment"
+      );
+    } finally {
+      setConfirmingPayment(false);
     }
   };
 
@@ -838,13 +874,36 @@ export default function TaskDetailPage() {
                     <span className="font-semibold">Helper:</span>{" "}
                     {task.assignedTo.name || task.assignedTo.email}
                   </p>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-gray-700 mb-2">
                     <span className="font-semibold">Amount:</span> $
                     {task.budget.toFixed(2)}
                   </p>
+                  <p className="text-sm text-gray-700">
+                    <span className="font-semibold">Status:</span>{" "}
+                    <span
+                      className={`font-semibold ${
+                        task.paymentStatus === "transferred"
+                          ? "text-green-600"
+                          : task.paymentStatus === "paid"
+                            ? "text-blue-600"
+                            : "text-gray-600"
+                      }`}
+                    >
+                      {task.paymentStatus === "transferred"
+                        ? "✓ Transferred to Helper"
+                        : task.paymentStatus === "paid"
+                          ? "Paid"
+                          : "Pending"}
+                    </span>
+                  </p>
                 </div>
 
-                {paymentLinkUrl ? (
+                {task.paymentStatus === "transferred" ? (
+                  <Alert variant="success">
+                    Payment of ${task.budget.toFixed(2)} has been transferred to{" "}
+                    {task.assignedTo.name || task.assignedTo.email}!
+                  </Alert>
+                ) : paymentLinkUrl ? (
                   <div className="space-y-3">
                     <Alert variant="success">
                       Payment link created successfully!
@@ -857,9 +916,18 @@ export default function TaskDetailPage() {
                     >
                       Proceed to Payment →
                     </a>
+                    <button
+                      onClick={handleConfirmPayment}
+                      disabled={confirmingPayment}
+                      className="w-full bg-green-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-green-700 disabled:opacity-50"
+                    >
+                      {confirmingPayment
+                        ? "Confirming..."
+                        : "Confirm Payment Completed"}
+                    </button>
                     <p className="text-xs text-gray-500 text-center">
-                      You will be redirected to Stripe to complete the payment
-                      (sandbox mode for testing)
+                      After completing payment in Stripe, click "Confirm Payment
+                      Completed" to transfer earnings to the helper
                     </p>
                   </div>
                 ) : (
