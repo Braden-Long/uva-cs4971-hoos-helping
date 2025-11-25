@@ -123,9 +123,7 @@ export async function POST(
     return NextResponse.json(
       {
         error:
-          error instanceof Error
-            ? error.message
-            : "Failed to confirm payment",
+          error instanceof Error ? error.message : "Failed to confirm payment",
       },
       { status: 500 }
     );
