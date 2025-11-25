@@ -21,6 +21,7 @@ interface Task {
   scheduledDate: string | null;
   categorySpecificData: Record<string, unknown> | null;
   createdAt: string;
+  paymentStatus?: string;
   createdBy: {
     id: string;
     name: string | null;
@@ -108,6 +109,9 @@ export default function TaskDetailPage() {
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [creatingPaymentLink, setCreatingPaymentLink] = useState(false);
+  const [paymentLinkUrl, setPaymentLinkUrl] = useState<string | null>(null);
+  const [confirmingPayment, setConfirmingPayment] = useState(false);
 
   const fetchApplications = useCallback(async () => {
     try {
@@ -299,6 +303,65 @@ export default function TaskDetailPage() {
       );
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleCreatePaymentLink = async () => {
+    setCreatingPaymentLink(true);
+
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/payment-link`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const data = await response.json();
+      setPaymentLinkUrl(data.paymentLinkUrl);
+      toast.success("Payment link created! Click to proceed to payment.");
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to create payment link"
+      );
+    } finally {
+      setCreatingPaymentLink(false);
+    }
+  };
+
+  const handleConfirmPayment = async () => {
+    if (
+      !confirm(
+        "Confirm that you have completed the payment and want to transfer it to the helper?"
+      )
+    )
+      return;
+
+    setConfirmingPayment(true);
+
+    try {
+      const response = await fetch(`/api/tasks/${taskId}/confirm-payment`, {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const data = await response.json();
+      toast.success(
+        `Payment of $${data.amount.toFixed(2)} transferred to ${data.helper.name}!`
+      );
+      fetchTask(); // Refresh task to show updated payment status
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Failed to confirm payment"
+      );
+    } finally {
+      setConfirmingPayment(false);
     }
   };
 
@@ -798,6 +861,92 @@ export default function TaskDetailPage() {
               <p className="text-sm text-green-800">
                 You have already reviewed this task.
               </p>
+            </div>
+          )}
+
+          {/* Payment Section - Only show for task owner on completed tasks */}
+          {task.status === "completed" && isOwner && task.assignedTo && (
+            <div className="bg-white border rounded-lg p-6 mb-6">
+              <h2 className="text-xl font-semibold mb-4">Payment</h2>
+              <div className="space-y-4">
+                <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+                  <p className="text-sm text-gray-700 mb-2">
+                    <span className="font-semibold">Helper:</span>{" "}
+                    {task.assignedTo.name || task.assignedTo.email}
+                  </p>
+                  <p className="text-sm text-gray-700 mb-2">
+                    <span className="font-semibold">Amount:</span> $
+                    {task.budget.toFixed(2)}
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    <span className="font-semibold">Status:</span>{" "}
+                    <span
+                      className={`font-semibold ${
+                        task.paymentStatus === "transferred"
+                          ? "text-green-600"
+                          : task.paymentStatus === "paid"
+                            ? "text-blue-600"
+                            : "text-gray-600"
+                      }`}
+                    >
+                      {task.paymentStatus === "transferred"
+                        ? "✓ Transferred to Helper"
+                        : task.paymentStatus === "paid"
+                          ? "Paid"
+                          : "Pending"}
+                    </span>
+                  </p>
+                </div>
+
+                {task.paymentStatus === "transferred" ? (
+                  <Alert variant="success">
+                    Payment of ${task.budget.toFixed(2)} has been transferred to{" "}
+                    {task.assignedTo.name || task.assignedTo.email}!
+                  </Alert>
+                ) : paymentLinkUrl ? (
+                  <div className="space-y-3">
+                    <Alert variant="success">
+                      Payment link created successfully!
+                    </Alert>
+                    <a
+                      href={paymentLinkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block w-full bg-primary text-white px-6 py-3 rounded-md font-semibold hover:bg-primary-hover text-center"
+                    >
+                      Proceed to Payment →
+                    </a>
+                    <button
+                      onClick={handleConfirmPayment}
+                      disabled={confirmingPayment}
+                      className="w-full bg-green-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-green-700 disabled:opacity-50"
+                    >
+                      {confirmingPayment
+                        ? "Confirming..."
+                        : "Confirm Payment Completed"}
+                    </button>
+                    <p className="text-xs text-gray-500 text-center">
+                      After completing payment in Stripe, click &quot;Confirm
+                      Payment Completed&quot; to transfer earnings to the helper
+                    </p>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleCreatePaymentLink}
+                    disabled={creatingPaymentLink}
+                    className="w-full bg-primary text-white px-6 py-3 rounded-md font-semibold hover:bg-primary-hover disabled:opacity-50"
+                  >
+                    {creatingPaymentLink
+                      ? "Creating Payment Link..."
+                      : "Create Payment Link"}
+                  </button>
+                )}
+
+                <p className="text-xs text-gray-500">
+                  Note: This is a demonstration of Stripe payment integration in
+                  sandbox mode. No real money will be charged.
+                </p>
+              </div>
             </div>
           )}
         </div>
