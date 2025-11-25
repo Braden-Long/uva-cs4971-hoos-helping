@@ -14,12 +14,21 @@
 
 import Stripe from "stripe";
 
-// Initialize Stripe with API key from environment
-// In production, ensure STRIPE_SECRET_KEY is set in environment variables
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2025-11-17.clover",
-  typescript: true,
-});
+// Lazy initialization to avoid errors during build time
+let stripeInstance: Stripe | null = null;
+
+function getStripe(): Stripe {
+  if (!stripeInstance) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error("STRIPE_SECRET_KEY is not set in environment variables");
+    }
+    stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: "2025-11-17.clover",
+      typescript: true,
+    });
+  }
+  return stripeInstance;
+}
 
 /**
  * Get or create a Stripe customer for a user
@@ -48,6 +57,7 @@ export async function getOrCreateStripeCustomer(
     }
 
     // Create new Stripe customer
+    const stripe = getStripe();
     const customer = await stripe.customers.create({
       email,
       name: name || undefined,
@@ -80,6 +90,7 @@ export async function createTaskProduct(
   title: string,
   description?: string
 ): Promise<string> {
+  const stripe = getStripe();
   const product = await stripe.products.create({
     name: `Task: ${title}`,
     description: description || undefined,
@@ -104,6 +115,7 @@ export async function createTaskPrice(
   // Convert dollars to cents for Stripe
   const amountInCents = Math.round(amount * 100);
 
+  const stripe = getStripe();
   const price = await stripe.prices.create({
     product: productId,
     unit_amount: amountInCents,
@@ -123,6 +135,7 @@ export async function createPaymentLink(
   priceId: string,
   quantity: number = 1
 ): Promise<string> {
+  const stripe = getStripe();
   const paymentLink = await stripe.paymentLinks.create({
     line_items: [
       {
@@ -161,5 +174,3 @@ export async function createTaskPaymentLink(
 
   return paymentLinkUrl;
 }
-
-export { stripe };
