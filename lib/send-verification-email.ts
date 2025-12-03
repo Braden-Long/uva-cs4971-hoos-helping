@@ -6,7 +6,7 @@ interface SendVerificationRequestParams {
   identifier: string; // email
   url: string; // callback URL from NextAuth with token embedded
   provider: {
-    from: string;
+    from?: string;
   };
 }
 
@@ -32,8 +32,11 @@ export async function sendVerificationRequest({
 
     console.log("[EMAIL] Sending verification email to:", email);
     console.log("[EMAIL] Verification URL:", verificationUrl);
+
+    const fromEmail = provider.from || process.env.RESEND_FROM_EMAIL || "noreply@hooshelping.com";
+
     await resend.emails.send({
-      from: provider.from,
+      from: fromEmail,
       to: email,
       subject: "Sign in to Hoos Helping",
       html: `
