@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Button from "@/components/ui/button";
 import { InlineLoader } from "@/components/ui/loading-spinner";
 import Alert from "@/components/ui/alert";
 
 export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,7 +36,7 @@ export default function VerifyEmailPage() {
       // This will consume the token and complete the sign-in
       const callbackUrlParam = encodeURIComponent(callbackUrl);
       window.location.href = `/api/auth/callback/resend?token=${token}&email=${encodeURIComponent(email)}&callbackUrl=${callbackUrlParam}`;
-    } catch (err) {
+    } catch {
       setError("Failed to verify email. Please try again.");
       setIsVerifying(false);
     }
