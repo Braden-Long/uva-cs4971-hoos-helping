@@ -33,8 +33,11 @@ model User {
   averageRating            Float?
   totalTasksAsHelper       Int       @default(0)
 
-  // UVA Verification
-  isUvaVerified            Boolean   @default(false) // Auto-set server-side based on @virginia.edu email
+  // UVA Verification (Code-based)
+  isUvaVerified            Boolean   @default(false) // Set to true after code verification
+  uvaEmail                 String?   // The verified @virginia.edu email
+  uvaVerificationCode      String?   // Temporary 6-digit code
+  uvaVerificationCodeExpires DateTime? // Code expiration timestamp
 
   // Background Verification (SerpAPI)
   isBackgroundVerified     Boolean   @default(false)

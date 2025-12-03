@@ -14,6 +14,15 @@ export default function SignInForm() {
     setIsLoading(true);
     setError("");
 
+    // Prevent @virginia.edu emails from being used for login
+    if (email.toLowerCase().endsWith("@virginia.edu")) {
+      setError(
+        "Please use a non-UVA email for login (Gmail, Outlook, etc.). You can verify your UVA affiliation separately on your profile page."
+      );
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const result = await signIn("resend", {
         email,
@@ -67,13 +76,6 @@ export default function SignInForm() {
           className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
           placeholder="you@example.com"
         />
-        <p className="mt-2 text-xs text-gray-600">
-          <span className="font-medium" style={{ color: "#E57200" }}>
-            UVA community:
-          </span>{" "}
-          Use your @virginia.edu email to get a verified UVA badge on your
-          profile
-        </p>
       </div>
 
       {error && (
