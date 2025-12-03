@@ -43,7 +43,7 @@ export default function UvaVerificationSection({
 
       setSuccess("Verification code sent! Check your UVA email.");
       setCodeSent(true);
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -72,7 +72,7 @@ export default function UvaVerificationSection({
       setSuccess("UVA affiliation verified successfully!");
       // Refresh the page to show verified status
       setTimeout(() => window.location.reload(), 1500);
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);

@@ -152,8 +152,8 @@ export default async function ProfilePage() {
                 />
               </svg>
               <span>
-                <strong>Trusted community member:</strong> Show you're part of
-                UVA
+                <strong>Trusted community member:</strong> Show you&apos;re part
+                of UVA
               </span>
             </div>
             <div className="flex items-start gap-2">
