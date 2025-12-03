@@ -26,7 +26,7 @@ export default async function DashboardPage() {
     <div>
       <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
       <p className="text-gray-600 mb-8 flex items-center gap-2">
-        Welcome back, {session?.user?.email}
+        Welcome, {session?.user?.email}
         {user?.isUvaVerified && <UvaBadge />}
       </p>
 
