@@ -11,7 +11,10 @@ Hoos Helping enables students, faculty, and Charlottesville residents to post ta
 - Browse and filter tasks by category, location, and budget
 - Post tasks with detailed descriptions and compensation
 - Email-based authentication (magic links via Resend)
-- User profiles with task statistics
+- **UVA Verification System** - Code-based verification using @virginia.edu email (separate from login)
+- **Background Verification** - Third-party verification via SerpAPI
+- User profiles with task statistics and verification badges
+- **Stripe Payment Integration** - Payment links and earnings tracking (sandbox mode)
 - Google Maps integration for task locations
 
 ## Tech Stack
@@ -52,8 +55,10 @@ npm install
 ```env
 DATABASE_URL="postgresql://user:password@host/database"
 AUTH_SECRET="your-auth-secret"
+NEXTAUTH_URL="http://localhost:3000"  # Optional, for local dev
 RESEND_API_KEY="re_..."
 RESEND_FROM_EMAIL="noreply@hooshelping.com"
+STRIPE_SECRET_KEY="sk_test_..."  # Stripe test mode key
 ```
 
 4. Run database migrations:
@@ -94,8 +99,8 @@ npm run db:migrate -- --name add_task_images
 - `npm run db:studio` - Open Prisma Studio to view/edit data
 - `npm run db:generate` - Regenerate Prisma Client
 - `npm run db:seed` - Insert reusable demo users/tasks/applications
-- `npm run db:reset` - Remove the demo data (safe, only touches `@demo.hooshelping.com`)
-- `npm run db:reseed` - Convenience command to reset then seed in one go
+- `node scripts/demo-reset.mjs` - **Clear ALL database records** (use with caution)
+- `npm run db:reseed` - Clear all data then seed fresh demo data
 
 **Important:** Commit migration files in `prisma/migrations/` to git. They're automatically applied during Netlify deployments.
 
@@ -111,6 +116,31 @@ Feel free to tweak the seed lists inside `scripts/demo-seed.mjs` if you need dif
 
 > Tip: the seed script now provisions a realistic end-to-end account (`yousif@hooshelping.com`) with 20+ posted tasks, helper assignments, and pending applications so the dashboard/profile/My Tasks views are fully populated for demos.
 
+## UVA Verification System
+
+**Important:** UVA (@virginia.edu) emails are **not allowed for login** to avoid Microsoft Outlook's aggressive link scanning which breaks magic link authentication.
+
+### How It Works
+
+1. **Login:** Users create accounts with **non-UVA emails** (Gmail, personal Outlook, etc.)
+2. **Verification:** On the profile page, users can verify their UVA affiliation separately by:
+   - Entering their `computingid@virginia.edu` email
+   - Receiving a 6-digit verification code
+   - Entering the code to get verified (code expires in 10 minutes)
+
+### Why Code-Based?
+
+Microsoft Outlook scans links in emails, consuming magic link tokens before users can click them. By separating authentication (any email) from UVA verification (code-based), we avoid this issue entirely.
+
+### User Flow
+
+```
+1. Sign up with gmail.com → Magic link works perfectly ✓
+2. Go to Profile → UVA Verification section
+3. Enter computingid@virginia.edu → Receive 6-digit code
+4. Enter code → Get UVA verified badge ✓
+```
+
 ## Deployment
 
 ### Netlify Setup
@@ -121,8 +151,10 @@ The app is hosted on Netlify and deploys automatically on push to `main`.
 
 - `DATABASE_URL` - PostgreSQL connection string (pooled)
 - `AUTH_SECRET` - NextAuth secret
+- `NEXTAUTH_URL` - Production URL (e.g., `https://hooshelping.com`)
 - `RESEND_API_KEY` - Resend API key
 - `RESEND_FROM_EMAIL` - Email sender address
+- `STRIPE_SECRET_KEY` - Stripe API key (use test mode: `sk_test_...`)
 
 **Build Process:**
 
