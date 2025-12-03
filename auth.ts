@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@/app/generated/prisma";
 import { authConfig } from "./auth.config";
 import Resend from "next-auth/providers/resend";
+import { sendVerificationRequest } from "./lib/send-verification-email";
 
 const prisma = new PrismaClient();
 
@@ -15,6 +16,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       apiKey: process.env.RESEND_API_KEY,
       from: process.env.RESEND_FROM_EMAIL || "noreply@hooshelping.com",
       maxAge: 24 * 60 * 60, // 24 hours (in seconds) - accounts for slow email delivery (e.g., Outlook)
+      sendVerificationRequest, // Custom email sender with confirmation page to prevent link scanning
     }),
   ],
   callbacks: {
