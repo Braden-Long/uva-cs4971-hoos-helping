@@ -204,25 +204,30 @@ export default function TasksPage() {
             />
           </label>
         </div>
-        <div className="mt-4 flex flex-wrap gap-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={uvaVerifiedFilter}
-              onChange={(e) => setUvaVerifiedFilter(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-            />
-            <UvaBadge />
+        <div className="mt-6">
+          <label className="text-sm font-medium text-gray-700 mb-3 block">
+            Verification Status
           </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={backgroundVerifiedFilter}
-              onChange={(e) => setBackgroundVerifiedFilter(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-            />
-            <BgVerifiedBadge />
-          </label>
+          <div className="flex flex-wrap gap-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={uvaVerifiedFilter}
+                onChange={(e) => setUvaVerifiedFilter(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <UvaBadge />
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={backgroundVerifiedFilter}
+                onChange={(e) => setBackgroundVerifiedFilter(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <BgVerifiedBadge />
+            </label>
+          </div>
         </div>
       </div>
 

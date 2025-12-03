@@ -14,6 +14,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Resend({
       apiKey: process.env.RESEND_API_KEY,
       from: process.env.RESEND_FROM_EMAIL || "noreply@hooshelping.com",
+      maxAge: 24 * 60 * 60, // 24 hours (in seconds) - accounts for slow email delivery (e.g., Outlook)
     }),
   ],
   callbacks: {
