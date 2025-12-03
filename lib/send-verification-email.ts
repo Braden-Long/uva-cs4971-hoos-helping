@@ -33,7 +33,10 @@ export async function sendVerificationRequest({
     console.log("[EMAIL] Sending verification email to:", email);
     console.log("[EMAIL] Verification URL:", verificationUrl);
 
-    const fromEmail = provider.from || process.env.RESEND_FROM_EMAIL || "noreply@hooshelping.com";
+    const fromEmail =
+      provider.from ||
+      process.env.RESEND_FROM_EMAIL ||
+      "noreply@hooshelping.com";
 
     await resend.emails.send({
       from: fromEmail,
