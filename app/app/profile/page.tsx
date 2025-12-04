@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { PrismaClient } from "@/app/generated/prisma";
 import Link from "next/link";
 import UvaBadge from "@/components/uva-badge";
+import BgVerifiedBadge from "@/components/bg-verified-badge";
 import BackgroundVerificationBadge from "@/components/background-verification-badge";
 import UvaVerificationSection from "@/components/uva-verification-section";
 import EditProfileInfoForm from "@/components/edit-profile-info-form";
@@ -87,6 +88,7 @@ export default async function ProfilePage() {
             <p className="text-gray-600 flex items-center gap-2">
               {user.email}
               {user.isUvaVerified && <UvaBadge />}
+              {user.isBackgroundVerified && <BgVerifiedBadge />}
             </p>
             <p className="text-sm text-gray-500">
               Member since{" "}
