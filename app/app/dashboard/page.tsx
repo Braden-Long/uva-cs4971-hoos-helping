@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import Link from "next/link";
 import { PrismaClient } from "@/app/generated/prisma";
 import UvaBadge from "@/components/uva-badge";
+import BgVerifiedBadge from "@/components/bg-verified-badge";
 import Card from "@/components/ui/card";
 
 const prisma = new PrismaClient();
@@ -15,6 +16,7 @@ export default async function DashboardPage() {
         where: { id: session.user.id },
         select: {
           isUvaVerified: true,
+          isBackgroundVerified: true,
           isHelperProfileComplete: true,
           skills: true,
           hourlyRate: true,
@@ -28,6 +30,7 @@ export default async function DashboardPage() {
       <p className="text-gray-600 mb-8 flex items-center gap-2">
         Welcome, {session?.user?.email}
         {user?.isUvaVerified && <UvaBadge />}
+        {user?.isBackgroundVerified && <BgVerifiedBadge />}
       </p>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
