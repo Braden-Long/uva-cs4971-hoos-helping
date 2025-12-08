@@ -148,8 +148,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
 
 FormSelect.displayName = "FormSelect";
 
-interface FormTextareaProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
   helperText?: string;
