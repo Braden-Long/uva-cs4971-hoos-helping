@@ -17,29 +17,35 @@ Hoos Helping enables students, faculty, and Charlottesville residents to post ta
 - **Stripe Payment Integration** - Payment links and earnings tracking (sandbox mode)
 - Google Maps integration for task locations
 
-## Team 
+## Team
+
 - Aditya Kakkar (zjq5mr)
 - Ansh Pathapadu (tqc7wn)
 - Braden Long (bcj3rh)
 - Yousif Abood (ywx4um)
 
-## Application Links 
-- Production Environment: https://hooshelping.com 
-- Hosting Provider: https://netlify.com 
-- Payment Provider: https://stripe.com 
-- Background Checks Provider: https://serpapi.com 
+## Application Links
+
+- Production Environment: https://hooshelping.com
+- Hosting Provider: https://netlify.com
+- Payment Provider: https://stripe.com
+- Background Checks Provider: https://serpapi.com
 
 ## Testing
-- You can register with any email address for testing locally and on production (check note about virigina.edu addresses). 
 
-## Installation Instuctions 
-- See prerequisites and local development instructions below. 
+- You can register with any email address for testing locally and on production (check note about virigina.edu addresses).
 
-## Usage Instructions 
-- See "How It Works" and "User Flow" sections below. To populate the application with demo data, run `npm install` then `npm run db:seed` from the repository root. Be sure to update the .env file first. 
+## Installation Instuctions
 
-## Sources Used 
-- Generative AI such as Claude and Codex 
+- See prerequisites and local development instructions below.
+
+## Usage Instructions
+
+- See "How It Works" and "User Flow" sections below. To populate the application with demo data, run `npm install` then `npm run db:seed` from the repository root. Be sure to update the .env file first.
+
+## Sources Used
+
+- Generative AI such as Claude and Codex
 - Tailwind UI and Tailwind CSS
 
 ## Tech Stack
@@ -226,4 +232,4 @@ prisma/
 
 ## License
 
-Check the LICENSE file. 
+Check the LICENSE file.
