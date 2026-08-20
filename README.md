@@ -27,7 +27,8 @@ Hoos Helping enables students, faculty, and Charlottesville residents to post ta
 ## Application Links
 
 - Production Environment: https://hooshelping.com
-- Hosting Provider: https://netlify.com
+- Hosting Provider: https://railway.com
+- DNS / CDN: https://cloudflare.com
 - Payment Provider: https://stripe.com
 - Background Checks Provider: https://serpapi.com
 
@@ -52,10 +53,11 @@ Hoos Helping enables students, faculty, and Charlottesville residents to post ta
 
 - **Frontend:** Next.js 15 (React 19), TypeScript, Tailwind CSS 4
 - **Backend:** Next.js API routes, Prisma ORM
-- **Database:** PostgreSQL (Neon)
+- **Database:** PostgreSQL (Railway)
 - **Auth:** NextAuth.js v5 with email magic links
 - **Email:** Resend
-- **Hosting:** Netlify
+- **Hosting:** Railway
+- **DNS / CDN:** Cloudflare
 
 ## Getting Started
 
@@ -133,7 +135,7 @@ npm run db:migrate -- --name add_task_images
 - `node scripts/demo-reset.mjs` - **Clear ALL database records** (use with caution)
 - `npm run db:reseed` - Clear all data then seed fresh demo data
 
-**Important:** Commit migration files in `prisma/migrations/` to git. They're automatically applied during Netlify deployments.
+**Important:** Commit migration files in `prisma/migrations/` to git. They're automatically applied during Railway pre-deploy.
 
 ### Reusable Demo Data
 
@@ -174,28 +176,41 @@ Microsoft Outlook scans links in emails, consuming magic link tokens before user
 
 ## Deployment
 
-### Netlify Setup
+### Railway Setup
 
-The app is hosted on Netlify and deploys automatically on push to `main`.
+The app is hosted on Railway. The `web` service deploys from this directory (`railway.json`) and runs Prisma migrations as a pre-deploy step.
 
-**Environment Variables (set in Netlify dashboard):**
+**Custom domain (Cloudflare):** `hooshelping.com` stays on Cloudflare DNS/CDN. Add these records, then set SSL/TLS encryption to **Full** (not Full Strict) while the orange-cloud proxy is on:
 
-- `DATABASE_URL` - PostgreSQL connection string (pooled)
+| Type  | Name                  | Content                                                                           | Proxy    |
+| ----- | --------------------- | --------------------------------------------------------------------------------- | -------- |
+| CNAME | `@`                   | `saa6oiv5.up.railway.app`                                                         | Proxied  |
+| TXT   | `_railway-verify`     | `railway-verify=e27e16a667b52b196dcbeb84c9c8c1e62d6d3cae7d22cadeaedcbeda7f1e4ac6` | DNS only |
+| CNAME | `www`                 | `wgrx7jvw.up.railway.app`                                                         | Proxied  |
+| TXT   | `_railway-verify.www` | `railway-verify=2ca8ea8eccf2a03f67df165d45429c33115fb4a8c9fc78a87239c6599e07ea40` | DNS only |
+
+Railway will not route `hooshelping.com` until both the CNAME and the `_railway-verify` TXT record exist.
+
+**Environment Variables (set in Railway dashboard / CLI):**
+
+- `DATABASE_URL` - PostgreSQL connection string (Railway Postgres reference: `${{Postgres.DATABASE_URL}}`)
 - `AUTH_SECRET` - NextAuth secret
-- `NEXTAUTH_URL` - Production URL (e.g., `https://hooshelping.com`)
+- `AUTH_URL` / `NEXTAUTH_URL` - Production URL (`https://hooshelping.com`)
+- `AUTH_TRUST_HOST` - `true` (required behind Cloudflare/Railway proxies)
 - `RESEND_API_KEY` - Resend API key
 - `RESEND_FROM_EMAIL` - Email sender address
 - `STRIPE_SECRET_KEY` - Stripe API key (use test mode: `sk_test_...`)
+- `SERPAPI_API_KEY` - SerpAPI key for background verification
 
 **Build Process:**
 
 1. `npm install` runs `postinstall` hook → generates Prisma Client
-2. `npm run build` runs `prisma migrate deploy && next build`
-3. Migrations apply automatically before build
+2. `npm run build` generates Prisma Client and runs `next build`
+3. `npx prisma migrate deploy` runs as a Railway pre-deploy command before `npm start`
 
 ### Database
 
-We use Neon PostgreSQL with connection pooling. Set `DATABASE_URL` to the pooled connection string (with `-pooler` in hostname).
+Production uses Railway PostgreSQL. `DATABASE_URL` is wired from the Postgres service over Railway's private network.
 
 ## Project Structure
 
