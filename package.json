@@ -2,9 +2,12 @@
   "name": "hooshelping",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "next dev",
-    "build": "prisma migrate deploy && next build",
+    "build": "prisma generate && next build",
     "build:preview": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
@@ -21,7 +24,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
     "@prisma/client": "^6.18.0",
-    "next": "^15.5.7",
+    "next": "^15.5.23",
     "next-auth": "^5.0.0-beta.29",
     "react": "19.1.0",
     "react-dom": "19.1.0",

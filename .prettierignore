@@ -19,3 +19,4 @@ app/generated
 # Misc
 .DS_Store
 *.log
+.nvmrc
