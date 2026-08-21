@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { PrismaClient } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { validateUSAddress } from "@/lib/address-validation";
-
-const prisma = new PrismaClient();
 
 /**
  * GET /api/users/profile-info

@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { PrismaClient, Prisma } from "@/app/generated/prisma";
+import { Prisma } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import {
   performBackgroundCheck,
   isProfileCompleteForVerification,
 } from "@/lib/serpapi";
-
-const prisma = new PrismaClient();
 
 /**
  * POST /api/users/verify-background
