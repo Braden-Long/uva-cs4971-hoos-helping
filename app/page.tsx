@@ -1,11 +1,16 @@
 import Link from "next/link";
 import MobileMenu from "@/components/mobile-menu";
 import Image from "next/image";
+import {
+  ViewOnGitHubBanner,
+  ViewOnGitHubLink,
+} from "@/components/view-on-github";
 
 export default function Home() {
   return (
     <div className="bg-white">
-      <header className="absolute inset-x-0 top-0 z-50">
+      <ViewOnGitHubBanner />
+      <header className="absolute inset-x-0 top-10 z-50">
         <nav
           aria-label="Global"
           className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
@@ -684,25 +689,32 @@ export default function Home() {
       <footer className="bg-white border-t border-gray-200">
         <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8 lg:py-32">
           <div className="xl:grid xl:grid-cols-3 xl:gap-8 xl:items-start">
-            <div className="flex items-center gap-2">
-              <div className="bg-uva-orange rounded-lg p-1.5 flex items-center justify-center w-9 h-9">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 500 500"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-uva-blue"
-                >
-                  <path
-                    d="M488 0C494.627 1.28852e-06 500 5.37258 500 12V488C500 494.627 494.627 500 488 500H408C401.373 500 396 494.627 396 488V282H302V447C302 452.523 297.523 457 292 457H208C202.477 457 198 452.523 198 447V282H104V392C104 397.523 99.5228 402 94 402H10C4.47715 402 1.93283e-07 397.523 0 392V108C0 102.477 4.47715 98 10 98H94C99.5228 98 104 102.477 104 108V218H198V53C198 47.4772 202.477 43 208 43H292C297.523 43 302 47.4772 302 53V218H396V12C396 5.37258 401.373 3.22128e-08 408 0H488Z"
-                    fill="currentColor"
-                  />
-                </svg>
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="bg-uva-orange rounded-lg p-1.5 flex items-center justify-center w-9 h-9">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 500 500"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="text-uva-blue"
+                  >
+                    <path
+                      d="M488 0C494.627 1.28852e-06 500 5.37258 500 12V488C500 494.627 494.627 500 488 500H408C401.373 500 396 494.627 396 488V282H302V447C302 452.523 297.523 457 292 457H208C202.477 457 198 452.523 198 447V282H104V392C104 397.523 99.5228 402 94 402H10C4.47715 402 1.93283e-07 397.523 0 392V108C0 102.477 4.47715 98 10 98H94C99.5228 98 104 102.477 104 108V218H198V53C198 47.4772 202.477 43 208 43H292C297.523 43 302 47.4772 302 53V218H396V12C396 5.37258 401.373 3.22128e-08 408 0H488Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+                <span className="text-lg font-bold text-uva-blue">
+                  Hoos Helping
+                </span>
               </div>
-              <span className="text-lg font-bold text-uva-blue">
-                Hoos Helping
-              </span>
+              <p className="mt-6 max-w-xs text-sm/6 text-gray-600">
+                A portfolio project for UVA CS 4971. The complete source and
+                commit history are public.
+              </p>
+              <ViewOnGitHubLink className="mt-5 rounded-md bg-[#0d1117] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#20262e] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-uva-orange" />
             </div>
             <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
               <div className="md:grid md:grid-cols-2 md:gap-8">

@@ -2,6 +2,7 @@ import SignInForm from "@/components/auth/sign-in-form";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { ViewOnGitHubLink } from "@/components/view-on-github";
 
 export default async function LoginPage() {
   const session = await auth();
@@ -42,13 +43,14 @@ export default async function LoginPage() {
         <div className="mt-8 bg-white py-8 px-6 shadow rounded-lg">
           <SignInForm />
         </div>
-        <div className="text-center">
-          <Link
-            href="/"
-            className="text-sm text-primary hover:text-primary-hover"
-          >
+        <div className="flex items-center justify-center gap-x-3 text-sm">
+          <Link href="/" className="text-primary hover:text-primary-hover">
             ← Back to home
           </Link>
+          <span aria-hidden="true" className="text-gray-300">
+            |
+          </span>
+          <ViewOnGitHubLink className="text-gray-500 hover:text-gray-900" />
         </div>
       </div>
     </div>
