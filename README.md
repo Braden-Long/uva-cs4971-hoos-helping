@@ -132,8 +132,8 @@ npm run db:migrate -- --name add_task_images
 - `npm run db:studio` - Open Prisma Studio to view/edit data
 - `npm run db:generate` - Regenerate Prisma Client
 - `npm run db:seed` - Insert reusable demo users/tasks/applications
-- `node scripts/demo-reset.mjs` - **Clear ALL database records** (use with caution)
-- `npm run db:reseed` - Clear all data then seed fresh demo data
+- `npm run db:reset` - Remove seeded demo data only; real accounts are preserved
+- `npm run db:reseed` - Remove demo data then seed it fresh
 
 **Important:** Commit migration files in `prisma/migrations/` to git. They're automatically applied during Railway pre-deploy.
 
@@ -142,12 +142,14 @@ npm run db:migrate -- --name add_task_images
 For school demos you can quickly spin up realistic content without touching real accounts:
 
 1. `npm run db:seed` adds 20 tasker accounts, multiple helpers, and 20+ tasks spanning every status (open, assigned, in-progress, completed) plus applications and reviews. All demo accounts use the `@demo.hooshelping.com` domain.
-2. `npm run db:reset` now fully clears **all** tables (users, tasks, applications, reviews, sessions, etc.). Only run this when you truly want a blank database.
-3. `npm run db:reseed` combines both, so you get a fresh empty database and the new sample data in one go.
+2. `npm run db:reset` removes **only** demo data - every delete is scoped to the `@demo.hooshelping.com` domain. Real accounts are never touched; it prints the ones it preserved. Deleting a real account is a manual step on purpose, since these commands are routinely pointed at production.
+3. `npm run db:reseed` combines both, so you get fresh demo data in one go. It is safe to re-run.
 
 Feel free to tweak the seed lists inside `scripts/demo-seed.mjs` if you need different scenarios; just keep emails on the demo domain so the cleanup script can find them.
 
-> Tip: the seed script now provisions a realistic end-to-end account (`yousif@hooshelping.com`) with 20+ posted tasks, helper assignments, and pending applications so the dashboard/profile/My Tasks views are fully populated for demos.
+> Tip: the seed script provisions a realistic end-to-end account (`devon.marsh@demo.hooshelping.com`) with 20+ posted tasks, helper assignments, and pending applications so the dashboard/profile/My Tasks views are fully populated for demos.
+
+> Note: sign-in is magic-link only, and `hooshelping.com` publishes no MX record, so it cannot receive mail. Seeded accounts exist to populate the UI - none of them can actually log in.
 
 ## UVA Verification System
 
