@@ -1860,7 +1860,7 @@ const sampleLocations = [
   "Preston Avenue",
 ];
 
-const yousifPostedTemplates = [
+const primaryDemoPostedTemplates = [
   {
     title: "Run student org merch pickup",
     description:
@@ -1935,7 +1935,7 @@ const yousifPostedTemplates = [
   },
 ];
 
-const yousifHelperTemplates = [
+const primaryDemoHelperTemplates = [
   {
     title: "Volunteer check-in booth",
     description:
@@ -2010,7 +2010,7 @@ const yousifHelperTemplates = [
   },
 ];
 
-const yousifApplicationTemplates = [
+const primaryDemoApplicationTemplates = [
   {
     title: "Pop-up shop cash wrap setup",
     description:
@@ -2059,11 +2059,16 @@ const yousifApplicationTemplates = [
   },
 ];
 
-const yousifUserSeed = {
-  key: "user_yousif",
+// This account must live on DEMO_EMAIL_DOMAIN like every other seeded user.
+// purgeDemoData() scopes its deletes to that domain, so an account on the real
+// domain survives the purge and the next seed run dies on the unique email
+// constraint. It is also permanently unreachable: hooshelping.com publishes no
+// MX record, so a magic link sent there can never be delivered.
+const primaryDemoUserSeed = {
+  key: "user_primary_demo",
   data: {
-    name: "Yousif Abood",
-    email: "yousif@hooshelping.com",
+    name: "Devon Marsh",
+    email: `devon.marsh@${DEMO_EMAIL_DOMAIN}`,
     bio: "Product-minded tasker who also helps with event logistics and tech setups.",
     role: "user",
     skills: ["Event Support", "Tech Support", "Errands"],
@@ -2088,17 +2093,18 @@ const formatZonedDate = (month, day, hour) =>
       .padStart(2, "0")}T${hour.toString().padStart(2, "0")}:00:00Z`
   );
 
-const yousifPostedTasks = Array.from({ length: 24 }, (_, index) => {
+const primaryDemoPostedTasks = Array.from({ length: 24 }, (_, index) => {
   const status = postedStatuses[index % postedStatuses.length];
-  const template = yousifPostedTemplates[index % yousifPostedTemplates.length];
+  const template =
+    primaryDemoPostedTemplates[index % primaryDemoPostedTemplates.length];
   const helperKey =
     status === "open"
       ? null
       : (helperSeeds[index % helperSeeds.length]?.key ?? null);
 
   return {
-    key: `yousif-posted-${index + 1}`,
-    createdBy: yousifUserSeed.key,
+    key: `primary-demo-posted-${index + 1}`,
+    createdBy: primaryDemoUserSeed.key,
     assignedTo: helperKey,
     data: {
       title: template.title,
@@ -2114,7 +2120,7 @@ const yousifPostedTasks = Array.from({ length: 24 }, (_, index) => {
   };
 });
 
-const yousifAssignedTaskSeeds = Array.from({ length: 22 }, (_, index) => {
+const primaryDemoAssignedTaskSeeds = Array.from({ length: 22 }, (_, index) => {
   const creatorKeys = [
     "tasker_avery",
     "tasker_priya",
@@ -2125,11 +2131,12 @@ const yousifAssignedTaskSeeds = Array.from({ length: 22 }, (_, index) => {
   const status =
     index < 10 ? "assigned" : index < 16 ? "in_progress" : "completed";
   const creator = creatorKeys[index % creatorKeys.length];
-  const template = yousifHelperTemplates[index % yousifHelperTemplates.length];
+  const template =
+    primaryDemoHelperTemplates[index % primaryDemoHelperTemplates.length];
   return {
-    key: `yousif-helper-${index + 1}`,
+    key: `primary-demo-helper-${index + 1}`,
     createdBy: creator,
-    assignedTo: yousifUserSeed.key,
+    assignedTo: primaryDemoUserSeed.key,
     data: {
       title: template.title,
       description: template.description,
@@ -2153,11 +2160,13 @@ const applicationTaskCreators = [
   "tasker_theo",
 ];
 
-const yousifPendingTaskSeeds = Array.from({ length: 23 }, (_, index) => {
+const primaryDemoPendingTaskSeeds = Array.from({ length: 23 }, (_, index) => {
   const template =
-    yousifApplicationTemplates[index % yousifApplicationTemplates.length];
+    primaryDemoApplicationTemplates[
+      index % primaryDemoApplicationTemplates.length
+    ];
   return {
-    key: `yousif-application-${index + 1}`,
+    key: `primary-demo-application-${index + 1}`,
     createdBy: applicationTaskCreators[index % applicationTaskCreators.length],
     assignedTo: null,
     data: {
@@ -2177,24 +2186,31 @@ const yousifPendingTaskSeeds = Array.from({ length: 23 }, (_, index) => {
 
 const taskSeeds = [
   ...baseTaskSeeds,
-  ...yousifPostedTasks,
-  ...yousifAssignedTaskSeeds,
-  ...yousifPendingTaskSeeds,
+  ...primaryDemoPostedTasks,
+  ...primaryDemoAssignedTaskSeeds,
+  ...primaryDemoPendingTaskSeeds,
 ];
 
-const yousifApplicationSeeds = yousifPendingTaskSeeds.map((task, index) => {
-  const template =
-    yousifApplicationTemplates[index % yousifApplicationTemplates.length];
-  return {
-    task: task.key,
-    helper: yousifUserSeed.key,
-    status: "pending",
-    proposedRate: 28 + (index % 5) * 3,
-    message: template.message,
-  };
-});
+const primaryDemoApplicationSeeds = primaryDemoPendingTaskSeeds.map(
+  (task, index) => {
+    const template =
+      primaryDemoApplicationTemplates[
+        index % primaryDemoApplicationTemplates.length
+      ];
+    return {
+      task: task.key,
+      helper: primaryDemoUserSeed.key,
+      status: "pending",
+      proposedRate: 28 + (index % 5) * 3,
+      message: template.message,
+    };
+  }
+);
 
-const applicationSeeds = [...baseApplicationSeeds, ...yousifApplicationSeeds];
+const applicationSeeds = [
+  ...baseApplicationSeeds,
+  ...primaryDemoApplicationSeeds,
+];
 
 async function main() {
   console.log("Clearing existing demo data…");
@@ -2215,10 +2231,12 @@ async function main() {
   }
 
   console.log("Creating primary demo account…");
-  const yousifRecord = await prisma.user.create({ data: yousifUserSeed.data });
+  const primaryDemoRecord = await prisma.user.create({
+    data: primaryDemoUserSeed.data,
+  });
 
   const userMap = { ...mapByKey(taskers), ...mapByKey(helpers) };
-  userMap[yousifUserSeed.key] = yousifRecord;
+  userMap[primaryDemoUserSeed.key] = primaryDemoRecord;
 
   console.log(`Creating sample tasks (${taskSeeds.length})…`);
   const tasks = [];
