@@ -6,6 +6,7 @@ import UserMenu from "@/components/auth/user-menu";
 import AppMobileMenu from "@/components/app/mobile-nav";
 import AppNavLink from "@/components/app/app-nav-link";
 import { APP_NAV_LINKS, APP_NAV_CTA } from "@/lib/app-navigation";
+import { ViewOnGitHubLink } from "@/components/view-on-github";
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const session = await auth();
@@ -71,8 +72,14 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
         </main>
       </div>
       <footer className="border-t border-gray-200 bg-gray-50">
-        <div className="mx-auto max-w-7xl px-4 py-4 text-sm text-gray-500 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} Hoos Helping · University of Virginia
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-3 gap-y-2 px-4 py-4 text-sm text-gray-500 sm:px-6 lg:px-8">
+          <span>
+            © {new Date().getFullYear()} Hoos Helping · University of Virginia
+          </span>
+          <span aria-hidden="true" className="text-gray-300">
+            |
+          </span>
+          <ViewOnGitHubLink className="hover:text-gray-900" />
         </div>
       </footer>
     </div>
