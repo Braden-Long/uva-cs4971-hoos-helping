@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { PrismaClient, Prisma } from "@/app/generated/prisma";
-
-const prisma = new PrismaClient();
+import { Prisma } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 
 // GET /api/tasks - Fetch tasks with optional filters
 export async function GET(req: Request) {

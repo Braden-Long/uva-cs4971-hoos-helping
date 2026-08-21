@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { PrismaClient } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
-
-const prisma = new PrismaClient();
 
 // Lazy initialization to avoid build-time errors
 let resend: Resend | null = null;

@@ -1,14 +1,12 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import UvaBadge from "@/components/uva-badge";
 import BgVerifiedBadge from "@/components/bg-verified-badge";
 import BackgroundVerificationBadge from "@/components/background-verification-badge";
 import UvaVerificationSection from "@/components/uva-verification-section";
 import EditProfileInfoForm from "@/components/edit-profile-info-form";
-
-const prisma = new PrismaClient();
 
 export default async function ProfilePage() {
   const session = await auth();

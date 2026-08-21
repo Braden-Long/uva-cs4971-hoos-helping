@@ -13,6 +13,7 @@
  */
 
 import Stripe from "stripe";
+import { prisma } from "@/lib/prisma";
 
 // Lazy initialization to avoid errors during build time
 let stripeInstance: Stripe | null = null;
@@ -42,40 +43,33 @@ export async function getOrCreateStripeCustomer(
   email: string,
   name?: string | null
 ): Promise<string> {
-  const { PrismaClient } = await import("@/app/generated/prisma");
-  const prisma = new PrismaClient();
+  // Check if user already has a Stripe customer ID
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { stripeCustomerId: true },
+  });
 
-  try {
-    // Check if user already has a Stripe customer ID
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { stripeCustomerId: true },
-    });
-
-    if (user?.stripeCustomerId) {
-      return user.stripeCustomerId;
-    }
-
-    // Create new Stripe customer
-    const stripe = getStripe();
-    const customer = await stripe.customers.create({
-      email,
-      name: name || undefined,
-      metadata: {
-        userId,
-      },
-    });
-
-    // Save customer ID to database
-    await prisma.user.update({
-      where: { id: userId },
-      data: { stripeCustomerId: customer.id },
-    });
-
-    return customer.id;
-  } finally {
-    await prisma.$disconnect();
+  if (user?.stripeCustomerId) {
+    return user.stripeCustomerId;
   }
+
+  // Create new Stripe customer
+  const stripe = getStripe();
+  const customer = await stripe.customers.create({
+    email,
+    name: name || undefined,
+    metadata: {
+      userId,
+    },
+  });
+
+  // Save customer ID to database
+  await prisma.user.update({
+    where: { id: userId },
+    data: { stripeCustomerId: customer.id },
+  });
+
+  return customer.id;
 }
 
 /**

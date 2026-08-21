@@ -1,11 +1,9 @@
 import { auth } from "@/auth";
 import Link from "next/link";
-import { PrismaClient } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import UvaBadge from "@/components/uva-badge";
 import BgVerifiedBadge from "@/components/bg-verified-badge";
 import Card from "@/components/ui/card";
-
-const prisma = new PrismaClient();
 
 export default async function DashboardPage() {
   const session = await auth();

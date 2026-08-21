@@ -1,11 +1,9 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@/app/generated/prisma";
+import { prisma } from "@/lib/prisma";
 import { authConfig } from "./auth.config";
 import Resend from "next-auth/providers/resend";
 import { sendVerificationRequest } from "./lib/send-verification-email";
-
-const prisma = new PrismaClient();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
