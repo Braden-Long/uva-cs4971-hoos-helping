@@ -65,7 +65,7 @@ Hoos Helping enables students, faculty, and Charlottesville residents to post ta
 
 - Node.js 20+
 - npm/yarn/pnpm
-- PostgreSQL database (we use Neon)
+- PostgreSQL database (we use Railway Postgres)
 
 ### Local Development
 
