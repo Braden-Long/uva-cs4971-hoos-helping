@@ -24,6 +24,23 @@ Hoos Helping enables students, faculty, and Charlottesville residents to post ta
 - Braden Long (bcj3rh)
 - Yousif Abood (ywx4um)
 
+## Project History
+
+Hoos Helping was built between September and December 2025 as a four-person
+course project for UVA CS 4971. That work accounts for 113 of the commits in
+this repository.
+
+Everything after that is solo post-course maintenance: migrating production
+hosting from Netlify to Railway, fixing a sign-in outage caused by a missing
+Prisma migration, and hardening the demo seed and reset scripts. That work was
+done with AI assistance, noted in the relevant commit trailers and pull request
+descriptions.
+
+The pull requests visible here are all from that maintenance period. The
+course-era pull requests stayed in the original class repository and did not
+carry over, so the team's work is in the commit log rather than the pull
+request tab.
+
 ## Application Links
 
 - Production Environment: https://hooshelping.com
