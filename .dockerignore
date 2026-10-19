@@ -7,3 +7,4 @@ app/generated
 npm-debug.log*
 .DS_Store
 .env*
+.railway
