@@ -225,7 +225,7 @@ Railway will not route `hooshelping.com` until both the CNAME and the `_railway-
 
 1. `npm install` runs `postinstall` hook → generates Prisma Client
 2. `npm run build` generates Prisma Client and runs `next build`
-3. `npx prisma migrate deploy` runs as a Railway pre-deploy command before `npm start`
+3. `npx prisma migrate deploy` runs as a Railway pre-deploy command, then the container starts the standalone server (`node .next/standalone/server.js`)
 
 ### Database
 
