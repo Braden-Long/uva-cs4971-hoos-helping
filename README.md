@@ -197,7 +197,16 @@ Microsoft Outlook scans links in emails, consuming magic link tokens before user
 
 ### Railway Setup
 
-The app is hosted on Railway. The `web` service deploys from this directory (`railway.json`) and runs Prisma migrations as a pre-deploy step.
+The app is hosted on Railway. The `web` service builds from the `Dockerfile` and runs Prisma migrations as a pre-deploy step.
+
+**Service settings live in `.railway/railway.ts`** (Railway Infrastructure as Code; it replaced `railway.json`, which Railway stops reading after 2026-12-01). It owns only the `web` service: the build, start command, healthcheck, pre-deploy command and custom domains. Pushing to `main` deploys the code but does **not** apply changes to this file. To change a setting, edit the file, then:
+
+```bash
+railway config plan    # dry run: review the diff, expect no unrelated changes
+railway config apply   # apply after reviewing
+```
+
+Environment variables and the Postgres service are not managed by the file. Change those in the Railway dashboard.
 
 **Custom domain (Cloudflare):** `hooshelping.com` stays on Cloudflare DNS/CDN. Add these records, then set SSL/TLS encryption to **Full** (not Full Strict) while the orange-cloud proxy is on:
 
