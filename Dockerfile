@@ -31,12 +31,22 @@ RUN DATABASE_URL="postgresql://build:build@localhost:5432/build" \
     AUTH_SECRET="build-time-placeholder-not-used-at-runtime" \
     NEXT_TELEMETRY_DISABLED=1 \
     npm run build
+# The standalone output leaves out static assets and public/; put them next to
+# server.js so it can serve them.
+RUN cp -r public .next/standalone/ \
+    && cp -r .next/static .next/standalone/.next/
 
 FROM base AS runner
+# server.js reads HOSTNAME and PORT instead of CLI flags. `::` keeps the
+# dual-stack bind that Railway's proxy needs (it connects over IPv6).
 ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1
+    NEXT_TELEMETRY_DISABLED=1 \
+    HOSTNAME=:: \
+    PORT=8080
 # Copies node_modules too, so the prisma CLI is available for the
-# `prisma migrate deploy` pre-deploy step.
+# `prisma migrate deploy` pre-deploy step. Only .next/standalone runs.
 COPY --from=build /srv/web ./
 EXPOSE 8080
-CMD ["npx", "next", "start", "--hostname", "::"]
+# Run the standalone server directly: no npx wrapper process and no full next
+# CLI, which roughly halves resident memory compared to `npx next start`.
+CMD ["node", ".next/standalone/server.js"]
